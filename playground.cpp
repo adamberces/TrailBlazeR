@@ -5,26 +5,22 @@
 
 static const char WINDOW_TITLE[] = "TrailBlazeR";
 
-class Game
-{
-    GameWindow w;
-
-    GameLoop()
-    {
-
-    }
-
-    Game()
-    {}
-};
-
-class GameWindow
+class GameWindow_c
 {
     GLFWwindow* Window = NULL;
 
-    void resizeCallback(GLFWwindow*, int w, int h)
+    static void resizeCallback(GLFWwindow*, int w, int h)
     {
         glViewport(0, 0, w, h);
+    }
+
+    void processInput(GLFWwindow* window)
+    {
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+        {
+            std::cout << "ESC" << std::endl;
+            glfwSetWindowShouldClose(window, true);
+        }
     }
 
 public:
@@ -50,7 +46,7 @@ public:
     }
 
 
-    GameWindow()
+    GameWindow_c()
     {
         glfwInit();
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -70,17 +66,37 @@ public:
 
     }
 
-    ~GameWindow()
+    ~GameWindow_c()
     {
         glfwTerminate();
     }
 };
 
 
+class Game
+{
+    GameWindow_c GameWindow;
+
+public:
+    void gameLoop()
+    {
+        GameWindow_c::WindowState_e WindowState =
+            GameWindow_c::WindowState_e::OK;
+
+        while (WindowState == GameWindow_c::WindowState_e::OK)
+        {
+            WindowState = GameWindow.updateWindow();
+        }
+    }
+
+    Game()
+    {}
+};
+
 
 int main()
 {
     Game g;
-
-       return 0;
+    g.gameLoop();
+    return 0;
 }
