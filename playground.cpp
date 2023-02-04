@@ -72,7 +72,6 @@ public:
     }
 };
 
-
 class Game
 {
     GameWindow_c GameWindow;
