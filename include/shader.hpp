@@ -5,27 +5,60 @@
 #include <fstream>
 #include <filesystem>
 
-#include <GLFW/glfw3.h>
-
-
-using UID = unsigned int;
-
-static constexpr size_t INFOLOG_BUFSZ = 0x200;
+using Id_t = unsigned int;
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // Represents a shader source
  
+class ShaderFile_c
+{
+    std::string FileName;
+    std::string Source;
+
+public:
+    std::string fileName() const
+    {
+        return FileName;
+    }
+
+    std::string source() const
+    {
+        return Source.data();
+    }
+
+    explicit ShaderFile_c(std::string fileName) :
+        FileName(fileName)
+    {
+        std::size_t size = std::filesystem::file_size(FileName);
+        std::string buffer(size + 1U, '\0');
+        std::ifstream file(FileName);
+
+        if (!file.read(buffer.data(), size))
+        {
+            throw std::runtime_error("Loading GLSL file failed: " + FileName);
+        }
+        std::cout << buffer << std::endl;
+    }
+};
+
 class Shader_c
 {
+    static constexpr size_t INFOLOG_BUFSZ = 0x200;
+
 protected:
-    UID Id;
+    Id_t Id;
+    ShaderFile_c SourceFile;
 
-    virtual void createShaderObject(ShaderType_e) = 0
-
-    void compileShader(std::string FileName, std::string Source)
+    virtual void createShaderObject() = 0;
+    
+public:
+    void compile()
     {
+        std::string source = SourceFile.source();
+        const char* sourcebuf = source.data();
+
         createShaderObject();
-        glShaderSource(Id, 1, &Source, NULL);
+        glShaderSource(Id, 1, &sourcebuf, NULL);
         glCompileShader(Id);
 
         // check for compile errors
@@ -35,27 +68,16 @@ protected:
         if (!success)
         {
             glGetShaderInfoLog(Id, INFOLOG_BUFSZ, NULL, infoLog);
-            std::cout << "Shader file (" << FileName << ") compilation failed: ";
-            std::cout << std::endl; << infoLog << std::endl;
+            std::cout << "Shader file (" << SourceFile.fileName() << ") compilation failed: ";
+            std::cout << std::endl << infoLog << std::endl;
+            throw std::runtime_error("Shader compilation failed!");
         }
     }
 
-public:
-    Shader_c(std::string FileName)
-    {
-        std::uintmax_t = std::filesystem::file_size(FileName)
-        std::string buffer(size);
-        std::ifstream file(FileName);
-
-        if (file.read(buffer.data(), size))
-        {
-            compileShader(FileName, buffer);
-        }
-        else
-        {
-            std::cout << "Loading GLSL file failed: " << FileName << std::endl;
-        }
-        
+    Shader_c(std::string fileName) :
+        Id(0),
+        SourceFile(ShaderFile_c(fileName))
+    {  
     }
 };
 
@@ -65,7 +87,7 @@ public:
     using Shader_c::Shader_c;
 
 private:
-    void createShaderObject(ShaderType_e) override
+    void createShaderObject() override
     {
         Id = glCreateShader(GL_VERTEX_SHADER);
     }
@@ -78,7 +100,7 @@ public:
     using Shader_c::Shader_c;
 
 private:
-    void createShaderObject(ShaderType_e) override
+    void createShaderObject() override
     {
         Id = glCreateShader(GL_FRAGMENT_SHADER);
     }

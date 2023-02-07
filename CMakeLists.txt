@@ -3,8 +3,8 @@ project(trailblazer)
 
 set(EXE_NAME trailblazer)
 
-set(CCFLAGS -O2 -std=c++17 -Wall -Wpedantic -Werror)
-set (LINK_LIBS glfw GL)
+set(CCFLAGS -O2 -std=c++17 -Wall) # -Wpedantic -Werror)
+set (LINK_LIBS glfw GL dl m pthread)
 ###############################################################################
 
 # Set variables for the main folder structure
@@ -17,7 +17,7 @@ set(CMAKE_BINARY_DIR ${BIN_FOLDER})
 set(EXECUTABLE_OUTPUT_PATH ${BIN_FOLDER})
 
 # Define the include directory and source file list
-file(GLOB EXE_SOURCE_FILES "${SOURCE_FOLDER}/*.cpp")
+file(GLOB EXE_SOURCE_FILES "${SOURCE_FOLDER}/*.c*")
 include_directories(${INCLUDE_FOLDER})
 
 ###############################################################################

@@ -1,7 +1,10 @@
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 #include <memory>
 #include <iostream>
 
+#include "shader.hpp"
 
 static const char WINDOW_TITLE[] = "TrailBlazeR";
 
@@ -49,9 +52,9 @@ public:
     GameWindow_c()
     {
         glfwInit();
-        //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 
         Window = glfwCreateWindow(640, 480, WINDOW_TITLE, NULL, NULL);
         if (!Window)
@@ -64,6 +67,14 @@ public:
         glfwMakeContextCurrent(Window);
         glfwSetFramebufferSizeCallback(Window, resizeCallback);
 
+        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
+        {
+            std::cout << "Failed to initialize OpenGL context" << std::endl;
+            throw 1;
+        }   
+
+        VertexShader_c s("./assets/shaders/v_simple.glsl");
+        s.compile();
     }
 
     ~GameWindow_c()
