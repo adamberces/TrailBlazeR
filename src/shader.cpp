@@ -22,14 +22,13 @@ ShaderFile_c::ShaderFile_c(std::string fileName) :
     FileName(fileName)
 {
     std::size_t size = std::filesystem::file_size(FileName);
-    std::string buffer(size + 1U, '\0');
+    Source = std::string(size + 1U, '\0');
     std::ifstream file(FileName);
 
-    if (!file.read(buffer.data(), size))
+    if (!file.read(Source.data(), size))
     {
         throw std::runtime_error("Loading GLSL file failed: " + FileName);
     }
-    std::cout << buffer << std::endl;
 }
 
 
