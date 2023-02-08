@@ -1,4 +1,11 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-using Id_t = unsigned int;
+
+class GLWrapper_i
+{
+protected:
+    unsigned int Id;
+    static constexpr size_t INFOLOG_BUFSZ = 0x200;
+}
+

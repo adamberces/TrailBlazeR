@@ -23,12 +23,11 @@ public:
 /////////////////////////////////////////////////////////////////////////////////////////
 // Abstract class representing a shader code, responsible for calling shader compilation 
 
-class Shader_c
+class Shader_i : public GLWrapper_i
 {
-    static constexpr size_t INFOLOG_BUFSZ = 0x200;
+    
 
 protected:
-    Id_t Id;
     ShaderFile_c SourceFile;
 
     virtual void createShaderObject() = 0;
@@ -36,13 +35,13 @@ protected:
 public:
     void compile();
 
-    explicit Shader_c(std::string fileName);
+    explicit Shader_i(std::string fileName);
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // Represents a Vertex shader code
 
-class VertexShader_c : public Shader_c
+class VertexShader_c : public Shader_i
 {
     void createShaderObject() override;
      
@@ -53,7 +52,7 @@ public:
 /////////////////////////////////////////////////////////////////////////////////////////
 // Represents a Fragment shader code
 
-class FragmentShader_c : public Shader_c
+class FragmentShader_c : public Shader_i
 {
     void createShaderObject() override;
 

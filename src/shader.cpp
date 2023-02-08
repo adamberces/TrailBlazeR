@@ -33,9 +33,9 @@ ShaderFile_c::ShaderFile_c(std::string fileName) :
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Shader_c implementation
+// Shader_i implementation
 
-void Shader_c::compile()
+void Shader_i::compile()
 {
     std::string source = SourceFile.source();
     const char* sourcebuf = source.data();
@@ -57,7 +57,7 @@ void Shader_c::compile()
     }
 }
 
-Shader_c::Shader_c(std::string fileName) :
+Shader_i::Shader_i(std::string fileName) :
     Id(0),
     SourceFile(ShaderFile_c(fileName))
 {  

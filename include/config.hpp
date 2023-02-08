@@ -2,8 +2,6 @@
 
 class Config
 {
-    
-
     Config()
     {}
 
