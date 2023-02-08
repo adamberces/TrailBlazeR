@@ -1,9 +1,8 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 
 #include <memory>
 #include <iostream>
 
+#include "ogl.hpp"
 #include "shader.hpp"
 
 static const char WINDOW_TITLE[] = "TrailBlazeR";

@@ -1,14 +1,11 @@
 #pragma once
 
+#include "ogl.hpp"
 #include <string>
-#include <iostream>
-#include <fstream>
-#include <filesystem>
 
-using Id_t = unsigned int;
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Represents a shader source
+// Represents a shader source file, responsible for reading GLSL files and store contents
  
 class ShaderFile_c
 {
@@ -16,30 +13,15 @@ class ShaderFile_c
     std::string Source;
 
 public:
-    std::string fileName() const
-    {
-        return FileName;
-    }
+    std::string fileName() const;
+    std::string source() const;
 
-    std::string source() const
-    {
-        return Source;
-    }
-
-    explicit ShaderFile_c(std::string fileName) :
-        FileName(fileName)
-    {
-        std::size_t size = std::filesystem::file_size(FileName);
-        std::string buffer(size + 1U, '\0');
-        std::ifstream file(FileName);
-
-        if (!file.read(buffer.data(), size))
-        {
-            throw std::runtime_error("Loading GLSL file failed: " + FileName);
-        }
-        std::cout << buffer << std::endl;
-    }
+    explicit ShaderFile_c(std::string fileName);
 };
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Abstract class representing a shader code, responsible for calling shader compilation 
 
 class Shader_c
 {
@@ -52,56 +34,29 @@ protected:
     virtual void createShaderObject() = 0;
     
 public:
-    void compile()
-    {
-        std::string source = SourceFile.source();
-        const char* sourcebuf = source.data();
+    void compile();
 
-        createShaderObject();
-        glShaderSource(Id, 1, &sourcebuf, NULL);
-        glCompileShader(Id);
-
-        // check for compile errors
-        int success;
-        char infoLog[INFOLOG_BUFSZ];
-        glGetShaderiv(Id, GL_COMPILE_STATUS, &success);
-        if (!success)
-        {
-            glGetShaderInfoLog(Id, INFOLOG_BUFSZ, NULL, infoLog);
-            std::cout << "Shader file (" << SourceFile.fileName() << ") compilation failed: ";
-            std::cout << std::endl << infoLog << std::endl;
-            throw std::runtime_error("Shader compilation failed!");
-        }
-    }
-
-    Shader_c(std::string fileName) :
-        Id(0),
-        SourceFile(ShaderFile_c(fileName))
-    {  
-    }
+    explicit Shader_c(std::string fileName);
 };
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Represents a Vertex shader code
 
 class VertexShader_c : public Shader_c
 {
+    void createShaderObject() override;
+     
 public:
     using Shader_c::Shader_c;
-
-private:
-    void createShaderObject() override
-    {
-        Id = glCreateShader(GL_VERTEX_SHADER);
-    }
 };
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Represents a Fragment shader code
 
 class FragmentShader_c : public Shader_c
 {
+    void createShaderObject() override;
+
 public:
     using Shader_c::Shader_c;
-
-private:
-    void createShaderObject() override
-    {
-        Id = glCreateShader(GL_FRAGMENT_SHADER);
-    }
 };
