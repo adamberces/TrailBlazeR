@@ -23,7 +23,7 @@ public:
 
     std::string source() const
     {
-        return Source.data();
+        return Source;
     }
 
     explicit ShaderFile_c(std::string fileName) :
