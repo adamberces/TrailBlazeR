@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+trailblazer
+
+# VS C0de
+.vscode
+
+# CMake
+CMakeCache.txt
+cmake_install.cmake
+CMakeFiles
+build
