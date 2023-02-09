@@ -25,8 +25,6 @@ public:
 
 class Shader_i : public GLWrapper_i
 {
-    
-
 protected:
     ShaderFile_c SourceFile;
 
@@ -43,10 +41,10 @@ public:
 
 class VertexShader_c : public Shader_i
 {
-    void createShaderObject() override;
+    void createShaderObject();
      
 public:
-    using Shader_c::Shader_c;
+    using Shader_i::Shader_i;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -54,8 +52,8 @@ public:
 
 class FragmentShader_c : public Shader_i
 {
-    void createShaderObject() override;
+    void createShaderObject();
 
 public:
-    using Shader_c::Shader_c;
+    using Shader_i::Shader_i;
 };

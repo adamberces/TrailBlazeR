@@ -58,7 +58,6 @@ void Shader_i::compile()
 }
 
 Shader_i::Shader_i(std::string fileName) :
-    Id(0),
     SourceFile(ShaderFile_c(fileName))
 {  
 }
@@ -76,7 +75,7 @@ void VertexShader_c::createShaderObject()
 /////////////////////////////////////////////////////////////////////////////////////////
 // Shader_c implementation
 
-void Shader_c::createShaderObject()
+void FragmentShader_c::createShaderObject()
 {
     Id = glCreateShader(GL_FRAGMENT_SHADER);
 }

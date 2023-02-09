@@ -13,7 +13,7 @@ ShaderProgram_c::ShaderProgram_c(const char** shaderSourceList)
 
     for (size_t i = 0; i < shaders_count; i++)
     {
-        shaders.push_back()
+        shaders.push_back();
     }
 
 }
