@@ -5,15 +5,24 @@
 #include "shaderprogram.hpp"
 
 
-ShaderProgram_c::ShaderProgram_c(const char** shaderSourceList)
-{
-    size_t shaders_count = sizeof(shaderSourceList);
-    std::vector<Shader_i*> shaders;
-    shaders.reserve(shaders_count);
+#include <iostream>
 
-    for (size_t i = 0; i < shaders_count; i++)
+
+using ShaderSourcePtr_t = std::string ShaderSourceList_s::*;
+
+ShaderSourcePtr_t ShaderSourceListMember[] = {
+    &ShaderSourceList_s::VertexShader,
+    &ShaderSourceList_s::FragmentShader,
+};
+
+ShaderProgram_c::ShaderProgram_c(ShaderSourceList_s& ssl)
+{
+    std::vector<Shader_i*> shaders;
+    
+    for (size_t i = 0; i < 2; i++)
     {
-        shaders.push_back();
+        std::cout << ssl.*ShaderSourceListMember[i] << std::endl;
+        //shaders.push_back();
     }
 
 }

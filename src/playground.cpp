@@ -4,6 +4,7 @@
 
 #include "ogl.hpp"
 #include "shader.hpp"
+#include "shaderprogram.hpp"
 
 static const char WINDOW_TITLE[] = "TrailBlazeR";
 
@@ -74,6 +75,9 @@ public:
 
         VertexShader_c s("./assets/shaders/v_simple.glsl");
         s.compile();
+
+        ShaderSourceList_s test;
+        ShaderProgram_c sp(test);
     }
 
     ~GameWindow_c()
