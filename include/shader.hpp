@@ -16,7 +16,7 @@ public:
     std::string fileName() const;
     std::string source() const;
 
-    explicit ShaderFile_c(std::string fileName);
+    explicit ShaderFile_c(const std::string& fileName);
 };
 
 
@@ -41,7 +41,40 @@ public:
 
 class VertexShader_c : public Shader_i
 {
-    void createShaderObject();
+    void createShaderObject() override; 
+     
+public:
+    using Shader_i::Shader_i;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Represents a Tesselation Control Shader shader code
+
+class TesselationControlShader_c : public Shader_i
+{
+    void createShaderObject() override;
+     
+public:
+    using Shader_i::Shader_i;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Represents a Tesselation Evaluation Shader shader code
+
+class TesselationEvaluationShader_c : public Shader_i
+{
+    void createShaderObject() override;
+     
+public:
+    using Shader_i::Shader_i;
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Represents a Geometry shader code
+
+class GeometryShader_c : public Shader_i
+{
+    void createShaderObject() override;
      
 public:
     using Shader_i::Shader_i;
@@ -52,7 +85,7 @@ public:
 
 class FragmentShader_c : public Shader_i
 {
-    void createShaderObject();
+    void createShaderObject() override;
 
 public:
     using Shader_i::Shader_i;

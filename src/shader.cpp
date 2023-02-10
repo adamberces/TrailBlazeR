@@ -18,7 +18,7 @@ std::string ShaderFile_c::source() const
     return Source;
 }
 
-ShaderFile_c::ShaderFile_c(std::string fileName) :
+ShaderFile_c::ShaderFile_c(const std::string& fileName) :
     FileName(fileName)
 {
     std::size_t size = std::filesystem::file_size(FileName);
@@ -64,7 +64,7 @@ Shader_i::Shader_i(std::string fileName) :
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Shader_c implementation
+// VertexShader_c implementation
 
 void VertexShader_c::createShaderObject()
 {
@@ -73,7 +73,34 @@ void VertexShader_c::createShaderObject()
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Shader_c implementation
+// TesselationControlShader_c implementation
+
+void TesselationControlShader_c::createShaderObject()
+{
+    Id = glCreateShader(GL_TESS_CONTROL_SHADER);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// TesselationEvaluationShader_c implementation
+
+void TesselationEvaluationShader_c::createShaderObject()
+{
+    Id = glCreateShader(GL_TESS_EVALUATION_SHADER);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// GeometryShader_c implementation
+
+void GeometryShader_c::createShaderObject()
+{
+    Id = glCreateShader(GL_GEOMETRY_SHADER);
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// FragmentShader_c implementation
 
 void FragmentShader_c::createShaderObject()
 {

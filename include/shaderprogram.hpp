@@ -11,7 +11,8 @@ static const char* test[] = {
 struct ShaderSourceList_s
 {
     std::string VertexShader;
-    std::string TesselationShader;
+    std::string TesselationControlShader;
+    std::string TesselationEvaluationShader;
     std::string GeometryShader;
     std::string FragmentShader;
 };

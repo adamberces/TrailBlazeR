@@ -11,5 +11,11 @@ protected:
 
     GLWrapper_i() : Id(0U)
     {}
+
+public:
+    decltype(Id) getId() const
+    {
+        return Id;
+    }
 };
 
