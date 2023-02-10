@@ -3,6 +3,15 @@
 #include "ogl.hpp"
 #include <string>
 
+enum class ShaderType_e
+{
+    VertexShader = GL_VERTEX_SHADER,
+    TesselationControlShader = GL_TESS_CONTROL_SHADER,
+    TesselationEvaluationShader = GL_TESS_EVALUATION_SHADER,
+    GeometryShader = GL_GEOMETRY_SHADER,
+    FragmentShader = GL_FRAGMENT_SHADER
+};
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // Represents a shader source file, responsible for reading GLSL files and store contents
@@ -23,70 +32,14 @@ public:
 /////////////////////////////////////////////////////////////////////////////////////////
 // Abstract class representing a shader code, responsible for calling shader compilation 
 
-class Shader_i : public GLWrapper_i
+class Shader_c : public GLWrapper_i
 {
-protected:
     ShaderFile_c SourceFile;
-
-    virtual void createShaderObject() = 0;
     
 public:
-    void compile();
+    void compile(ShaderType_e);
 
-    explicit Shader_i(std::string fileName);
-};
+    explicit Shader_c(std::string fileName);
 
-/////////////////////////////////////////////////////////////////////////////////////////
-// Represents a Vertex shader code
-
-class VertexShader_c : public Shader_i
-{
-    void createShaderObject() override; 
-     
-public:
-    using Shader_i::Shader_i;
-};
-
-/////////////////////////////////////////////////////////////////////////////////////////
-// Represents a Tesselation Control Shader shader code
-
-class TesselationControlShader_c : public Shader_i
-{
-    void createShaderObject() override;
-     
-public:
-    using Shader_i::Shader_i;
-};
-
-/////////////////////////////////////////////////////////////////////////////////////////
-// Represents a Tesselation Evaluation Shader shader code
-
-class TesselationEvaluationShader_c : public Shader_i
-{
-    void createShaderObject() override;
-     
-public:
-    using Shader_i::Shader_i;
-};
-
-/////////////////////////////////////////////////////////////////////////////////////////
-// Represents a Geometry shader code
-
-class GeometryShader_c : public Shader_i
-{
-    void createShaderObject() override;
-     
-public:
-    using Shader_i::Shader_i;
-};
-
-/////////////////////////////////////////////////////////////////////////////////////////
-// Represents a Fragment shader code
-
-class FragmentShader_c : public Shader_i
-{
-    void createShaderObject() override;
-
-public:
-    using Shader_i::Shader_i;
+    ~Shader_c();
 };

@@ -1,80 +1,94 @@
-#include <memory>
-#include <vector>
-
-#include "shader.hpp"
 #include "shaderprogram.hpp"
-
-
 #include <iostream>
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // This funny little facilty lets us "iterate" tru the ShaderSourceList struct
-// with a for loop and a homebrew "traits" struct (thru template specializations)
-// which provides type information of the corresponding shader code class to construct,
-// in the order of the OpenGL pipeline
+// and assign a corresponding value from the ShaderType enum for correct compilation
 
 using ShaderSourcePtr_t = std::string ShaderSourceList_s::*;
 
-ShaderSourcePtr_t ShaderSourceListMember[] = {
-    &ShaderSourceList_s::VertexShader,
-    &ShaderSourceList_s::TesselationControlShader,
-    &ShaderSourceList_s::TesselationEvaluationShader,
-    &ShaderSourceList_s::GeometryShader,
-    &ShaderSourceList_s::FragmentShader,
-};
-
-
-template<size_t Index>
-struct ShaderSourceListTrait
+ShaderSourcePtr_t ShaderSourceListMember[] =
 {
+    &ShaderSourceList_s::VertexShaderPath,
+    &ShaderSourceList_s::TesselationControlShaderPath,
+    &ShaderSourceList_s::TesselationEvaluationShaderPath,
+    &ShaderSourceList_s::GeometryShaderPath,
+    &ShaderSourceList_s::FragmentShaderPath,
 };
 
-template<>
-struct ShaderSourceListTrait<0>
+ShaderType_e ShaderSourceListType[] = 
 {
-    using type = VertexShader_c;
+    ShaderType_e::VertexShader,
+    ShaderType_e::TesselationControlShader,
+    ShaderType_e::TesselationEvaluationShader,
+    ShaderType_e::GeometryShader,
+    ShaderType_e::FragmentShader
 };
 
-template<>
-struct ShaderSourceListTrait<1>
+std::vector<std::shared_ptr<Shader_c>>
+    ShaderProgram_c::compileShaderProgram(ShaderSourceList_s& ssl) const
 {
-    using type = TesselationControlShader_c;
-};
+    std::vector<std::shared_ptr<Shader_c>> shaders;
+    size_t listsize = std::size(ShaderSourceListMember);
 
-template<>
-struct ShaderSourceListTrait<2>
+    for (size_t i = 0; i < listsize; i++)
+    {
+        std::string sourceFileName = ssl.*ShaderSourceListMember[i];
+        if (!sourceFileName.empty())
+        {
+            auto s = std::make_shared<Shader_c>(sourceFileName);
+            s->compile(ShaderSourceListType[i]);
+            shaders.push_back(s);
+        }
+        else
+        {
+            if (i == 0 || i == listsize - 1)
+            {
+                throw std::runtime_error("Defining Vertex and Fragment shader"
+                    "for a shader program is mandatory!");
+            }
+        }
+    }
+
+    return shaders;
+}
+
+void ShaderProgram_c::linkShaderProgram(std::vector<std::shared_ptr<Shader_c>>& program)
 {
-    using type = TesselationEvaluationShader_c;
-};
+    Id = glCreateProgram();
 
-template<>
-struct ShaderSourceListTrait<3>
+    for (const auto& p : program)
+    {
+        glAttachShader(Id, p->getId());
+    }
+
+    glLinkProgram(Id);
+
+    // check for linking errors
+    int success;
+    char infoLog[INFOLOG_BUFSZ];
+    glGetProgramiv(Id, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(Id, INFOLOG_BUFSZ, NULL, infoLog);
+        std::cout << "Shader program linking failed: ";
+        std::cout << std::endl << infoLog << std::endl;
+        throw std::runtime_error("Shader linking failed!");
+    }
+}
+
+void ShaderProgram_c::use() const
 {
-    using type = GeometryShader_c;
-};
-
-template<>
-struct ShaderSourceListTrait<4>
-{
-    using type = FragmentShader_c;
-};
-
-template struct ShaderSourceListTrait<0>;
+    glUseProgram(Id);
+}
 
 ShaderProgram_c::ShaderProgram_c(ShaderSourceList_s& ssl)
 {
-    std::vector<std::unique_ptr<Shader_i>> shaders;
-    
-    auto l = [&](const size_t index) -> std::unique_ptr<Shader_i>
-    {
-        std::string sourceFileName = ssl.*ShaderSourceListMember[index];
-        auto s = std::make_unique<ShaderSourceListTrait<index>::type>(sourceFileName);
-    };
+    auto program = compileShaderProgram(ssl);
+    linkShaderProgram(program);
+}
 
-    for (size_t i = 0; i < 5; i++)
-    {
-        shaders.push_back(l(i));
-    }
-
+ShaderProgram_c::~ShaderProgram_c()
+{
+    glDeleteProgram(Id);
 }

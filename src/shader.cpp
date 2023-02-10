@@ -35,12 +35,12 @@ ShaderFile_c::ShaderFile_c(const std::string& fileName) :
 /////////////////////////////////////////////////////////////////////////////////////////
 // Shader_i implementation
 
-void Shader_i::compile()
+void Shader_c::compile(ShaderType_e type)
 {
     std::string source = SourceFile.source();
     const char* sourcebuf = source.data();
 
-    createShaderObject();
+    Id = glCreateShader(static_cast<unsigned int>(type));;
     glShaderSource(Id, 1, &sourcebuf, NULL);
     glCompileShader(Id);
 
@@ -57,52 +57,12 @@ void Shader_i::compile()
     }
 }
 
-Shader_i::Shader_i(std::string fileName) :
+Shader_c::Shader_c(std::string fileName) :
     SourceFile(ShaderFile_c(fileName))
 {  
 }
 
-
-/////////////////////////////////////////////////////////////////////////////////////////
-// VertexShader_c implementation
-
-void VertexShader_c::createShaderObject()
+Shader_c::~Shader_c()
 {
-    Id = glCreateShader(GL_VERTEX_SHADER);
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////
-// TesselationControlShader_c implementation
-
-void TesselationControlShader_c::createShaderObject()
-{
-    Id = glCreateShader(GL_TESS_CONTROL_SHADER);
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////
-// TesselationEvaluationShader_c implementation
-
-void TesselationEvaluationShader_c::createShaderObject()
-{
-    Id = glCreateShader(GL_TESS_EVALUATION_SHADER);
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////
-// GeometryShader_c implementation
-
-void GeometryShader_c::createShaderObject()
-{
-    Id = glCreateShader(GL_GEOMETRY_SHADER);
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////
-// FragmentShader_c implementation
-
-void FragmentShader_c::createShaderObject()
-{
-    Id = glCreateShader(GL_FRAGMENT_SHADER);
+    glDeleteShader(Id);
 }

@@ -73,10 +73,9 @@ public:
             throw 1;
         }   
 
-        VertexShader_c s("./assets/shaders/v_simple.glsl");
-        s.compile();
-
         ShaderSourceList_s test;
+        test.FragmentShaderPath = "./assets/shaders/f_uniformcolor.glsl";
+        test.VertexShaderPath = "./assets/shaders/v_simple.glsl";
         ShaderProgram_c sp(test);
     }
 
