@@ -1,15 +1,15 @@
 #pragma once
-#include <glad/glad.h>
+#include <glkit/glad/glad.h>
 #include <GLFW/glfw3.h>
 
 
-class GLWrapper_i
+class GLObject_i
 {
 protected:
     unsigned int Id;
     static const size_t INFOLOG_BUFSZ = 0x200;
 
-    GLWrapper_i() : Id(0U)
+    GLObject_i() : Id(0U)
     {}
 
 public:

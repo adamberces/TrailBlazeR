@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ogl.hpp"
+#include "globject.hpp"
 #include "shader.hpp"
 
 #include <string>
@@ -17,7 +17,7 @@ struct ShaderSourceList_s
     std::string FragmentShaderPath;
 };
 
-class ShaderProgram_c : public GLWrapper_i
+class ShaderProgram_c : public GLObject_i
 {
     std::vector<std::shared_ptr<Shader_c>>
         compileShaderProgram(ShaderSourceList_s&) const;

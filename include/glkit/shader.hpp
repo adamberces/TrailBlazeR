@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ogl.hpp"
+#include "globject.hpp"
 #include <string>
 
 enum class ShaderType_e
@@ -32,7 +32,7 @@ public:
 /////////////////////////////////////////////////////////////////////////////////////////
 // Abstract class representing a shader code, responsible for calling shader compilation 
 
-class Shader_c : public GLWrapper_i
+class Shader_c : public GLObject_i
 {
     ShaderFile_c SourceFile;
     

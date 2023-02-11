@@ -17,7 +17,7 @@ set(CMAKE_BINARY_DIR ${BIN_FOLDER})
 set(EXECUTABLE_OUTPUT_PATH ${BIN_FOLDER})
 
 # Define the include directory and source file list
-file(GLOB EXE_SOURCE_FILES "${SOURCE_FOLDER}/*.c*")
+file(GLOB_RECURSE EXE_SOURCE_FILES "${SOURCE_FOLDER}/*.c*")
 include_directories(${INCLUDE_FOLDER})
 
 ###############################################################################
