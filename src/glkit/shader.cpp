@@ -33,7 +33,7 @@ ShaderFile_c::ShaderFile_c(const std::string& fileName) :
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Shader_i implementation
+// Shader_c implementation
 
 void Shader_c::compile(ShaderType_e type)
 {

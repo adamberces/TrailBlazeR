@@ -26,6 +26,10 @@ ShaderType_e ShaderSourceListType[] =
     ShaderType_e::FragmentShader
 };
 
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// ShaderProgram_c implementation
+
 std::vector<std::shared_ptr<Shader_c>>
     ShaderProgram_c::compileShaderProgram(ShaderSourceList_s& ssl) const
 {

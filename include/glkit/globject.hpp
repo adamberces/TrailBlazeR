@@ -3,6 +3,9 @@
 #include <GLFW/glfw3.h>
 
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Common acestor for all objects wrapping OpenGL features, providing the unique ID
+
 class GLObject_i
 {
 protected:

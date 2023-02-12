@@ -3,6 +3,10 @@
 #include "globject.hpp"
 #include <string>
 
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Type safe wrapper of OpenGL shader types
+
 enum class ShaderType_e
 {
     VertexShader = GL_VERTEX_SHADER,
@@ -30,7 +34,9 @@ public:
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Abstract class representing a shader code, responsible for calling shader compilation 
+// Class representing a shader code, responsible for shader compilation 
+// Designed as per the RAII principles, glDeleteShader is automatically called to free
+// resources when the object lifetime is over.
 
 class Shader_c : public GLObject_i
 {

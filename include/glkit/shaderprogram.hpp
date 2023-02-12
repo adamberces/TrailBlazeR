@@ -8,6 +8,11 @@
 #include <memory>
 
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Struct to specify paths of GLSL source files to be compiled and linked to
+// an OpenGL Shader program. Note, that defining VertexShaderPath and FragmentShaderPath
+// is mandatory, the rest can be left empty optionally.
+
 struct ShaderSourceList_s
 {
     std::string VertexShaderPath;
@@ -16,6 +21,13 @@ struct ShaderSourceList_s
     std::string GeometryShaderPath;
     std::string FragmentShaderPath;
 };
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Class representing a shader program, responsible for calling the compilation of
+// individual shader sources (wrapped in Shader_c instances) and linking them together.
+// Designed as per the RAII principles, glDeleteProgram is automatically called to free
+// resources when the object lifetime is over.
 
 class ShaderProgram_c : public GLObject_i
 {
