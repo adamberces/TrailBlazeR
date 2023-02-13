@@ -34,7 +34,7 @@ class ArrayBuffer_c : public GLObject_i
     ArrayBufferUsage_e Usage;
 
 public:
-    void bindAndCopy(std::vector<BufferDataType> data)
+    inline void bindAndCopy(std::vector<BufferDataType> data)
     {
         // Sanity check: test if we have a vertex array object bound
         int vao_id = 0;
@@ -52,7 +52,7 @@ public:
                      static_cast<unsigned int>(Usage));
     }
 
-    void unbind() const
+    inline void unbind() const
     {
         glBindBuffer(static_cast<unsigned int>(Type), 0); 
     }

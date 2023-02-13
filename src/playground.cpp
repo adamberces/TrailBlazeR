@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include <glkit/shaderprogram.hpp>
-#include <glkit/arraybuffer.hpp>
+#include <glkit/vertexarray.hpp>
 
 static const char WINDOW_TITLE[] = "TrailBlazeR";
 
@@ -35,7 +35,7 @@ public:
     ShaderProgram_c* sp;
     ArrayBuffer_c<float>* vbo;
     ArrayBuffer_c<unsigned int>* ebo;
-    unsigned int VAO;
+    VertexArrayObject_c<float>* vao;
     
     WindowState_e updateWindow()
     {
@@ -44,7 +44,7 @@ public:
         glClearColor(.2F, .2F, .4F, 1.F);
         glClear(GL_COLOR_BUFFER_BIT);
         sp->use();
-        glBindVertexArray(VAO);
+        vao->bind();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(Window);
@@ -96,29 +96,9 @@ public:
             1, 2, 3   // second Triangle
         };
 
-        glGenVertexArrays(1, &VAO);
-
-        vbo = new ArrayBuffer_c<float>
-            (ArrayBufferType_e::ArrayBuffer,
-             ArrayBufferUsage_e::StaticDraw);
-
-        ebo = new ArrayBuffer_c<unsigned int>
-            (ArrayBufferType_e::ElementArrayBuffer,
-             ArrayBufferUsage_e::StaticDraw);
-             
-         glBindVertexArray(VAO);
-
-        vbo->bindAndCopy(vertices);
-        ebo->bindAndCopy(indices);
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-
-        // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-        vbo->unbind();
-        // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-        // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-        glBindVertexArray(0); 
+        vao = new VertexArrayObject_c<float>();
+        vao->copyVertexData(vertices, indices);
+        vao->setVertexAttribute(0, 3);
     }
 
     ~GameWindow_c()
