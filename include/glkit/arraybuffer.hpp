@@ -57,7 +57,7 @@ public:
         glBindBuffer(static_cast<unsigned int>(Type), 0); 
     }
 
-    explicit ArrayBuffer_c
+    ArrayBuffer_c
         (ArrayBufferType_e type, ArrayBufferUsage_e usage) :
         Type(type),
         Usage(usage)
