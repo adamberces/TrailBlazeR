@@ -51,6 +51,8 @@ class VertexArrayObject_c : public GLObject_i
     ArrayBufferPtrContainer_t<unsigned int> ElementBuffers;
 
 public:
+    // Copies a pair of vertex and element position data to the
+    // GPU and assigns them to the current Vertex Array Object
     inline void copyVertexData
         (std::vector<BufferDataType>& vertexData,
          std::vector<unsigned int>& elementData)
@@ -72,16 +74,35 @@ public:
         unbind();
     }
 
-    // Note, for convience, currently only tightly packed arrays
-    // are accepted, so we only need to set the index and the size
-    inline void setVertexAttribute(size_t index, size_t size)
+    // Stores vertex attributes in the Vertex Array Object
+    // for the given location
+    inline void setVertexAttribute
+        (size_t location, size_t component_count,
+         size_t stride, size_t offset)
     {
         bind();
-        glVertexAttribPointer(index, size,
+        glVertexAttribPointer(location, component_count,
             buffer_data_type_traits<BufferDataType>::type,
-            GL_FALSE, size * sizeof(BufferDataType), (void*)0);
-        glEnableVertexAttribArray(index);
+            GL_FALSE, stride, (void*)offset);
+        glEnableVertexAttribArray(location);
         unbind();
+    }
+
+    // Overload for convience, when no additional offset is needed
+    inline void setVertexAttribute
+        (size_t location, size_t component_count, size_t stride)
+    {
+        setVertexAttribute(location, component_count, stride, 0);
+    }
+
+
+    // Overload for convience, when the struct is tightly packed
+    // and also no additional offset is needed
+    inline void setVertexAttribute(size_t location, size_t component_count)
+    {
+        setVertexAttribute
+            (location, component_count,
+             component_count * sizeof(BufferDataType));
     }
 
     inline void bind() const
