@@ -1,4 +1,4 @@
-#include <glkit/shader.hpp>
+#include <glkit/core/shader.hpp>
 
 #include <iostream>
 #include <fstream>

@@ -3,7 +3,7 @@ project(trailblazer)
 
 set(EXE_NAME trailblazer)
 
-set(CCFLAGS -O2 -std=c++17 -Wall) # -Wpedantic -Werror)
+set(CCFLAGS -O2 -std=c++2a -Wall) # -Wpedantic -Werror)
 set (LINK_LIBS glfw GL dl m pthread)
 ###############################################################################
 

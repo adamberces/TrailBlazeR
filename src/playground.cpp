@@ -2,8 +2,8 @@
 #include <memory>
 #include <iostream>
 
-#include <glkit/shaderprogram.hpp>
-#include <glkit/vertexarray.hpp>
+#include <glkit/core/shaderprogram.hpp>
+#include <glkit/core/vertexarray.hpp>
 
 static const char WINDOW_TITLE[] = "TrailBlazeR";
 

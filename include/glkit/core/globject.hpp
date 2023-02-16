@@ -1,5 +1,5 @@
 #pragma once
-#include <glkit/glad/glad.h>
+#include <glkit/core/glad/glad.h>
 #include <GLFW/glfw3.h>
 
 
