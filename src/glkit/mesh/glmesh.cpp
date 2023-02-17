@@ -18,6 +18,7 @@ void GLMesh_i::draw()
 void GLMesh_i::constructVertexArrayObject
     (const vertex_vector_t& vertices, const element_vector_t& indices)
 {
+    NumberOfElements = indices.size();
     VertexArrayObject = std::make_unique<core::VertexArrayObject_c<float>>();
     VertexArrayObject->copyVertexData(vertices, indices);
     VertexArrayObject->setVertexAttribute(0, 3);
