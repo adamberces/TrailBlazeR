@@ -17,41 +17,20 @@ class GLMesh_i
     unsigned int NumberOfElements;
 
 public:
-    void draw()
-    {
-        ShaderProgram->use();
-        VertexArrayObject->bind();
-
-        glDrawElements(GL_TRIANGLES, NumberOfElements,
-                       GL_UNSIGNED_INT, 0);
-
-        VertexArrayObject->unbind();
-    }
+    void draw();
 
 protected:
     using vertex_vector_t = std::vector<float>;
     using element_vector_t = std::vector<unsigned int>;
 
     void constructVertexArrayObject
-        (const vertex_vector_t& vertices, const element_vector_t& indices)
-    {
-        VertexArrayObject = std::make_unique<core::VertexArrayObject_c<float>>();
-        VertexArrayObject->copyVertexData(vertices, indices);
-        VertexArrayObject->setVertexAttribute(0, 3);
-    }
+        (const vertex_vector_t&, const element_vector_t&);
 
-    void constructShaderProgram(const core::ShaderSourceList_s& ssl)
-    {
-        ShaderProgram = std::make_unique<core::ShaderProgram_c>(ssl);
-    }
-
-    void initialize(const core::ShaderSourceList_s& shaderSourceList,
-        const vertex_vector_t& vertices,
-        const element_vector_t& indices) 
-    {
-        constructShaderProgram(shaderSourceList);
-        constructVertexArrayObject(vertices, indices);       
-    }
+    void constructShaderProgram(const core::ShaderSourceList_s&);
+  
+    void initialize(const core::ShaderSourceList_s&,
+        const vertex_vector_t&,
+        const element_vector_t&);
 
     GLMesh_i() : NumberOfElements(0)
     {
