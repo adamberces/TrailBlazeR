@@ -32,15 +32,15 @@ struct ShaderSourceList_s
 class ShaderProgram_c : public GLObject_i
 {
     std::vector<std::shared_ptr<Shader_c>>
-        compileShaderProgram(ShaderSourceList_s&) const;
+        compileShaderProgram(const ShaderSourceList_s&) const;
 
     void linkShaderProgram
-        (std::vector<std::shared_ptr<Shader_c>>&);
+        (const std::vector<std::shared_ptr<Shader_c>>&);
 
 public:
     void use() const;
 
-    explicit ShaderProgram_c(ShaderSourceList_s&);
+    explicit ShaderProgram_c(const ShaderSourceList_s&);
 
     ~ShaderProgram_c();
 };

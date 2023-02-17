@@ -2,14 +2,14 @@
 #include <memory>
 #include <iostream>
 
-#include <glkit/core/shaderprogram.hpp>
-#include <glkit/core/vertexarray.hpp>
+#include <glkit/glmesh/glcube.hpp>
 
 static const char WINDOW_TITLE[] = "TrailBlazeR";
 
 class GameWindow_c
 {
     GLFWwindow* Window = NULL;
+    GLCube* cube;
 
     static void resizeCallback(GLFWwindow*, int w, int h)
     {
@@ -31,11 +31,6 @@ public:
         OK,
         CLOSING
     };
-
-    ShaderProgram_c* sp;
-    ArrayBuffer_c<float>* vbo;
-    ArrayBuffer_c<unsigned int>* ebo;
-    VertexArrayObject_c<float>* vao;
     
     WindowState_e updateWindow()
     {
@@ -43,9 +38,8 @@ public:
 
         glClearColor(.2F, .2F, .4F, 1.F);
         glClear(GL_COLOR_BUFFER_BIT);
-        sp->use();
-        vao->bind();
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+       cube->draw();
 
         glfwSwapBuffers(Window);
         glfwPollEvents();
@@ -80,25 +74,7 @@ public:
             throw 1;
         }   
 
-        ShaderSourceList_s test;
-        test.FragmentShaderPath = "./assets/shaders/f_uniformcolor.glsl";
-        test.VertexShaderPath = "./assets/shaders/v_simple.glsl";
-        sp = new ShaderProgram_c(test);
-
-        std::vector<float> vertices = {
-         0.5f,  0.5f, 0.0f,  // top right
-         0.5f, -0.5f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  // bottom left
-        -0.5f,  0.5f, 0.0f   // top left 
-        };
-        std::vector<unsigned int> indices = {  // note that we start from 0!
-            0, 1, 3,  // first Triangle
-            1, 2, 3   // second Triangle
-        };
-
-        vao = new VertexArrayObject_c<float>();
-        vao->copyVertexData(vertices, indices);
-        vao->setVertexAttribute(0, 3);
+        cube = new GLCube(1.F, 1.F, 0.2F);
     }
 
     ~GameWindow_c()

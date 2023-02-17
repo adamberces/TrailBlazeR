@@ -54,8 +54,8 @@ public:
     // Copies a pair of vertex and element position data to the
     // GPU and assigns them to the current Vertex Array Object
     inline void copyVertexData
-        (std::vector<BufferDataType>& vertexData,
-         std::vector<unsigned int>& elementData)
+        (const std::vector<BufferDataType>& vertexData,
+         const std::vector<unsigned int>& elementData)
     {
         bind();
 

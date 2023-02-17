@@ -3,51 +3,55 @@
 #include <memory>
 #include <vector>
 
+#include <glkit/core/shaderprogram.hpp>
+#include <glkit/core/vertexarray.hpp>
 
-// Forward declarations for pointer types
-class ShaderProgram_c;
-class VertexArrayObject_c;
-struct ShaderSourceList_s;
 
 class GLMesh_i
 {
     std::unique_ptr<ShaderProgram_c> ShaderProgram;
-    std::unique_ptr<VertexArrayObject_c> VertexArrayObject;
+    std::unique_ptr<VertexArrayObject_c<float>> VertexArrayObject;
 
     unsigned int NumberOfElements;
 
-protected:
-    virtual void constructVertexData() = 0;
-
-    virtual void draw()
+public:
+    void draw()
     {
-        sp->use();
-        vao->bind();
-        glDrawElements(GL_TRIANGLES, NumberOfElements, GL_UNSIGNED_INT, 0);
+        ShaderProgram->use();
+        VertexArrayObject->bind();
+
+        glDrawElements(GL_TRIANGLES, NumberOfElements,
+                       GL_UNSIGNED_INT, 0);
+
+        VertexArrayObject->unbind();
     }
 
-    virtual void constructVertexArrayObject
-        (std::vector<float>& vertices, std::vector<unsigned int>& indices)
+protected:
+    using vertex_vector_t = std::vector<float>;
+    using element_vector_t = std::vector<unsigned int>;
+
+    void constructVertexArrayObject
+        (const vertex_vector_t& vertices, const element_vector_t& indices)
     {
-        VertexArrayObject = std::make_uniqe VertexArrayObject_c<float>();
+        VertexArrayObject = std::make_unique<VertexArrayObject_c<float>>();
         VertexArrayObject->copyVertexData(vertices, indices);
         VertexArrayObject->setVertexAttribute(0, 3);
     }
 
-    virtual void constructShaderProgram(ShaderSourceList_s& ssl)
+    void constructShaderProgram(const ShaderSourceList_s& ssl)
     {
-        ShaderSourceList_s test;
-        test.FragmentShaderPath = "./assets/shaders/f_uniformcolor.glsl";
-        test.VertexShaderPath = "./assets/shaders/v_simple.glsl";
-        ShaderProgram = new ShaderProgram_c(test);
+        ShaderProgram = std::make_unique<ShaderProgram_c>(ssl);
     }
- 
-    GLMesh_i(ShaderSourceList_s* shaderSourceList) :
-        ShaderProgram_c(nullptr),
-        VertexArrayObject_c(nullptr),
-        NumberOfElements(0)
+
+    void initialize(const ShaderSourceList_s& shaderSourceList,
+        const vertex_vector_t& vertices,
+        const element_vector_t& indices) 
     {
         constructShaderProgram(shaderSourceList);
-        constructVertexArrayObject
+        constructVertexArrayObject(vertices, indices);       
+    }
+
+    GLMesh_i() : NumberOfElements(0)
+    {
     }
 };

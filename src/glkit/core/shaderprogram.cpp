@@ -31,7 +31,7 @@ ShaderType_e ShaderSourceListType[] =
 // ShaderProgram_c implementation
 
 std::vector<std::shared_ptr<Shader_c>>
-    ShaderProgram_c::compileShaderProgram(ShaderSourceList_s& ssl) const
+    ShaderProgram_c::compileShaderProgram(const ShaderSourceList_s& ssl) const
 {
     std::vector<std::shared_ptr<Shader_c>> shaders;
     size_t listsize = std::size(ShaderSourceListMember);
@@ -58,7 +58,8 @@ std::vector<std::shared_ptr<Shader_c>>
     return shaders;
 }
 
-void ShaderProgram_c::linkShaderProgram(std::vector<std::shared_ptr<Shader_c>>& program)
+void ShaderProgram_c::linkShaderProgram
+    (const std::vector<std::shared_ptr<Shader_c>>& program)
 {
     Id = glCreateProgram();
 
@@ -86,7 +87,7 @@ void ShaderProgram_c::use() const
     glUseProgram(Id);
 }
 
-ShaderProgram_c::ShaderProgram_c(ShaderSourceList_s& ssl)
+ShaderProgram_c::ShaderProgram_c(const ShaderSourceList_s& ssl)
 {
     auto program = compileShaderProgram(ssl);
     linkShaderProgram(program);

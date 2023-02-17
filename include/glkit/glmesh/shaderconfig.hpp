@@ -1,13 +1,20 @@
 #pragma once
+#include <glkit/core/shaderprogram.hpp>
+
+
+namespace shader_config
+{
 
 static const ShaderSourceList_s CubeShaderSources = 
 {
-    .FragmentShaderPath = "./assets/shaders/f_uniformcolor.glsl",
-    .VertexShaderPath = "./assets/shaders/v_simple.glsl"
+    .VertexShaderPath = "./assets/shaders/v_simple.glsl",
+    .FragmentShaderPath = "./assets/shaders/f_uniformcolor.glsl"
 };
 
 static const ShaderSourceList_s SphereShaderSources = 
 {
-    .FragmentShaderPath = "./assets/shaders/f_uniformcolor.glsl",
-    .VertexShaderPath = "./assets/shaders/v_simple.glsl"
+    .VertexShaderPath = "./assets/shaders/v_simple.glsl",
+    .FragmentShaderPath = "./assets/shaders/f_uniformcolor.glsl"
 };
+
+} // namespace shader_config
