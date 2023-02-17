@@ -7,6 +7,9 @@
 #include <memory>
 
 
+namespace glkit::core
+{
+
 /////////////////////////////////////////////////////////////////////////////////////////
 // Helper metafunctions for convient use of glVertexAttribPointer's type parameter
 
@@ -125,3 +128,5 @@ public:
         glDeleteVertexArrays(1, &Id);
     }
 };
+
+} // namespace glkit::core

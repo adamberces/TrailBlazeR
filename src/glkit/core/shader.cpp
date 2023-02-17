@@ -5,6 +5,9 @@
 #include <filesystem>
 
 
+namespace glkit::core
+{
+
 /////////////////////////////////////////////////////////////////////////////////////////
 // ShaderFile_c implementation
 
@@ -66,3 +69,5 @@ Shader_c::~Shader_c()
 {
     glDeleteShader(Id);
 }
+
+} // namespace glkit::core

@@ -1,1 +1,1 @@
-#include <glkit/glmesh/glcube.hpp>
+#include <glkit/mesh/glcube.hpp>

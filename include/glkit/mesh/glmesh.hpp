@@ -6,11 +6,13 @@
 #include <glkit/core/shaderprogram.hpp>
 #include <glkit/core/vertexarray.hpp>
 
+namespace glkit::mesh
+{
 
 class GLMesh_i
 {
-    std::unique_ptr<ShaderProgram_c> ShaderProgram;
-    std::unique_ptr<VertexArrayObject_c<float>> VertexArrayObject;
+    std::unique_ptr<core::ShaderProgram_c> ShaderProgram;
+    std::unique_ptr<core::VertexArrayObject_c<float>> VertexArrayObject;
 
     unsigned int NumberOfElements;
 
@@ -33,17 +35,17 @@ protected:
     void constructVertexArrayObject
         (const vertex_vector_t& vertices, const element_vector_t& indices)
     {
-        VertexArrayObject = std::make_unique<VertexArrayObject_c<float>>();
+        VertexArrayObject = std::make_unique<core::VertexArrayObject_c<float>>();
         VertexArrayObject->copyVertexData(vertices, indices);
         VertexArrayObject->setVertexAttribute(0, 3);
     }
 
-    void constructShaderProgram(const ShaderSourceList_s& ssl)
+    void constructShaderProgram(const core::ShaderSourceList_s& ssl)
     {
-        ShaderProgram = std::make_unique<ShaderProgram_c>(ssl);
+        ShaderProgram = std::make_unique<core::ShaderProgram_c>(ssl);
     }
 
-    void initialize(const ShaderSourceList_s& shaderSourceList,
+    void initialize(const core::ShaderSourceList_s& shaderSourceList,
         const vertex_vector_t& vertices,
         const element_vector_t& indices) 
     {
@@ -55,3 +57,5 @@ protected:
     {
     }
 };
+
+} // namespace glkit::mesh

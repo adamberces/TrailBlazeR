@@ -3,6 +3,9 @@
 #include <GLFW/glfw3.h>
 
 
+namespace glkit::core
+{
+
 /////////////////////////////////////////////////////////////////////////////////////////
 // Common acestor for all objects wrapping OpenGL features, providing the unique ID
 
@@ -22,3 +25,4 @@ public:
     }
 };
 
+} // namespace glkit::core

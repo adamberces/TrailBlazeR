@@ -8,6 +8,9 @@
 #include <memory>
 
 
+namespace glkit::core
+{
+
 /////////////////////////////////////////////////////////////////////////////////////////
 // Struct to specify paths of GLSL source files to be compiled and linked to
 // an OpenGL Shader program. Note, that defining VertexShaderPath and FragmentShaderPath
@@ -44,3 +47,5 @@ public:
 
     ~ShaderProgram_c();
 };
+
+} // namespace glkit::core

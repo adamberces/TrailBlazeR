@@ -2,14 +2,14 @@
 #include <memory>
 #include <iostream>
 
-#include <glkit/glmesh/glcube.hpp>
+#include <glkit/mesh/glcube.hpp>
 
 static const char WINDOW_TITLE[] = "TrailBlazeR";
 
 class GameWindow_c
 {
     GLFWwindow* Window = NULL;
-    GLCube* cube;
+    glkit::mesh::GLCube* cube;
 
     static void resizeCallback(GLFWwindow*, int w, int h)
     {
@@ -74,7 +74,7 @@ public:
             throw 1;
         }   
 
-        cube = new GLCube(1.F, 1.F, 0.2F);
+        cube = new glkit::mesh::GLCube(1.F, 1.F, 0.2F);
     }
 
     ~GameWindow_c()

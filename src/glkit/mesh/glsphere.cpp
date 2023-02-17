@@ -1,1 +1,1 @@
-#include <glkit/glmesh/glsphere.hpp>
+#include <glkit/mesh/glsphere.hpp>

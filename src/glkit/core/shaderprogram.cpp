@@ -2,6 +2,9 @@
 #include <glkit/core/shaderprogram.hpp>
 
 
+namespace glkit::core
+{
+
 /////////////////////////////////////////////////////////////////////////////////////////
 // This funny little facilty lets us "iterate" tru the ShaderSourceList struct
 // and assign a corresponding value from the ShaderType enum for correct compilation
@@ -97,3 +100,5 @@ ShaderProgram_c::~ShaderProgram_c()
 {
     glDeleteProgram(Id);
 }
+
+} // namespace glkit::core

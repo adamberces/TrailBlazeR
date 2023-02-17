@@ -4,6 +4,9 @@
 #include <string>
 
 
+namespace glkit::core
+{
+
 /////////////////////////////////////////////////////////////////////////////////////////
 // Type safe wrapper of OpenGL shader types
 
@@ -49,3 +52,5 @@ public:
 
     ~Shader_c();
 };
+
+} // namespace glkit::core

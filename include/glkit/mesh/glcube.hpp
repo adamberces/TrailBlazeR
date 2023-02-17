@@ -5,6 +5,9 @@
 #include "shaderconfig.hpp"
 
 
+namespace glkit::mesh
+{
+
 class GLCube : public GLMesh_i
 {
     std::pair<vertex_vector_t, element_vector_t>
@@ -78,3 +81,5 @@ public:
             data.first, data.second);
     }
 };
+
+} // namespace glkit::mesh

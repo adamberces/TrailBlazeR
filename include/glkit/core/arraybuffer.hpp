@@ -6,6 +6,9 @@
 #include <algorithm>
 
 
+namespace glkit::core
+{
+
 /////////////////////////////////////////////////////////////////////////////////////////
 // Type safe wrappers of OpenGL array buffer types and usage
 
@@ -70,3 +73,5 @@ public:
         glDeleteBuffers(1, &Id);
     }
 };
+
+} // namespace glkit::core
