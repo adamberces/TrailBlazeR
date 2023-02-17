@@ -8,7 +8,7 @@
 namespace glkit::mesh
 {
 
-class GLCube : public GLMesh_i
+class GLCube_c : public GLMesh_i
 {
     std::pair<GLMesh_i::vertex_vector_t, GLMesh_i::element_vector_t>
     constructCubeVertexData(
@@ -17,7 +17,7 @@ class GLCube : public GLMesh_i
         float depth_ratio);
 
 public:
-    GLCube(float width_ratio,
+    GLCube_c(float width_ratio,
         float height_ratio,
         float depth_ratio);
 };

@@ -9,7 +9,7 @@ static const char WINDOW_TITLE[] = "TrailBlazeR";
 class GameWindow_c
 {
     GLFWwindow* Window = NULL;
-    glkit::mesh::GLCube* cube;
+    glkit::mesh::GLCube_c* cube;
 
     static void resizeCallback(GLFWwindow*, int w, int h)
     {
@@ -74,7 +74,7 @@ public:
             throw 1;
         }   
 
-        cube = new glkit::mesh::GLCube(1.F, 1.F, 0.2F);
+        cube = new glkit::mesh::GLCube_c(1.F, 1.F, 0.2F);
     }
 
     ~GameWindow_c()

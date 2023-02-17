@@ -5,7 +5,7 @@ namespace glkit::mesh
 {
 
 std::pair<GLMesh_i::vertex_vector_t, GLMesh_i::element_vector_t>
-GLCube::constructCubeVertexData(
+GLCube_c::constructCubeVertexData(
     float width_ratio,
     float height_ratio,
     float depth_ratio)
@@ -63,7 +63,7 @@ GLCube::constructCubeVertexData(
     return std::make_pair(v, e);
 }
 
-GLCube::GLCube(float width_ratio,
+GLCube_c::GLCube_c(float width_ratio,
     float height_ratio,
     float depth_ratio)
 {
