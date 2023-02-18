@@ -90,6 +90,14 @@ void ShaderProgram_c::use() const
     glUseProgram(Id);
 }
 
+void ShaderProgram_c::setMat4Data(const std::string& uniformLocation, const glm::mat4& data)
+{
+    glUniformMatrix4fv(
+        glGetUniformLocation(Id, uniformLocation.c_str()),
+        1, GL_FALSE, &data[0][0]
+    );
+}
+
 ShaderProgram_c::ShaderProgram_c(const ShaderSourceList_s& ssl)
 {
     auto program = compileShaderProgram(ssl);

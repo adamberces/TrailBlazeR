@@ -74,7 +74,7 @@ public:
             throw 1;
         }   
 
-        cube = new glkit::mesh::GLCube_c(1.F, 1.F, 0.2F);
+        cube = new glkit::mesh::GLCube_c(1.F, 0.5F, 0.2F);
     }
 
     ~GameWindow_c()

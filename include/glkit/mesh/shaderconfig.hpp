@@ -7,13 +7,13 @@ namespace glkit::mesh::shader_config
 
 static const core::ShaderSourceList_s CubeShaderSources = 
 {
-    .VertexShaderPath = "./assets/shaders/v_simple.glsl",
+    .VertexShaderPath = "./assets/shaders/v_perspective.glsl",
     .FragmentShaderPath = "./assets/shaders/f_uniformcolor.glsl"
 };
 
 static const core::ShaderSourceList_s SphereShaderSources = 
 {
-    .VertexShaderPath = "./assets/shaders/v_simple.glsl",
+    .VertexShaderPath = "./assets/shaders/v_perspective.glsl",
     .FragmentShaderPath = "./assets/shaders/f_uniformcolor.glsl"
 };
 

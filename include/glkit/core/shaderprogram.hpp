@@ -43,6 +43,9 @@ class ShaderProgram_c : public GLObject_i
 public:
     void use() const;
 
+    void setMat4Data
+        (const std::string& uniformLocation, const glm::mat4& data);
+
     explicit ShaderProgram_c(const ShaderSourceList_s&);
 
     ~ShaderProgram_c();

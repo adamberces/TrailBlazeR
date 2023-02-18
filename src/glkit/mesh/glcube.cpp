@@ -23,14 +23,14 @@ GLCube_c::constructCubeVertexData(
         // TOP PLANE
         -width_ratio, -height_ratio,  depth_ratio, // 0
         -width_ratio,  height_ratio,  depth_ratio, // 1
-            width_ratio,  height_ratio,  depth_ratio, // 2
-            width_ratio, -height_ratio,  depth_ratio, // 3
+         width_ratio,  height_ratio,  depth_ratio, // 2
+         width_ratio, -height_ratio,  depth_ratio, // 3
 
         // BOTTOM PLANE
         -width_ratio, -height_ratio, -depth_ratio, // 4
         -width_ratio,  height_ratio, -depth_ratio, // 5
-            width_ratio,  height_ratio, -depth_ratio, // 6
-            width_ratio, -height_ratio, -depth_ratio // 7
+         width_ratio,  height_ratio, -depth_ratio, // 6
+         width_ratio, -height_ratio, -depth_ratio // 7
     };
 
     element_vector_t e =
