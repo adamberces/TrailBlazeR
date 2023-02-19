@@ -30,7 +30,7 @@ GLCube_c::constructCubeVertexData(
         -width_ratio, -height_ratio, -depth_ratio, // 4
         -width_ratio,  height_ratio, -depth_ratio, // 5
          width_ratio,  height_ratio, -depth_ratio, // 6
-         width_ratio, -height_ratio, -depth_ratio // 7
+         width_ratio, -height_ratio, -depth_ratio  // 7
     };
 
     element_vector_t e =
