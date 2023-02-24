@@ -70,8 +70,7 @@ GLCube_c::GLCube_c(float width_ratio,
     auto data = constructCubeVertexData
         (width_ratio, height_ratio, depth_ratio);
         
-    initialize(shader_config::CubeShaderSources,
-        data.first, data.second);
+    initialize(data.first, data.second);
 }
 
 } // namespace glkit::mesh
