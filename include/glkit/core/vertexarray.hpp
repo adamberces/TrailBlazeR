@@ -118,12 +118,12 @@ public:
         glBindVertexArray(0);
     }
 
-    VertexArrayObject_c()
+    inline VertexArrayObject_c()
     {
         glGenVertexArrays(1, &Id);
     }
 
-    ~VertexArrayObject_c()
+    inline ~VertexArrayObject_c()
     {
         glDeleteVertexArrays(1, &Id);
     }

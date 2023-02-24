@@ -2,7 +2,7 @@
 
 #include <utility>
 #include "glmesh.hpp"
-#include "shaderconfig.hpp"
+#include "shaderfiles.hpp"
 
 
 namespace glkit::mesh
