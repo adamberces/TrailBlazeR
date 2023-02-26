@@ -1,10 +1,10 @@
 #pragma once
 
-#include "globject.hpp"
-#include "arraybuffer.hpp"
-
 #include <vector>
 #include <memory>
+
+#include <glkit/core/globject.hpp>
+#include <glkit/core/buffers/arraybuffer.hpp>
 
 
 namespace glkit::core::buffers
@@ -129,4 +129,4 @@ public:
     }
 };
 
-} // namespace glkit::core
+} // namespace glkit::core::buffers

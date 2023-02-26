@@ -1,5 +1,5 @@
 #include <iostream>
-#include <glkit/core/shaderprogram.hpp>
+#include <glkit/core/shaders/shaderprogram.hpp>
 
 
 namespace glkit::core::shaders

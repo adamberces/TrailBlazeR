@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glkit/core/uniformfunctor.hpp>
+#include <glkit/core/uniforms/uniformfunctor.hpp>
 
 
 namespace glkit::functors

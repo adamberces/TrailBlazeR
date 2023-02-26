@@ -1,9 +1,8 @@
-#include <glkit/core/shader.hpp>
-
 #include <iostream>
 #include <fstream>
 #include <filesystem>
 
+#include <glkit/core/shaders/shader.hpp>
 
 namespace glkit::core::shaders
 {

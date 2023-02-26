@@ -4,7 +4,7 @@
 #include <variant>
 #include <functional>
 
-#include "globject.hpp"
+#include <glkit/core/globject.hpp>
 
 
 namespace glkit::core::uniforms

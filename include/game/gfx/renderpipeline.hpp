@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include <glkit/core/shaderprogram.hpp>
-#include <glkit/core/uniformiface.hpp>
+#include <glkit/core/shaders/shaderprogram.hpp>
+#include <glkit/core/uniforms/uniformiface.hpp>
 
 #include <glkit/functors/camera.hpp>
 #include <glkit/functors/model.hpp>
@@ -89,7 +89,7 @@ class TilePipeline_c : public RenderPipeline_i
 
     void constructMesh() override
     {
-        Mesh = std::make_unique<glkit::mesh::GLKCube_c>(1, 1, .3);
+        Mesh = std::make_unique<glkit::mesh::GLKCube_c>(1, 1, 1);
     }
 };
 

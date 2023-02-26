@@ -1,9 +1,9 @@
 #pragma once
 
-#include "globject.hpp"
-
 #include <vector>
 #include <algorithm>
+
+#include <glkit/core/globject.hpp>
 
 
 namespace glkit::core::buffers

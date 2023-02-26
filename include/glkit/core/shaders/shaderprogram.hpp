@@ -1,11 +1,11 @@
 #pragma once
 
-#include "globject.hpp"
-#include "shader.hpp"
-
 #include <string>
 #include <vector>
 #include <memory>
+
+#include <glkit/core/globject.hpp>
+#include <glkit/core/shaders/shader.hpp>
 
 
 namespace glkit::core::shaders

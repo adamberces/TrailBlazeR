@@ -3,8 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include <glkit/core/shaderprogram.hpp>
-#include <glkit/core/vertexarray.hpp>
+#include <glkit/core/buffers/vertexarray.hpp>
 
 
 namespace glkit::mesh

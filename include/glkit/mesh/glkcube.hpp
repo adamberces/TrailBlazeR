@@ -1,7 +1,7 @@
 #pragma once
 
 #include <utility>
-#include "glkmesh.hpp"
+#include <glkit/mesh/glkmesh.hpp>
 
 
 namespace glkit::mesh

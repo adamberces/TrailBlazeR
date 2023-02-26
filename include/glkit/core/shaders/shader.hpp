@@ -1,7 +1,7 @@
 #pragma once
 
-#include "globject.hpp"
 #include <string>
+#include <glkit/core/globject.hpp>
 
 
 namespace glkit::core::shaders

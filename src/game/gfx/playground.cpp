@@ -24,6 +24,26 @@ class GameWindow_c
             std::cout << "ESC" << std::endl;
             glfwSetWindowShouldClose(window, true);
         }
+
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        {
+            ppl.config().CameraConfig.Position.Z += .05;
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        {
+            ppl.config().CameraConfig.Position.Z -= .05;
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        {
+            ppl.config().CameraConfig.Position.Y -= .05;
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        {
+            ppl.config().CameraConfig.Position.Y += .05;
+        }
     }
 
 public:
@@ -40,9 +60,6 @@ public:
         glClearColor(.2F, .2F, .4F, 1.F);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        ppl.config().CameraConfig.Position.X = -3;
-        ppl.config().CameraConfig.Position.Y = 0;
-        ppl.config().CameraConfig.Position.Z = 0;
         ppl.config().CameraConfig.Direction.X = 1;
         ppl.config().CameraConfig.Direction.Y = 0;
         ppl.config().CameraConfig.Direction.Z = 0;
@@ -53,7 +70,7 @@ public:
         ppl.config().ModelConfig.Rotation.X = 1;
         ppl.config().ModelConfig.Rotation.Y = 0;
         ppl.config().ModelConfig.Rotation.Z = 0;
-        ppl.config().ModelConfig.Rotation.Angle = 0;
+        ppl.config().ModelConfig.Rotation.Angle += 1;
 
         ppl.run();
 
@@ -89,6 +106,10 @@ public:
             std::cout << "Failed to initialize OpenGL context" << std::endl;
             throw 1;
         }   
+
+        ppl.config().CameraConfig.Position.X = -3;
+        ppl.config().CameraConfig.Position.Y = 0;
+        ppl.config().CameraConfig.Position.Z = 0;
 
         ppl.config().ProjectionConfig.FOV = 45.F;
         ppl.config().ProjectionConfig.ScreenWidth = 640;
