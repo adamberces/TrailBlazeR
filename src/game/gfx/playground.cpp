@@ -10,7 +10,7 @@ class GameWindow_c
 {
     GLFWwindow* Window = NULL;
 
-    trailblazer::gfx::RenderPipeline_c ppl;
+    trailblazer::gfx::TilePipeline_c ppl;
 
     static void resizeCallback(GLFWwindow*, int w, int h)
     {
@@ -97,6 +97,7 @@ public:
         ppl.config().ProjectionConfig.FarPlane = 100.F;
 
         ppl.config().ModelConfig.Rotation.Angle = 0;
+
         ppl.setup();
     }
 

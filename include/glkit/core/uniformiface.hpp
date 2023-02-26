@@ -46,7 +46,6 @@ public:
         }
 
         auto& uniform = (*(UniformList.find(name))).second;
-        printf("%s\n", name.c_str());
         uniform->setData(ProgramId, argsPtr);
     }
 
