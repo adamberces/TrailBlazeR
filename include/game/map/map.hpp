@@ -3,11 +3,10 @@
 #include <vector>
 #include "tile.hpp"
 
-
 class Map_c
 {
-    fSize2D_t TileSize;
-    uSize2D_t MapDimensions;
+    unsigned Width;
+    unsigned Height;
 
     std::vector<Tile_t> Tiles;
 
