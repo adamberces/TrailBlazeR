@@ -2,14 +2,15 @@
 #include <memory>
 #include <iostream>
 
-#include <glkit/mesh/glcube.hpp>
+#include <game/gfx/renderpipeline.hpp>
 
 static const char WINDOW_TITLE[] = "test";
 
 class GameWindow_c
 {
     GLFWwindow* Window = NULL;
-    glkit::mesh::GLCube_c* cube;
+
+    trailblazer::gfx::RenderPipeline_c ppl;
 
     static void resizeCallback(GLFWwindow*, int w, int h)
     {
@@ -39,7 +40,22 @@ public:
         glClearColor(.2F, .2F, .4F, 1.F);
         glClear(GL_COLOR_BUFFER_BIT);
 
-       cube->draw();
+        ppl.config().CameraConfig.Position.X = -3;
+        ppl.config().CameraConfig.Position.Y = 0;
+        ppl.config().CameraConfig.Position.Z = 0;
+        ppl.config().CameraConfig.Direction.X = 1;
+        ppl.config().CameraConfig.Direction.Y = 0;
+        ppl.config().CameraConfig.Direction.Z = 0;
+
+        ppl.config().ModelConfig.Position.X = .1;
+        ppl.config().ModelConfig.Position.Y = .2;
+        ppl.config().ModelConfig.Position.Z = .3;
+        ppl.config().ModelConfig.Rotation.X = 1;
+        ppl.config().ModelConfig.Rotation.Y = 0;
+        ppl.config().ModelConfig.Rotation.Z = 0;
+        ppl.config().ModelConfig.Rotation.Angle = 0;
+
+        ppl.run();
 
         glfwSwapBuffers(Window);
         glfwPollEvents();
@@ -74,7 +90,14 @@ public:
             throw 1;
         }   
 
-        cube = new glkit::mesh::GLCube_c(1.F, 1.F, 0.1F);
+        ppl.config().ProjectionConfig.FOV = 45.F;
+        ppl.config().ProjectionConfig.ScreenWidth = 640;
+        ppl.config().ProjectionConfig.ScreenHeight = 480;
+        ppl.config().ProjectionConfig.NearPlane = 0.1F;
+        ppl.config().ProjectionConfig.FarPlane = 100.F;
+
+        ppl.config().ModelConfig.Rotation.Angle = 0;
+        ppl.setup();
     }
 
     ~GameWindow_c()

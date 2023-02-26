@@ -10,14 +10,14 @@
 namespace glkit::mesh
 {
 
-class GLMesh_i
+class GLKMesh_i
 {
-    std::unique_ptr<core::VertexArrayObject_c<float>> VertexArrayObject;
+    std::unique_ptr<core::buffers::VertexArrayObject_c<float>> VertexArrayObject;
 
     unsigned int NumberOfElements;
 
 public:
-    void draw(const ShaderProgram&) const;
+    void draw() const;
 
 protected:
     using vertex_vector_t = std::vector<float>;
@@ -26,7 +26,7 @@ protected:
     void initialize(const vertex_vector_t&,
         const element_vector_t&);
 
-    GLMesh_i() : NumberOfElements(0)
+    GLKMesh_i() : NumberOfElements(0)
     {
     }
 };

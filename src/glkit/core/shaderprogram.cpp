@@ -2,7 +2,7 @@
 #include <glkit/core/shaderprogram.hpp>
 
 
-namespace glkit::core
+namespace glkit::core::shaders
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -101,4 +101,4 @@ ShaderProgram_c::~ShaderProgram_c()
     glDeleteProgram(Id);
 }
 
-} // namespace glkit::core
+} // namespace glkit::core::shaders

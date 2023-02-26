@@ -1,0 +1,24 @@
+#pragma once
+
+#include <utility>
+#include "glkmesh.hpp"
+
+
+namespace glkit::mesh
+{
+
+class GLKCube_c : public GLKMesh_i
+{
+    std::pair<GLKMesh_i::vertex_vector_t, GLKMesh_i::element_vector_t>
+    constructCubeVertexData
+        (float width_ratio,
+         float height_ratio,
+         float depth_ratio);
+
+public:
+    GLKCube_c(float width_ratio,
+        float height_ratio,
+        float depth_ratio);
+};
+
+} // namespace glkit::mesh

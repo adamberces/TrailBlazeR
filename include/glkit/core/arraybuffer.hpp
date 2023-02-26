@@ -6,7 +6,7 @@
 #include <algorithm>
 
 
-namespace glkit::core
+namespace glkit::core::buffers
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -44,7 +44,7 @@ public:
         glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vao_id);
         if (vao_id == 0)
         {
-            throw std::runtime_error("Please bind a Vertex Array Object"
+            throw std::runtime_error("ArrayBuffer_c error: please bind a Vertex Array Object"
                 "before binding an Array Buffer!");
         }
 
@@ -74,4 +74,4 @@ public:
     }
 };
 
-} // namespace glkit::core
+} // namespace glkit::core::buffers

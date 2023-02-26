@@ -17,21 +17,23 @@ namespace glkit::core::uniforms
 // setData calls the functor and assigns the resulting value to a uniform of the given
 // shader program by calling the correct API function
 
+using uniform_name_t = std::string;
+
 class ShaderUniform_c
 {
-    std::string UniformName;
+    uniform_name_t UniformName;
     uniform_functor_t UniformFunctor;
 
 public:
     inline void setData(GLuint shaderProgramId, uniform_args_ptr_t uniformArguments) const 
     {
         // Try to find the uniform's location in the given shader program
-        GLint location = glGetUniformLocation(shaderProgramId, UniformName.c_str());
+        const GLint location = glGetUniformLocation(shaderProgramId, UniformName.c_str());
 
         // Test if the uniform exists
         if (location == -1)
         {
-            throw std::runtime_error("Uniform name not found in program" +
+            throw std::runtime_error("ShaderUniform_c::setData: Uniform name not found in program" +
                 std::to_string(shaderProgramId));
         }
 
@@ -41,24 +43,27 @@ public:
         // Determine the return value type and call OpenGL API accordingly
         if (std::holds_alternative<glm::vec3>(value))
         {
-            glUniform3fv(location, 1, &value[0]);
+            glm::vec3 v = std::get<glm::vec3>(value);
+            glUniform3fv(location, 1, &v[0]);
         }
         else if (std::holds_alternative<glm::vec4>(value))
         {
-            glUniform4fv(location, 1, &value[0]);
+            glm::vec4 v = std::get<glm::vec4>(value);
+            glUniform4fv(location, 1, &v[0]);
         }
         else if (std::holds_alternative<glm::mat4>(value))
         {
-            glUniformMatrix4fv(location, 1, GL_FALSE, &value[0][0]);
+            glm::mat4 v = std::get<glm::mat4>(value);
+            glUniformMatrix4fv(location, 1, GL_FALSE, &v[0][0]);
         }
         else
         {
-            throw std::runtime_error("Unset/Unknown type error in ShaderUniform_c")
+            throw std::runtime_error("ShaderUniform_c::setData: unset/unknown type error in ShaderUniform_c");
         }
     }
 
-    inline ShaderUniform_c
-        (const std::string& uniformName,
+    ShaderUniform_c
+        (const uniform_name_t& uniformName,
          const uniform_functor_t& uniformFunctor) :
         UniformName(uniformName),
         UniformFunctor(uniformFunctor)

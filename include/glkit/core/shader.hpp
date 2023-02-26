@@ -4,7 +4,7 @@
 #include <string>
 
 
-namespace glkit::core
+namespace glkit::core::shaders
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -53,4 +53,4 @@ public:
     ~Shader_c();
 };
 
-} // namespace glkit::core
+} // namespace glkit::core::shaders

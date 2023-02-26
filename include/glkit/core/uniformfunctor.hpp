@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <variant>
 #include <functional>
 
 #include "globject.hpp"
@@ -24,9 +25,9 @@ namespace glkit::core::uniforms
 struct UniformFunctorArgs_i
 {
     virtual ~UniformFunctorArgs_i() {};
-}
+};
 
-#define UNIFORM_ARGS(struct_name) struct struct_name : UniformFunctorArgs_i
+#define UNIFORM_ARGS(struct_name) struct struct_name : glkit::core::uniforms::UniformFunctorArgs_i
 
 UNIFORM_ARGS(EmptyPlaceholder)
 {

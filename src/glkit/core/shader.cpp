@@ -5,7 +5,7 @@
 #include <filesystem>
 
 
-namespace glkit::core
+namespace glkit::core::shaders
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -70,4 +70,4 @@ Shader_c::~Shader_c()
     glDeleteShader(Id);
 }
 
-} // namespace glkit::core
+} // namespace glkit::core::shaders

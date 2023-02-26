@@ -8,7 +8,7 @@
 #include <memory>
 
 
-namespace glkit::core
+namespace glkit::core::shaders
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -48,4 +48,4 @@ public:
     ~ShaderProgram_c();
 };
 
-} // namespace glkit::core
+} // namespace glkit::core::shaders
