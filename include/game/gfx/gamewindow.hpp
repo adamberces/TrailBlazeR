@@ -2,7 +2,7 @@
 
 #include <glkit/window/glwindow.hpp>
 #include <game/gfx/renderpipeline.hpp>
-
+#include <game/map/map.hpp>
 
 namespace trailblazer::gfx
 {
@@ -11,6 +11,7 @@ class GameWindow_c : public glkit::window::GLWindow_i
 {
 public:
     using glkit::window::GLWindow_i::GLWindow_i;
+    Map_c map;
 
 protected:
     trailblazer::gfx::TilePipeline_c ppl;
@@ -35,7 +36,7 @@ protected:
 
     void drawEvents() override
     {
-        ppl.run();
+        map.draw();
     }
 
     void keypressEvents() override
