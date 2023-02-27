@@ -7,22 +7,9 @@ namespace glkit::core::uniforms
 /////////////////////////////////////////////////////////////////////////////////////////
 // Implementation for ShaderUniformInterface_c
 
-bool ShaderUniformInterface_c::isUniformOnList(const uniform_name_t& name) const 
-{
-    auto it = UniformList.find(name);
-    if (it == UniformList.end())
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
-
 void ShaderUniformInterface_c::update(const uniform_name_t& name, const uniform_args_ptr_t argsPtr) const
 {
-    if (!(isUniformOnList(name)))
+    if (!(UniformList.contains(name)))
     {
         throw std::runtime_error("ShaderUniformInterface_c::update: "
             "Uniform name not found in UniformList:" + name);
@@ -34,7 +21,7 @@ void ShaderUniformInterface_c::update(const uniform_name_t& name, const uniform_
 
 void ShaderUniformInterface_c::add(const uniform_name_t& name, const uniform_functor_t& func)
 {
-    if (isUniformOnList(name))
+    if (UniformList.contains(name))
     {
         throw std::runtime_error("ShaderUniformInterface_c::add: "
             "Uniform name already registered in UniformList:" + name);
