@@ -33,6 +33,7 @@ public:
                 // shift to next row
                 ppl.ModelConfig.Position.X = 0.F;
                 ppl.ModelConfig.Position.Y += 1.F;
+                row_cnt = 0;
             }
             else
             {

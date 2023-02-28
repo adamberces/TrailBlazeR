@@ -62,18 +62,26 @@ public:
     {
         bind();
 
+        if (vertexData.empty())
+        {
+            throw std::runtime_error("VertexArrayObject_c::copyVertexData: "
+                "vertexData can't be empty!");
+        }
         VertexBuffers.emplace_back
             (new ArrayBuffer_c<BufferDataType>
              (ArrayBufferType_e::ArrayBuffer,
               ArrayBufferUsage_e::StaticDraw));
         VertexBuffers.back()->bindAndCopy(vertexData);
 
-        ElementBuffers.emplace_back
-            (new ArrayBuffer_c<unsigned int>
-             (ArrayBufferType_e::ElementArrayBuffer,
-              ArrayBufferUsage_e::StaticDraw));
-        ElementBuffers.back()->bindAndCopy(elementData);
-
+        if (!(elementData.empty()))
+        {
+            ElementBuffers.emplace_back
+                (new ArrayBuffer_c<unsigned int>
+                (ArrayBufferType_e::ElementArrayBuffer,
+                ArrayBufferUsage_e::StaticDraw));
+            ElementBuffers.back()->bindAndCopy(elementData);
+        }
+        
         unbind();
     }
 
