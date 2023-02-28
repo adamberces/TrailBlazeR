@@ -20,6 +20,7 @@ void RenderPipeline_i::run()
 
     ShaderProgram->use();
 
+    Uniforms->update("projection", &ProjectionConfig);
     Uniforms->update("model", &ModelConfig);
     Uniforms->update("view", &CameraConfig);
     Uniforms->update("myColor", &ModelConfig);
@@ -39,9 +40,6 @@ void RenderPipeline_i::setup()
     Uniforms->add("view", glkit::functors::Camera_f);
     Uniforms->add("projection", glkit::functors::PerspectiveProjection_f);
     Uniforms->add("myColor", glkit::functors::UniformColor_f);
-
-    ShaderProgram->use();
-    Uniforms->update("projection", &ProjectionConfig);
 }
 
 } //namespace trailblazer::gfx
