@@ -26,7 +26,7 @@ public:
     
     static glkit::functors::LightningColorConfig_s LightningColorConfig;
     static glkit::functors::LightningPositionConfig_s LightningPositionConfig;
-    
+    static glkit::functors::LightningPositionConfig_s CameraPositionConfig;
     
     glkit::functors::ModelConfig_s ModelConfig;
     glkit::functors::LightningColorConfig_s ModelColorConfig;

@@ -14,6 +14,8 @@ glkit::functors::LightningColorConfig_s RenderPipeline_i::LightningColorConfig =
     glkit::functors::LightningColorConfig_s {};
 glkit::functors::LightningPositionConfig_s RenderPipeline_i::LightningPositionConfig =
     glkit::functors::LightningPositionConfig_s {};
+glkit::functors::LightningPositionConfig_s RenderPipeline_i::CameraPositionConfig =
+    glkit::functors::LightningPositionConfig_s {};
 
 void RenderPipeline_i::run()
 {
@@ -22,15 +24,20 @@ void RenderPipeline_i::run()
         throw std::runtime_error("GLKPipeline::run: call setup first!");
     }
 
+    glClear(GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_DEPTH_TEST);  
+
     ShaderProgram->use();
+
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     Uniforms->update("model", &ModelConfig);
     Uniforms->update("view", &CameraConfig);
     Uniforms->update("projection", &ProjectionConfig);
     Uniforms->update("light_color", &LightningColorConfig);
     Uniforms->update("light_position", &LightningPositionConfig);
+    Uniforms->update("cam_position", &LightningPositionConfig);
     Uniforms->update("object_color", &ModelColorConfig);
-
     Mesh->draw();
 }
 
@@ -47,6 +54,7 @@ void RenderPipeline_i::setup()
     Uniforms->add("projection", glkit::functors::PerspectiveProjection_f);
     Uniforms->add("light_color", glkit::functors::BasicLightningColor_f);
     Uniforms->add("light_position", glkit::functors::BasicLightningPosition_f);
+    Uniforms->add("cam_position", glkit::functors::BasicLightningPosition_f);
     Uniforms->add("object_color", glkit::functors::BasicLightningColor_f);
 
 }

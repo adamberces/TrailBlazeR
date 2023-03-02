@@ -1,24 +1,34 @@
 #version 330 core
+
+in vec3 FragPos;
+in vec3 Normal;
+
 out vec4 FragColor;
 
-in vec3 Normal;  
-in vec3 FragPos;  
-  
 uniform vec3 object_color;
 uniform vec3 light_position; 
 uniform vec3 light_color;
 
+uniform vec3 cam_position;
+
+const float shininess = .5;
+
 void main()
 {
-    // ambient lightning
-    float ambientStrength = 0.1;
-    vec3 ambient = ambientStrength * light_color;
-  	
-    // diffuse lightning 
+    // ambient
+    vec3 ambient = light_color * object_color;
+    
+    // diffuse 
     vec3 lightDir = normalize(light_position - FragPos);
-    float diff = max(dot(Normal, lightDir), 1.0);
-    vec3 diffuse = diff * light_color;
-            
-    vec3 result = vec3(0.0001*(ambient + diffuse)) * object_color;
+    float diff = max(dot(Normal, lightDir), 0.0);
+    vec3 diffuse = light_color * diff * object_color;
+    
+    // specular
+    vec3 viewDir = normalize(cam_position - FragPos);
+    vec3 reflectDir = reflect(-lightDir, Normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
+    vec3 specular = vec3(1, 1, 1) * spec;
+    
+    vec3 result = ambient + diffuse + specular;
     FragColor = vec4(result, 1.0);
-} 
+}

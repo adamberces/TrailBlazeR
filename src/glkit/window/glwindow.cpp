@@ -24,7 +24,6 @@ bool GLWindow_i::isPressed(int key) const
 
     if (glfwGetKey(Window, key) == GLFW_PRESS)
     {
-        std::cout << "Pressed:" << (char)key << std::endl;
         ret = true;
     }
 

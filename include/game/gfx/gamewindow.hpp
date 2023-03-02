@@ -24,6 +24,9 @@ protected:
         RenderPipeline_i::CameraConfig.Direction.X = 1;
         RenderPipeline_i::CameraConfig.Direction.Y = 0;
         RenderPipeline_i::CameraConfig.Direction.Z = 0;
+        RenderPipeline_i::CameraPositionConfig.Position.X = RenderPipeline_i::CameraConfig.Position.X;
+        RenderPipeline_i::CameraPositionConfig.Position.Y = RenderPipeline_i::CameraConfig.Position.Y;
+        RenderPipeline_i::CameraPositionConfig.Position.Z = RenderPipeline_i::CameraConfig.Position.Z;
 
         RenderPipeline_i::ProjectionConfig.FOV = 45.F;
         RenderPipeline_i::ProjectionConfig.ScreenWidth = 640;

@@ -11,7 +11,6 @@ namespace trailblazer::gfx
 class Map_c
 {
     unsigned Width = 3;
-    unsigned Height = 8;
 
     std::vector<Tile_t> Tiles;
     trailblazer::gfx::TilePipeline_c ppl;
@@ -27,7 +26,7 @@ public:
         ppl.ModelConfig.Rotation.Z = 0;
         ppl.ModelConfig.Rotation.Angle = 0;
 
-        std::size_t row_cnt = 0;
+        std::size_t row_cnt = 1;
         for (const auto& t : Tiles)
         {
             if (t.Color == RED)
@@ -63,7 +62,7 @@ public:
                 // shift to next row
                 ppl.ModelConfig.Position.X = 0.F;
                 ppl.ModelConfig.Position.Y += 1.F;
-                row_cnt = 0;
+                row_cnt = 1;
             }
             else
             {
@@ -82,16 +81,13 @@ public:
         Tiles =
         {
             { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
-            { NORMAL, BLUE }, { NORMAL, GREEN }, { NORMAL, BLUE },
-
             { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
             { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
-
-            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
-            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
-
             { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
             { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
+            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
+            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
+            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
 
         };
     }
