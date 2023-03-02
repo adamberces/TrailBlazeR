@@ -21,7 +21,7 @@ auto BasicLightningColor_f =
 {
     LightningColorConfig_s* cfg = dynamic_cast<LightningColorConfig_s*>(ptr);
 
-    glm::vec4 color(cfg.Color.R, cfg.Color.G, cfg.Color.B 1.F);
+    glm::vec3 color(cfg->Color.R, cfg->Color.G, cfg->Color.B);
         
     return { color };
 };

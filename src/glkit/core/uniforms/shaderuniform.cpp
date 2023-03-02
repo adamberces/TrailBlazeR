@@ -15,8 +15,8 @@ void ShaderUniform_c::setData(GLuint shaderProgramId, uniform_args_ptr_t uniform
     // Test if the uniform exists
     if (location == -1)
     {
-        throw std::runtime_error("ShaderUniform_c::setData: Uniform name not found in program" +
-            std::to_string(shaderProgramId));
+        throw std::runtime_error("ShaderUniform_c::setData: Uniform name " + UniformName +
+            " not found in program " + std::to_string(shaderProgramId));
     }
 
     // Call the uniform functor
@@ -26,6 +26,7 @@ void ShaderUniform_c::setData(GLuint shaderProgramId, uniform_args_ptr_t uniform
     if (std::holds_alternative<glm::vec3>(value))
     {
         glm::vec3 v = std::get<glm::vec3>(value);
+        printf("%s %f %f %f\n", UniformName.c_str(), v[0], v[1], v[2]);
         glUniform3fv(location, 1, &v[0]);
     }
     else if (std::holds_alternative<glm::vec4>(value))

@@ -5,6 +5,8 @@
 
 #include <game/gfx/renderpipeline.hpp>
 
+namespace trailblazer::gfx
+{
 
 class Map_c
 {
@@ -17,7 +19,7 @@ class Map_c
 public:
     void draw()
     {
-        ppl.ModelConfig.Position.X = 0;
+        ppl.ModelConfig.Position.X = -1;
         ppl.ModelConfig.Position.Y = 0;
         ppl.ModelConfig.Position.Z = 0;
         ppl.ModelConfig.Rotation.X = 1;
@@ -28,6 +30,34 @@ public:
         std::size_t row_cnt = 0;
         for (const auto& t : Tiles)
         {
+            if (t.Color == RED)
+            {
+                ppl.ModelColorConfig.Color.R = 1.F;
+                ppl.ModelColorConfig.Color.G = 0.F;
+                ppl.ModelColorConfig.Color.B = 0.F;
+                RenderPipeline_i::LightningColorConfig.Color.R = 1.F;
+                RenderPipeline_i::LightningColorConfig.Color.G = 0.F;
+                RenderPipeline_i::LightningColorConfig.Color.B = 0.F;
+            }
+            else if (t.Color == BLUE)
+            {
+                ppl.ModelColorConfig.Color.R = 0.F;
+                ppl.ModelColorConfig.Color.G = 0.F;
+                ppl.ModelColorConfig.Color.B = 1.F;
+                RenderPipeline_i::LightningColorConfig.Color.R = 1.F;
+                RenderPipeline_i::LightningColorConfig.Color.G = 0.F;
+                RenderPipeline_i::LightningColorConfig.Color.B = 1.F;
+            }
+            else if (t.Color == GREEN)
+            {
+                ppl.ModelColorConfig.Color.R = 0.F;
+                ppl.ModelColorConfig.Color.G = 1.F;
+                ppl.ModelColorConfig.Color.B = 0.F;
+                RenderPipeline_i::LightningColorConfig.Color.R = 1.F;
+                RenderPipeline_i::LightningColorConfig.Color.G =1.F;
+                RenderPipeline_i::LightningColorConfig.Color.B = 0.F;
+            }
+
             if (row_cnt > Width)
             {
                 // shift to next row
@@ -52,7 +82,7 @@ public:
         Tiles =
         {
             { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
-            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
+            { NORMAL, BLUE }, { NORMAL, GREEN }, { NORMAL, BLUE },
 
             { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
             { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
@@ -66,3 +96,5 @@ public:
         };
     }
 };
+
+}

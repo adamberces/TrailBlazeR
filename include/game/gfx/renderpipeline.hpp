@@ -8,7 +8,8 @@
 #include <glkit/functors/camera.hpp>
 #include <glkit/functors/model.hpp>
 #include <glkit/functors/projection.hpp>
-#include <glkit/functors/uniformcolor.hpp>
+#include <glkit/functors/basiclightning_color.hpp>
+#include <glkit/functors/basiclightning_position.hpp>
 
 #include <glkit/mesh/glkcube.hpp>
 #include <glkit/mesh/glksphere.hpp>
@@ -22,7 +23,13 @@ class RenderPipeline_i
 public:
     static glkit::functors::ProjectionConfig_s ProjectionConfig;
     static glkit::functors::CameraConfig_s CameraConfig;
+    
+    static glkit::functors::LightningColorConfig_s LightningColorConfig;
+    static glkit::functors::LightningPositionConfig_s LightningPositionConfig;
+    
+    
     glkit::functors::ModelConfig_s ModelConfig;
+    glkit::functors::LightningColorConfig_s ModelColorConfig;
 
 protected:
     glkit::core::shaders::ShaderSourceList_s SSL;
@@ -45,7 +52,8 @@ class TilePipeline_c : public RenderPipeline_i
     void setupSSL() override
     {
         SSL.VertexShaderPath = "./assets/shaders/v_perspective.glsl";
-        SSL.FragmentShaderPath = "./assets/shaders/f_uniformcolor.glsl";
+        SSL.GeometryShaderPath = "./assets/shaders/g_normalcalculator.glsl";
+        SSL.FragmentShaderPath = "./assets/shaders/f_basiclightning.glsl";
     }
 
     void constructMesh() override

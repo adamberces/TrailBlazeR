@@ -12,14 +12,13 @@ void main()
 {
     // ambient lightning
     float ambientStrength = 0.1;
-    vec3 ambient = ambientStrength * lightColor;
+    vec3 ambient = ambientStrength * light_color;
   	
     // diffuse lightning 
-    vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(lightPos - FragPos);
-    float diff = max(dot(norm, lightDir), 0.0);
-    vec3 diffuse = diff * lightColor;
+    vec3 lightDir = normalize(light_position - FragPos);
+    float diff = max(dot(Normal, lightDir), 1.0);
+    vec3 diffuse = diff * light_color;
             
-    vec3 result = (ambient + diffuse) * objectColor;
+    vec3 result = vec3(0.0001*(ambient + diffuse)) * object_color;
     FragColor = vec4(result, 1.0);
 } 

@@ -31,6 +31,13 @@ protected:
         RenderPipeline_i::ProjectionConfig.NearPlane = 0.1F;
         RenderPipeline_i::ProjectionConfig.FarPlane = 100.F;
 
+        /*RenderPipeline_i::LightningColorConfig.Color.R = 1.F;
+        RenderPipeline_i::LightningColorConfig.Color.G = 1.F;
+        RenderPipeline_i::LightningColorConfig.Color.B = 1.F;*/
+        RenderPipeline_i::LightningPositionConfig.Position.X = 1;
+        RenderPipeline_i::LightningPositionConfig.Position.Y = 1;
+        RenderPipeline_i::LightningPositionConfig.Position.Z = 1;
+
         ppl.setup();
     }
 

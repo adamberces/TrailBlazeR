@@ -16,14 +16,14 @@ UNIFORM_ARGS(LightningPositionConfig_s)
     } Position;
 };
 
-auto BasicLightningColor_f =
+auto BasicLightningPosition_f =
     [](core::uniforms::uniform_args_ptr_t ptr) -> core::uniforms::uniform_types_t
 {
     LightningPositionConfig_s* cfg = dynamic_cast<LightningPositionConfig_s*>(ptr);
 
-    glm::vec3 color(cfg.Position.X, cfg.Position.Y, cfg.Position.Z);
+    glm::vec3 pos(cfg->Position.X, cfg->Position.Y, cfg->Position.Z);
         
-    return { color };
+    return { pos };
 };
 
 } // namespace glkit::functors
