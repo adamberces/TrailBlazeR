@@ -24,9 +24,6 @@ void RenderPipeline_i::run()
         throw std::runtime_error("GLKPipeline::run: call setup first!");
     }
 
-    glClear(GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_DEPTH_TEST);  
-
     ShaderProgram->use();
 
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

@@ -34,12 +34,18 @@ GLWindow_i::WindowState_e GLWindow_i::updateWindow()
 {
     if (!IsInitialized)
     {
+        glEnable(GL_DEPTH_TEST);
+        glDepthMask(GL_TRUE);
+        glDepthFunc(GL_LEQUAL);
+        glDepthRange(0.0f, 1.0f);
+
         initEvents();
         IsInitialized = true;
     }
 
-    glClearColor(0.F, 0.F, 0.F, 1.F);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearDepth(1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     handleESC();
     keypressEvents();
