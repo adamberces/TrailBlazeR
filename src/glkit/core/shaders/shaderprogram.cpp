@@ -87,7 +87,12 @@ void ShaderProgram_c::linkShaderProgram
 
 void ShaderProgram_c::use() const
 {
-    glUseProgram(Id);
+    GLint current = 0;
+    glGetIntegerv(GL_CURRENT_PROGRAM, &current);
+    if (current != static_cast<GLint>(Id))
+    {
+        glUseProgram(Id);
+    }
 }
 
 ShaderProgram_c::ShaderProgram_c(const ShaderSourceList_s& ssl)
