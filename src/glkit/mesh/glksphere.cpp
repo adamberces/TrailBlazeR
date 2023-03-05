@@ -14,6 +14,8 @@ GLKSphere_c::constructSphereVertexData(unsigned int u_max, unsigned int v_max)
     vertex_vector_t v;
     element_vector_t e;
 
+    float colored = 1.F;
+
     unsigned int ix = 0;
     float step_u = (Pi * 2) / u_max;
     float step_v = Pi / v_max;
@@ -45,10 +47,10 @@ GLKSphere_c::constructSphereVertexData(unsigned int u_max, unsigned int v_max)
 
             v.insert(v.end(),
             {
-                x0, y0, z0,
-                x1, y1, z1,
-                x2, y2, z2,
-                x3, y3, z3
+                x0, y0, z0, colored,
+                x1, y1, z1, colored,
+                x2, y2, z2, colored,
+                x3, y3, z3, colored
             });
 
             e.insert(e.end(),
@@ -58,7 +60,9 @@ GLKSphere_c::constructSphereVertexData(unsigned int u_max, unsigned int v_max)
             });
 
             ix += 4;
+            colored *= -1.F;
         }
+        colored *= -1.F;
     }
 
     return std::make_pair(v, e);

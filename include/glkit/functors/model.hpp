@@ -17,12 +17,18 @@ UNIFORM_ARGS(ModelConfig_s)
 
     struct
     {
-        float X;
-        float Y;
-        float Z;
+        float X = 1.F;
+        float Y = 0.F;
+        float Z = 0.F;
         float Angle;
     } Rotation;
 
+    struct
+    {
+        float X = 1.F;
+        float Y = 1.F;
+        float Z = 1.F;
+    } Scale;
 };
 
 auto ModelTransformation_f =
@@ -38,7 +44,9 @@ auto ModelTransformation_f =
 
     model = glm::rotate(model, glm::radians(cfg->Rotation.Angle),
          glm::vec3(cfg->Rotation.X, cfg->Rotation.Y, cfg->Rotation.Z));
-  
+
+    model = glm::scale(model, glm::vec3(cfg->Scale.X, cfg->Scale.Y, cfg->Scale.Z));
+    
     return { model };
 };
 

@@ -73,7 +73,7 @@ class BallPipeline_c : public RenderPipeline_i
 
     void constructMesh() override
     {
-        Mesh = std::make_unique<glkit::mesh::GLKSphere_c>(20, 20);
+        Mesh = std::make_unique<glkit::mesh::GLKSphere_c>(10, 10);
     }
 };
 

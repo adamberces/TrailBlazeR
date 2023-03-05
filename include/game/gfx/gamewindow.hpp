@@ -18,7 +18,7 @@ protected:
 
     void initEvents() override
     {
-        RenderPipeline_i::CameraConfig.Position.X = -3;
+        RenderPipeline_i::CameraConfig.Position.X = 0;
         RenderPipeline_i::CameraConfig.Position.Y = 0;
         RenderPipeline_i::CameraConfig.Position.Z = 0;
         RenderPipeline_i::CameraConfig.Direction.X = 1;
@@ -34,12 +34,13 @@ protected:
         RenderPipeline_i::ProjectionConfig.NearPlane = 0.1F;
         RenderPipeline_i::ProjectionConfig.FarPlane = 100.F;
 
-        /*RenderPipeline_i::LightningColorConfig.Color.R = 1.F;
+        RenderPipeline_i::LightningColorConfig.Color.R = 1.F;
         RenderPipeline_i::LightningColorConfig.Color.G = 1.F;
-        RenderPipeline_i::LightningColorConfig.Color.B = 1.F;*/
+        RenderPipeline_i::LightningColorConfig.Color.B = 1.F;
         RenderPipeline_i::LightningPositionConfig.Position.X = 1;
         RenderPipeline_i::LightningPositionConfig.Position.Y = 1;
         RenderPipeline_i::LightningPositionConfig.Position.Z = 1;
+
 
         ppl.setup();
     }

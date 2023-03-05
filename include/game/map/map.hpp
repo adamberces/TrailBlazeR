@@ -14,6 +14,7 @@ class Map_c
 
     std::vector<Tile_t> Tiles;
     trailblazer::gfx::TilePipeline_c ppl;
+    trailblazer::gfx::BallPipeline_c b;
 
 public:
     void draw()
@@ -21,10 +22,17 @@ public:
         ppl.ModelConfig.Position.X = -1;
         ppl.ModelConfig.Position.Y = 0;
         ppl.ModelConfig.Position.Z = 0;
-        ppl.ModelConfig.Rotation.X = 1;
-        ppl.ModelConfig.Rotation.Y = 0;
-        ppl.ModelConfig.Rotation.Z = 0;
-        ppl.ModelConfig.Rotation.Angle = 0;
+
+        b.ModelConfig.Position.X = 2;
+        b.ModelConfig.Position.Y = 2;
+        b.ModelConfig.Position.Z = 2;
+        b.ModelConfig.Scale.X = .5;
+        b.ModelConfig.Scale.Y = .5;
+        b.ModelConfig.Scale.Z = .5;
+        b.ModelColorConfig.Color.R = 1.F;
+        b.ModelColorConfig.Color.G = 0.F;
+        b.ModelColorConfig.Color.B = 0.F;
+
 
         std::size_t row_cnt = 1;
         for (const auto& t : Tiles)
@@ -34,27 +42,18 @@ public:
                 ppl.ModelColorConfig.Color.R = 1.F;
                 ppl.ModelColorConfig.Color.G = 0.F;
                 ppl.ModelColorConfig.Color.B = 0.F;
-                RenderPipeline_i::LightningColorConfig.Color.R = 1.F;
-                RenderPipeline_i::LightningColorConfig.Color.G = 0.F;
-                RenderPipeline_i::LightningColorConfig.Color.B = 0.F;
             }
             else if (t.Color == BLUE)
             {
                 ppl.ModelColorConfig.Color.R = 0.F;
                 ppl.ModelColorConfig.Color.G = 0.F;
                 ppl.ModelColorConfig.Color.B = 1.F;
-                RenderPipeline_i::LightningColorConfig.Color.R = 1.F;
-                RenderPipeline_i::LightningColorConfig.Color.G = 0.F;
-                RenderPipeline_i::LightningColorConfig.Color.B = 1.F;
             }
             else if (t.Color == GREEN)
             {
                 ppl.ModelColorConfig.Color.R = 0.F;
                 ppl.ModelColorConfig.Color.G = 1.F;
                 ppl.ModelColorConfig.Color.B = 0.F;
-                RenderPipeline_i::LightningColorConfig.Color.R = 1.F;
-                RenderPipeline_i::LightningColorConfig.Color.G =1.F;
-                RenderPipeline_i::LightningColorConfig.Color.B = 0.F;
             }
 
             if (row_cnt > Width)
@@ -71,12 +70,14 @@ public:
             }
 
             ppl.run();
+            b.run();
             row_cnt++;
         }
     }
 
     Map_c()
     {
+        b.setup();
         ppl.setup();
         Tiles =
         {

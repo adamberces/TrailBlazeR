@@ -18,7 +18,7 @@ void GLKMesh_i::initialize(const vertex_vector_t& vertices,
     NumberOfElements = indices.size();
     VertexArrayObject = std::make_unique<core::buffers::VertexArrayObject_c<float>>();
     VertexArrayObject->copyVertexData(vertices, indices);
-    VertexArrayObject->setVertexAttribute(0, 3);    
+    VertexArrayObject->setVertexAttribute(0, 4);     
 }
 
 } // namespace glkit::mesh
