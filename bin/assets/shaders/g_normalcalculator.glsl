@@ -9,6 +9,7 @@ in vec3 FragPosition[];
 out vec3 Normal;
 out vec3 FragPos;
 
+
 void main()
 {
     // Calculate the normal of the triangle surface
