@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glkit/functors/functor_types.hpp>
 #include <glkit/core/uniforms/uniformfunctor.hpp>
 
 
@@ -8,27 +9,9 @@ namespace glkit::functors
 
 UNIFORM_ARGS(ModelConfig_s)
 {
-    struct
-    {
-        float X;
-        float Y;
-        float Z;
-    } Position;
-
-    struct
-    {
-        float X = 1.F;
-        float Y = 0.F;
-        float Z = 0.F;
-        float Angle;
-    } Rotation;
-
-    struct
-    {
-        float X = 1.F;
-        float Y = 1.F;
-        float Z = 1.F;
-    } Scale;
+    point3d_t Position;
+    rotation3d_t Rotation;
+    scale_t Scale;
 };
 
 auto ModelTransformation_f =

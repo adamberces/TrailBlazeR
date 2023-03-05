@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glkit/functors/functor_types.hpp>
 #include <glkit/core/uniforms/uniformfunctor.hpp>
 
 
@@ -8,19 +9,8 @@ namespace glkit::functors
 
 UNIFORM_ARGS(CameraConfig_s)
 {
-    struct
-    {
-        float X;
-        float Y;
-        float Z;
-    } Position;
-
-    struct
-    {
-        float X;
-        float Y;
-        float Z;
-    } Direction;
+    point3d_t Position;
+    point3d_t Direction;
 };
 
 auto Camera_f =

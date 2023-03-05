@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glkit/functors/functor_types.hpp>
 #include <glkit/core/uniforms/uniformfunctor.hpp>
 
 
@@ -8,12 +9,7 @@ namespace glkit::functors
 
 UNIFORM_ARGS(LightningColorConfig_s)
 {
-    struct
-    {
-        float R;
-        float G;
-        float B;
-    } Color;
+    rgb_t Color;
 };
 
 auto BasicLightningColor_f =

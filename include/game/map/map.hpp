@@ -8,9 +8,11 @@
 namespace trailblazer::gfx
 {
 
+
+
 class Map_c
 {
-    unsigned Width = 3;
+    unsigned Width = 5;
 
     std::vector<Tile_t> Tiles;
     trailblazer::gfx::TilePipeline_c ppl;
@@ -24,14 +26,15 @@ public:
         ppl.ModelConfig.Position.Z = 0;
 
         b.ModelConfig.Position.X = 2;
-        b.ModelConfig.Position.Y = 2;
-        b.ModelConfig.Position.Z = 2;
-        b.ModelConfig.Scale.X = .5;
-        b.ModelConfig.Scale.Y = .5;
-        b.ModelConfig.Scale.Z = .5;
+        b.ModelConfig.Position.Y = .5;
+        b.ModelConfig.Position.Z = .25;
+        b.ModelConfig.Scale.X = .25;
+        b.ModelConfig.Scale.Y = .25;
+        b.ModelConfig.Scale.Z = .25;
         b.ModelColorConfig.Color.R = 1.F;
         b.ModelColorConfig.Color.G = 0.F;
         b.ModelColorConfig.Color.B = 0.F;
+        b.ModelConfig.Rotation.Angle -= 5;
 
 
         std::size_t row_cnt = 1;
@@ -81,15 +84,27 @@ public:
         ppl.setup();
         Tiles =
         {
-            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
-            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
-            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
-            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
-            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
-            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
-            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
-            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
-
+            { NORMAL, GREEN }, { NORMAL, GREEN }, { NORMAL, GREEN }, { NORMAL, GREEN }, { NORMAL, GREEN },
+            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
+            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
+            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
+            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
+            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
+            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
+            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
+            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
+            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
+            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
+            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
+            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
+            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
+            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
+            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },      
+            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
+            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
+            { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED },
+            { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE }, { NORMAL, RED }, { NORMAL, BLUE },
+            
         };
     }
 };

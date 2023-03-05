@@ -18,15 +18,13 @@ protected:
 
     void initEvents() override
     {
-        RenderPipeline_i::CameraConfig.Position.X = 0;
-        RenderPipeline_i::CameraConfig.Position.Y = 0;
-        RenderPipeline_i::CameraConfig.Position.Z = 0;
-        RenderPipeline_i::CameraConfig.Direction.X = 1;
-        RenderPipeline_i::CameraConfig.Direction.Y = 0;
-        RenderPipeline_i::CameraConfig.Direction.Z = 0;
-        RenderPipeline_i::CameraPositionConfig.Position.X = RenderPipeline_i::CameraConfig.Position.X;
-        RenderPipeline_i::CameraPositionConfig.Position.Y = RenderPipeline_i::CameraConfig.Position.Y;
-        RenderPipeline_i::CameraPositionConfig.Position.Z = RenderPipeline_i::CameraConfig.Position.Z;
+        RenderPipeline_i::CameraConfig.Position.X = 2;
+        RenderPipeline_i::CameraConfig.Position.Y = -5;
+        RenderPipeline_i::CameraConfig.Position.Z = 1.5;
+        RenderPipeline_i::CameraConfig.Direction.X = 2;
+        RenderPipeline_i::CameraConfig.Direction.Y = 5;
+        RenderPipeline_i::CameraConfig.Direction.Z = .5;
+        RenderPipeline_i::CameraPositionConfig.Position = RenderPipeline_i::CameraConfig.Position;
 
         RenderPipeline_i::ProjectionConfig.FOV = 45.F;
         RenderPipeline_i::ProjectionConfig.ScreenWidth = 640;
@@ -34,12 +32,12 @@ protected:
         RenderPipeline_i::ProjectionConfig.NearPlane = 0.1F;
         RenderPipeline_i::ProjectionConfig.FarPlane = 100.F;
 
-        RenderPipeline_i::LightningColorConfig.Color.R = 1.F;
-        RenderPipeline_i::LightningColorConfig.Color.G = 1.F;
+        RenderPipeline_i::LightningColorConfig.Color.R = .5F;
+        RenderPipeline_i::LightningColorConfig.Color.G = .5F;
         RenderPipeline_i::LightningColorConfig.Color.B = 1.F;
-        RenderPipeline_i::LightningPositionConfig.Position.X = 1;
-        RenderPipeline_i::LightningPositionConfig.Position.Y = 1;
-        RenderPipeline_i::LightningPositionConfig.Position.Z = 1;
+        RenderPipeline_i::LightningPositionConfig.Position.X = 2;
+        RenderPipeline_i::LightningPositionConfig.Position.Y = 0.25F;
+        RenderPipeline_i::LightningPositionConfig.Position.Z = 0.5F;
 
 
         ppl.setup();
@@ -54,20 +52,30 @@ protected:
     {
         if (isPressed(GLFW_KEY_W))
         {
-            RenderPipeline_i::CameraConfig.Position.Z += .05;
+            RenderPipeline_i::LightningPositionConfig.Position.Z += .05;
         }
         else if (isPressed(GLFW_KEY_S))
         {
-            RenderPipeline_i::CameraConfig.Position.Z -= .05;
+            RenderPipeline_i::LightningPositionConfig.Position.Z -= .05;
         }
         else if (isPressed(GLFW_KEY_A))
         {
-            RenderPipeline_i::CameraConfig.Position.Y -= .05;
+            RenderPipeline_i::LightningPositionConfig.Position.Y -= .05;
         }
         else if (isPressed(GLFW_KEY_D))
         {
-            RenderPipeline_i::CameraConfig.Position.Y += .05;
+            RenderPipeline_i::LightningPositionConfig.Position.Y += .05;
         }
+        else if (isPressed(GLFW_KEY_E))
+        {
+            RenderPipeline_i::LightningPositionConfig.Position.X -= .05;
+        }
+          else if (isPressed(GLFW_KEY_R))
+        {
+            RenderPipeline_i::LightningPositionConfig.Position.X += .05;
+        }
+        printf("%f %f %f\n", RenderPipeline_i::LightningPositionConfig.Position.X,
+        RenderPipeline_i::LightningPositionConfig.Position.Y, RenderPipeline_i::LightningPositionConfig.Position.Z);
     }
 };
 
