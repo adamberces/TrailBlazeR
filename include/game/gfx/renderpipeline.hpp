@@ -53,12 +53,27 @@ class TilePipeline_c : public RenderPipeline_i
     {
         SSL.VertexShaderPath = "./assets/shaders/v_perspective.glsl";
         SSL.GeometryShaderPath = "./assets/shaders/g_normalcalculator.glsl";
-        SSL.FragmentShaderPath = "./assets/shaders/f_basiclightning.glsl";
+        SSL.FragmentShaderPath = "./assets/shaders/f_blinnphong.glsl";
     }
 
     void constructMesh() override
     {
-        Mesh = std::make_unique<glkit::mesh::GLKCube_c>(1, 1, 1);
+        Mesh = std::make_unique<glkit::mesh::GLKCube_c>(1, 1, .1);
+    }
+};
+
+class BallPipeline_c : public RenderPipeline_i
+{
+    void setupSSL() override
+    {
+        SSL.VertexShaderPath = "./assets/shaders/v_perspective.glsl";
+        SSL.GeometryShaderPath = "./assets/shaders/g_normalcalculator.glsl";
+        SSL.FragmentShaderPath = "./assets/shaders/f_blinnphong.glsl";
+    }
+
+    void constructMesh() override
+    {
+        Mesh = std::make_unique<glkit::mesh::GLKSphere_c>(20, 20);
     }
 };
 
