@@ -1,4 +1,6 @@
 #include <game/gfx/gamewindow.hpp>
+#include <game/map/mapmanager.hpp>
+#include <game/ball/ball.hpp>
 
 namespace trailblazer
 {
@@ -6,22 +8,27 @@ namespace trailblazer
 class Game
 {
     gfx::GameWindow_c GameWindow;
-    gfx::Scene_c GameScene;
+    map::MapManager_c MapManager;
+    std::shared_ptr<ball::Ball> Ball;
 
 public:
     void gameLoop()
     {
+        GameWindow.setMap(MapManager.getNextMap());
+        GameWindow.setBall(Ball);
+
         gfx::GameWindow_c::WindowState_e WindowState =
             gfx::GameWindow_c::WindowState_e::OK;
         while (WindowState == gfx::GameWindow_c::WindowState_e::OK)
         {   
-            GameScene.update();
             WindowState = GameWindow.updateWindow();
         }
     }
 
     Game() :
-        GameWindow(640, 480, "Test")
+        GameWindow(640, 480, "Test"),
+        MapManager("./assets/maps"),
+        Ball(std::make_shared<ball::Ball>())
     {}
 };
 

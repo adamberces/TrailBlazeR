@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <glkit/window/glwindow.hpp>
 #include <game/gfx/renderpipeline.hpp>
 #include <game/map/map.hpp>
@@ -11,10 +13,36 @@ class GameWindow_c : public glkit::window::GLWindow_i
 {
 public:
     using glkit::window::GLWindow_i::GLWindow_i;
-    Map_c map;
 
-protected:
-    trailblazer::gfx::TilePipeline_c ppl;
+    enum class KeyEvents_e
+    {
+        NONE,
+        LEFT,
+        RIGHT,
+        JUMP
+    };
+
+private:
+    KeyEvents_e LastKeyEvent;
+    
+    shared_ptr<map::Map_c> Map;
+    shared_ptr<ball::Ball_c> Ball;
+
+public:
+    void setBall(shared_ptr<ball::Ball_c>& ball)
+    {
+        Ball = ball;
+    }
+
+    void setMap(shared_ptr<map::Map_c>& map)
+    {
+        Map = map;
+    }
+
+    KeyEvents_e lastKeyEvent() const
+    {
+        return LastKeyEvent;
+    }
 
     void initEvents() override
     {
@@ -38,44 +66,30 @@ protected:
         RenderPipeline_i::LightningPositionConfig.Position.X = 2;
         RenderPipeline_i::LightningPositionConfig.Position.Y = 0.25F;
         RenderPipeline_i::LightningPositionConfig.Position.Z = 0.5F;
-
-
-        ppl.setup();
     }
 
     void drawEvents() override
     {
-        map.draw();
+        Map->draw();
+        Ball->draw();
     }
 
     void keypressEvents() override
     {
-        if (isPressed(GLFW_KEY_W))
+        LastKeyEvent = KeyEvent_e::NONE;
+
+        if (isPressed(GLFW_KEY_A))
         {
-            RenderPipeline_i::LightningPositionConfig.Position.Z += .05;
-        }
-        else if (isPressed(GLFW_KEY_S))
-        {
-            RenderPipeline_i::LightningPositionConfig.Position.Z -= .05;
-        }
-        else if (isPressed(GLFW_KEY_A))
-        {
-            RenderPipeline_i::LightningPositionConfig.Position.Y -= .05;
+            LastKeyEvent = KeyEvent_e::LEFT;
         }
         else if (isPressed(GLFW_KEY_D))
         {
-            RenderPipeline_i::LightningPositionConfig.Position.Y += .05;
+            LastKeyEvent = KeyEvent_e::RIGHT;
         }
-        else if (isPressed(GLFW_KEY_E))
+        else if (isPressed(GLFW_KEY_SPACE))
         {
-            RenderPipeline_i::LightningPositionConfig.Position.X -= .05;
+            LastKeyEvent = KeyEvent_e::JUMP;
         }
-          else if (isPressed(GLFW_KEY_R))
-        {
-            RenderPipeline_i::LightningPositionConfig.Position.X += .05;
-        }
-        printf("%f %f %f\n", RenderPipeline_i::LightningPositionConfig.Position.X,
-        RenderPipeline_i::LightningPositionConfig.Position.Y, RenderPipeline_i::LightningPositionConfig.Position.Z);
     }
 };
 

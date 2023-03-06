@@ -6,10 +6,18 @@
 namespace trailblazer::ball
 {
 
-struct Ball_c
+class Ball_c
 {
-
     trailblazer::gfx::BallPipeline_c PL;
+
+public:
+    void moveLeft();
+
+    void moveRight();
+
+    void jump();
+
+    point3d_t getPosition();
 
     void draw()
     {

@@ -54,7 +54,7 @@ enum class Color_e
     COLOR_COUNT
 };
 
-static rgb_t[] ColorCodes = 
+static glkit::functors::rgb_t ColorCodes[] = 
 {
     { 0.F, 0.F, 0.F },
     { 0.F, 0.F, 0.667F },
@@ -86,7 +86,7 @@ static std::unordered_map<Color_e, TileType_e> SpecialRules =
     { Color_e::LIGHT_RED, TileType_e::SPEEDDOWN },
     { Color_e::DARK_GRAY, TileType_e::FINISH },
     { Color_e::WHITE, TileType_e::FINISH }
-}
+};
 
 
 // Pack type and color into a struct
