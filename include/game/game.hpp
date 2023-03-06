@@ -6,6 +6,7 @@ namespace trailblazer
 class Game
 {
     gfx::GameWindow_c GameWindow;
+    gfx::Scene_c GameScene;
 
 public:
     void gameLoop()
@@ -13,7 +14,8 @@ public:
         gfx::GameWindow_c::WindowState_e WindowState =
             gfx::GameWindow_c::WindowState_e::OK;
         while (WindowState == gfx::GameWindow_c::WindowState_e::OK)
-        {
+        {   
+            GameScene.update();
             WindowState = GameWindow.updateWindow();
         }
     }
