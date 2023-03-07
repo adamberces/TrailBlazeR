@@ -30,7 +30,7 @@ bool GLWindow_i::isPressed(int key) const
     return ret;
 }
 
-GLWindow_i::WindowState_e GLWindow_i::updateWindow()
+GLWindow_i::WindowState_e GLWindow_i::updateWindow(Scene_i* scene)
 {
     if (!IsInitialized)
     {
@@ -49,7 +49,8 @@ GLWindow_i::WindowState_e GLWindow_i::updateWindow()
 
     handleESC();
     keypressEvents();
-    drawEvents();
+
+    scene->draw();
 
     glfwSwapBuffers(Window);
     glfwPollEvents();

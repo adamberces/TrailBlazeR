@@ -15,7 +15,7 @@
 #include <glkit/mesh/glksphere.hpp>
 
 
-namespace trailblazer::gfx
+namespace trailblazer::presentation
 {
 
 class RenderPipeline_i
@@ -77,4 +77,4 @@ class BallPipeline_c : public RenderPipeline_i
     }
 };
 
-} //trailblazer::gfx
+} //trailblazer::presentation

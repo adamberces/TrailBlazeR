@@ -2,10 +2,13 @@
 
 #include <string>
 #include <glkit/core/ogl_headers.hpp>
+#include <glkit/window/scene.hpp>
 
 
 namespace glkit::window
 {
+
+class Scene_
 
 class GLWindow_i
 {
@@ -17,7 +20,6 @@ class GLWindow_i
     void handleESC() const;
 
 protected:
-    virtual void drawEvents() = 0;
     virtual void initEvents() = 0;
     virtual void keypressEvents() = 0;
     
@@ -30,7 +32,7 @@ public:
         CLOSING
     };
 
-    WindowState_e updateWindow();
+    WindowState_e updateWindow(Scene_i*);
 
     GLWindow_i(int width, int height, std::string title);
 
