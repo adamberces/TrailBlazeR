@@ -1,7 +1,7 @@
 #pragma once
 
 #include <game/map/mapfile.hpp>
-#include <game/gfx/renderpipeline.hpp>
+#include <game/presentation/renderpipeline.hpp>
 
 
 namespace trailblazer::map
@@ -10,7 +10,7 @@ namespace trailblazer::map
 class Map_c
 {
     MapFile_c MapFile;
-    trailblazer::gfx::TilePipeline_c PL;
+    trailblazer::presentation::TilePipeline_c PL;
 
 public:
     void draw()

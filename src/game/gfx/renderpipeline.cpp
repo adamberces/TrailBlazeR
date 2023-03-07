@@ -1,7 +1,7 @@
-#include <game/gfx/renderpipeline.hpp>  
+#include <game/presentation/renderpipeline.hpp>  
 
 
-namespace trailblazer::gfx
+namespace trailblazer::presentation
 {
 
 // Define static members of RenderPipeline_i
@@ -56,4 +56,4 @@ void RenderPipeline_i::setup()
 
 }
 
-} //namespace trailblazer::gfx
+} //namespace trailblazer::presentation

@@ -12,7 +12,7 @@ class GameWindow_c : public glkit::window::GLWindow_i
 public:
     using glkit::window::GLWindow_i::GLWindow_i;
 
-    enum class KeyEvents_e
+    enum class KeyEvent_e
     {
         NONE,
         LEFT,
@@ -21,36 +21,15 @@ public:
     };
 
 private:
-    KeyEvents_e LastKeyEvent;
-
+    KeyEvent_e LastKeyEvent;
 
 public:
-    void setBall(shared_ptr<ball::Ball_c>& ball)
-    {
-        Ball = ball;
-    }
-
-    void setMap(shared_ptr<map::Map_c>& map)
-    {
-        Map = map;
-    }
-
-    KeyEvents_e lastKeyEvent() const
+    KeyEvent_e lastKeyEvent() const
     {
         return LastKeyEvent;
     }
 
-    void initEvents() override
-    {
-    }
-
-    void drawEvents() override
-    {
-        Map->draw();
-        Ball->draw();
-    }
-
-    void keypressEvents() override
+    void handleKeypressEvents() override
     {
         LastKeyEvent = KeyEvent_e::NONE;
 

@@ -19,7 +19,7 @@ class GameScene_c : public glkit::window::Scene_i
 public:
     // Updates the scene's globals (camera and lightning uniforms)
     // to follow the movement of the ball
-    void updateScene(glkit::uniforms::point3d_t ballPos)
+    void updateScene(glkit::functors::point3d_t ballPos)
     {
         // Update lightning position
 
@@ -41,6 +41,11 @@ public:
 
         RenderPipeline_i::CameraPositionConfig.Position =
             RenderPipeline_i::CameraConfig.Position;
+    }
+
+    void setMap(std::shared_ptr<map::Map_c> map)
+    {
+        Map = map;
     }
 
     void draw()

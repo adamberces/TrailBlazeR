@@ -1,35 +1,35 @@
-#include <game/gfx/gamewindow.hpp>
+#include <game/presentation/gamewindow.hpp>
+#include <game/presentation/gamescene.hpp>
 #include <game/map/mapmanager.hpp>
-#include <game/ball/ball.hpp>
+
 
 namespace trailblazer
 {
 
 class Game
 {
-    gfx::GameWindow_c GameWindow;
+    presentation::GameWindow_c GameWindow;
+    presentation::GameScene_c GameScene;
     map::MapManager_c MapManager;
-    std::shared_ptr<ball::Ball> Ball;
 
 public:
     void gameLoop()
     {
-        GameWindow.setMap(MapManager.getNextMap());
-        GameWindow.setBall(Ball);
-
-        gfx::GameWindow_c::WindowState_e WindowState =
-            gfx::GameWindow_c::WindowState_e::OK;
-        while (WindowState == gfx::GameWindow_c::WindowState_e::OK)
+        GameScene.setMap(MapManager.getNextMap());
+        presentation::GameWindow_c::WindowState_e WindowState =
+            presentation::GameWindow_c::WindowState_e::OK;
+        while (WindowState == presentation::GameWindow_c::WindowState_e::OK)
         {   
-            WindowState = GameWindow.updateWindow();
+            WindowState = GameWindow.updateWindow(&GameScene);
         }
     }
 
     Game() :
         GameWindow(640, 480, "Test"),
-        MapManager("./assets/maps"),
-        Ball(std::make_shared<ball::Ball>())
-    {}
+        MapManager("./assets/maps")
+    {
+        
+    }
 };
 
 } // namespace trailblazer

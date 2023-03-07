@@ -32,23 +32,12 @@ bool GLWindow_i::isPressed(int key) const
 
 GLWindow_i::WindowState_e GLWindow_i::updateWindow(Scene_i* scene)
 {
-    if (!IsInitialized)
-    {
-        glEnable(GL_DEPTH_TEST);
-        glDepthMask(GL_TRUE);
-        glDepthFunc(GL_LEQUAL);
-        glDepthRange(0.0f, 1.0f);
-
-        initEvents();
-        IsInitialized = true;
-    }
-
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClearDepth(1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     handleESC();
-    keypressEvents();
+    handleKeypressEvents();
 
     scene->draw();
 
@@ -83,7 +72,12 @@ GLWindow_i::GLWindow_i(int width, int height, std::string title)
     {
         std::cout << "Failed to initialize OpenGL context" << std::endl;
         throw 1;
-    }   
+    } 
+
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+    glDepthFunc(GL_LEQUAL);
+    glDepthRange(0.0f, 1.0f);  
 }
 
 GLWindow_i::~GLWindow_i()

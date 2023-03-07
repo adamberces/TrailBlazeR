@@ -8,20 +8,16 @@
 namespace glkit::window
 {
 
-class Scene_
-
 class GLWindow_i
 {
-    bool IsInitialized = false;
     GLFWwindow* Window = NULL;
   
     static void resizeCallback(GLFWwindow*, int w, int h);
-
+    
     void handleESC() const;
 
 protected:
-    virtual void initEvents() = 0;
-    virtual void keypressEvents() = 0;
+    virtual void handleKeypressEvents() = 0;
     
     bool isPressed(int key) const;
 

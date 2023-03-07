@@ -3,7 +3,6 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include <cstring>
 #include <fstream>
 #include <game/map/tile.hpp>
 
@@ -19,7 +18,7 @@ public:
 
 private:
     // Creating an alias for prettier code
-    using buffer_t = std::vector<unsigned char>;
+    using buffer_t = std::vector<char>;
 
     // Number of tiles in a row
     unsigned short Width;
@@ -46,14 +45,13 @@ public:
             throw std::runtime_error("MapFile_c::readHeader: "
                 "file too short to contain header or at least one tile data!");
         }
-        
+
         // Validate 'TMF' header, which sould be the first 3 bytes
-        if (::memcmp(static_cast<void*>(buf.data()),
-                     static_cast<void*>(EXTENSION),
+        if (::memcmp(buf.data(), EXTENSION,
                      std::size(EXTENSION) != 0))
         {
             throw std::runtime_error("MapFile_c::readHeader: "
-                "no 'MAP' header found.");
+                "no 'TMF' header found.");
         }
 
         // Read Width data
@@ -71,8 +69,8 @@ public:
             if (c >= Color_e::COLOR_COUNT)
             {
                 throw std::runtime_error("MapFile_c::readTileData: "
-                "Invalid color code " + std::to_string(static_cast<int>(c)) + 
-                " at position: " + std::to_string(id_t));
+                    "Invalid color code " + std::to_string(static_cast<int>(c)) + 
+                    " at position: " + std::to_string(i));
             }
             
             // Check if the color has a corresponding special type
@@ -87,13 +85,19 @@ public:
 
     void loadMap(const std::string& fileName)
     {
-        std::ifstream if(fileName);
+        std::ifstream ifs(fileName);
 
-        if.seekg(0, std::ios::end);
-        size_t sz = if.tellg();
-        if.seekg(0, std::ios::beg);
+        if (!ifs.good())
+        {
+            throw std::runtime_error("MapFile_c::loadMap: "
+                "Cannot open " + fileName);
+        }
 
+        ifs.seekg(0, std::ios::end);
+        size_t sz = ifs.tellg();
+        ifs.seekg(0, std::ios::beg);
         buffer_t buf = buffer_t(sz);
+        ifs.read(buf.data(), sz);
 
         readHeader(buf);
         readTileData(buf);
