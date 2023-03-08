@@ -16,10 +16,11 @@ class GameScene_c : public glkit::window::Scene_i
     std::shared_ptr<map::Map_c> Map;
     std::shared_ptr<ball::Ball_c> Ball;
 
-public:
+
+
     // Updates the scene's globals (camera and lightning uniforms)
     // to follow the movement of the ball
-    void updateScene(glkit::functors::point3d_t ballPos)
+    void updateGlobals(glkit::functors::point3d_t ballPos)
     {
         // Update lightning position
 
@@ -42,6 +43,8 @@ public:
         RenderPipeline_i::CameraPositionConfig.Position =
             RenderPipeline_i::CameraConfig.Position;
     }
+
+public:
 
     void setMap(std::shared_ptr<map::Map_c> map)
     {
@@ -87,7 +90,7 @@ public:
         Ball = std::make_shared<ball::Ball_c>();
 
         // Setup the initial positions according to the ball's properties
-        updateScene(Ball->getPosition());
+        updateGlobals(Ball->getPosition());
     }
 
 };

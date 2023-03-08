@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <glkit/window/glwindow.hpp>
-
+#include <game/controls/keymessaging.hpp>
 
 namespace trailblazer::presentation
 {
@@ -11,14 +11,6 @@ class GameWindow_c : public glkit::window::GLWindow_i
 {
 public:
     using glkit::window::GLWindow_i::GLWindow_i;
-
-    enum class KeyEvent_e
-    {
-        NONE,
-        LEFT,
-        RIGHT,
-        JUMP
-    };
 
 private:
     KeyEvent_e LastKeyEvent;

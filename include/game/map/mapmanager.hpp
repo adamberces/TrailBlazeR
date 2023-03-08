@@ -47,6 +47,11 @@ public:
         return Maps.at(ActualMapIndex);
     }
 
+    bool isLastMap() const
+    {
+        return (ActualMapIndex == Maps.size() - 1);
+    }
+
     MapManager_c(std::string path) :
         ActualMapIndex(-1)
     {

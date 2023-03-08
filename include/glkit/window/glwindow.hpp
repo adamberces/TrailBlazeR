@@ -11,7 +11,7 @@ namespace glkit::window
 class GLWindow_i
 {
     GLFWwindow* Window = NULL;
-  
+
     static void resizeCallback(GLFWwindow*, int w, int h);
     
     void handleESC() const;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <game/presentation/renderpipeline.hpp>
+#include <game/presentation/ballpipeline.hpp>
 
 
 namespace trailblazer::ball
@@ -9,7 +9,7 @@ namespace trailblazer::ball
 class Ball_c
 {
     float Diameter = 0.25F;
-    trailblazer::presentation::BallPipeline_c PL;
+    trailblazer::presentation::BallPipeline_c Pipeline;
 
 public:
     float diameter()
@@ -25,28 +25,28 @@ public:
 
     glkit::functors::point3d_t getPosition()
     {
-        return PL.ModelConfig.Position;
+        return Pipeline.ModelConfig.Position;
     }
 
     void draw()
     {
-        PL.ModelConfig.Position.Y += .01;
-        PL.ModelConfig.Rotation.Angle -= 1;
-        PL.run();
+        Pipeline.ModelConfig.Position.Y += .01;
+        Pipeline.ModelConfig.Rotation.Angle -= 1;
+        Pipeline.run();
     }
 
     Ball_c()
     {
-        PL.setup();
-        PL.ModelConfig.Position.X = 2;
-        PL.ModelConfig.Position.Y = Diameter;
-        PL.ModelConfig.Position.Z = Diameter;
-        PL.ModelConfig.Scale.X = Diameter;
-        PL.ModelConfig.Scale.Y = Diameter;
-        PL.ModelConfig.Scale.Z = Diameter;
-        PL.ModelColorConfig.Color.R = 1.F;
-        PL.ModelColorConfig.Color.G = 0.F;
-        PL.ModelColorConfig.Color.B = 0.F;
+        Pipeline.setup();
+        Pipeline.ModelConfig.Position.X = 2;
+        Pipeline.ModelConfig.Position.Y = Diameter;
+        Pipeline.ModelConfig.Position.Z = Diameter;
+        Pipeline.ModelConfig.Scale.X = Diameter;
+        Pipeline.ModelConfig.Scale.Y = Diameter;
+        Pipeline.ModelConfig.Scale.Z = Diameter;
+        Pipeline.ModelColorConfig.Color.R = 1.F;
+        Pipeline.ModelColorConfig.Color.G = 0.F;
+        Pipeline.ModelColorConfig.Color.B = 0.F;
     }
 
 };
