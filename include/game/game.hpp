@@ -1,23 +1,29 @@
+#pragma once
+
+#include <game/ball/ball.hpp>
+#include <game/map/mapmanager.hpp>
 #include <game/presentation/gamewindow.hpp>
 #include <game/presentation/gamescene.hpp>
-#include <game/map/mapmanager.hpp>
+#include <game/messaging/postoffice.hpp>
 
 
 namespace trailblazer
 {
 
 class Game
-{
-    map::MapManager_c MapManager;
-
+{   
+    messaging::PostOffice_c PostOffice;
     presentation::GameWindow_c GameWindow;
+
+    ball::Ball_c Ball;
+    map::MapManager_c MapManager;
     presentation::GameScene_c GameScene;
 
 public:
     void gameLoop()
     {   
         
-        while (!(MapManager.isLastMap))
+        while (!(MapManager.isLastMap()))
         {
             GameScene.setMap(MapManager.getNextMap());
 
@@ -33,8 +39,11 @@ public:
     }
 
     Game() :
-        GameWindow(640, 480, "Test"),
-        MapManager("./assets/maps")
+        PostOffice(),
+        GameWindow(&PostOffice),
+        Ball(&PostOffice),
+        MapManager("./assets/maps"),
+        GameScene(&Ball)
     {
         
     }

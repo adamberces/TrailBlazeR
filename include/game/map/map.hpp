@@ -50,7 +50,7 @@ public:
         }
     }
 
-    exPipelineicit Map_c(const std::string& mapFile) :
+    explicit Map_c(const std::string& mapFile) :
         MapFile(mapFile)
     {
         Pipeline.setup();

@@ -1,15 +1,32 @@
 #pragma once
 
-#include <game/messaging/message.hpp>
+#include <any>
 
 
 namespace trailblazer::messaging
 {
 
-class Recipient_i
+class PostOffice_c;
+
+/*
+class MessageProvider_i
 {
 public:
-    virtual void update(const Message_s&) const = 0;
+    virtual void sendMessage(std::any) = 0;
+};*/
+
+class MessageRecipient_i
+{
+protected:
+    PostOffice_c* PO;
+
+public:
+    virtual void sendMessage(std::any) = 0;
+
+    MessageRecipient_i(PostOffice_c* postOfficeAddress) :
+        PO(postOfficeAddress)
+    {
+    }
 };
 
 } // namespace trailblazer::messaging

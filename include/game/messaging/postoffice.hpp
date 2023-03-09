@@ -3,37 +3,31 @@
 #include <list>
 #include <unordered_map>
 #include <typeindex>
-#include <memory>
-
-#include <game/messaging/message.hpp>
+#include <iostream>
 #include <game/messaging/recipient.hpp>
-
 
 namespace trailblazer::messaging
 {
 
 class PostOffice_c
 {
-    std::unordered_map<std::type_index, std::list<std::shared_ptr<Recipient_i>>> Recipients;
-
-    void broadcast(const Message_s& message) const
-    {
-        for (auto r : Recipients)
-        {
-            r->update(message);
-        }
-    }
+    std::unordered_map<std::type_index, std::list<MessageRecipient_i*>> Recipients;
 
 public:
-    template <typename MessageType>--
-    void subscribeRecipient(const std::shared_ptr<Recipient_i>& r, )
+    template <typename MessageType>
+    void subscribeRecipient(MessageRecipient_i* r)
     {
-        Recipients.push_back(r);
+        std::cout << "New subscriber to type " << typeid(MessageType).name() << ": " << r << std::endl;
+        Recipients[ std::type_index(typeid(MessageType)) ].push_back(r);
     }
 
-    void setMessage(const Message_s& message) const
+    template <typename MessageType>
+    void broadcastMessage(MessageType message)
     {
-        broadcast(message);
+        for (auto& r : Recipients[ std::type_index(typeid(MessageType)) ])
+        {
+            r->sendMessage(message);
+        }
     }
 };
 

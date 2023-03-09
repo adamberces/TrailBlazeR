@@ -1,43 +1,50 @@
 #pragma once
 
 #include <memory>
+
 #include <glkit/window/glwindow.hpp>
-#include <game/controls/keymessaging.hpp>
+
+#include <game/messaging/postoffice.hpp>
+#include <game/messaging/recipient.hpp>
+#include <game/messaging/messagetypes.hpp>
 
 namespace trailblazer::presentation
 {
 
-class GameWindow_c : public glkit::window::GLWindow_i
+class GameWindow_c :
+    public glkit::window::GLWindow_i,
+    public messaging::MessageRecipient_i
+
 {
 public:
-    using glkit::window::GLWindow_i::GLWindow_i;
-
-private:
-    KeyEvent_e LastKeyEvent;
-
-public:
-    KeyEvent_e lastKeyEvent() const
-    {
-        return LastKeyEvent;
-    }
-
     void handleKeypressEvents() override
     {
-        LastKeyEvent = KeyEvent_e::NONE;
+        messaging::KeyEvent_e e =
+           messaging::KeyEvent_e::NONE;
 
         if (isPressed(GLFW_KEY_A))
         {
-            LastKeyEvent = KeyEvent_e::LEFT;
+            e = messaging::KeyEvent_e::LEFT;
         }
         else if (isPressed(GLFW_KEY_D))
         {
-            LastKeyEvent = KeyEvent_e::RIGHT;
+            e = messaging::KeyEvent_e::RIGHT;
         }
         else if (isPressed(GLFW_KEY_SPACE))
         {
-            LastKeyEvent = KeyEvent_e::JUMP;
+            e = messaging::KeyEvent_e::JUMP;
         }
+
+        PO->broadcastMessage<messaging::KeyEvent_e>(e);
     }
+
+    void sendMessage(std::any message) override
+    {}
+
+    GameWindow_c(messaging::PostOffice_c* po) :
+        GLWindow_i(800, 600, "TrailBlazeR"),
+        MessageRecipient_i(po)
+        {}
 };
 
 } // namespace trailblazer::presentation
