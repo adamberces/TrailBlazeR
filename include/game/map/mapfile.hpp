@@ -32,11 +32,15 @@ public:
         return Width;
     }
 
-    decltype(Tiles) tiles() const
+    decltype(Tiles)& tiles() const
     {
         return Tiles;
     }
 
+
+    // Reads and validates the TMF header, which is:
+    // bytes 0-2: characters 'TMF'
+    // byte 3: describes the width of a row
 
     void readHeader(const buffer_t& buf)
     {
@@ -80,6 +84,14 @@ public:
             }
 
             Tiles.push_back({ t, c });
+        }
+
+        // Let's see if the last row is complete or not
+        if (Tiles.size() % Width != 0)
+        {
+            throw std::runtime_error("MapFile_c::readTileData: "
+                    "Invalid color code " + std::to_string(static_cast<int>(c)) + 
+                    " at position: " + std::to_string(i));
         }
     }
 

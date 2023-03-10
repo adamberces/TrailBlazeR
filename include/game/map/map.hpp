@@ -13,6 +13,17 @@ class Map_c
     trailblazer::presentation::TilePipeline_c Pipeline;
 
 public:
+    // Returns the tile type of a tile of the given position,
+    // where x = 0; y = 0 is the bottom left of the map
+    TileType_e getTile(size_t x, size_t y)
+    {
+        size_t index = MapFile.width() * y + x;
+        return MapFile.tiles().at(index).Type;
+    }
+
+
+    // Redraw the map on the screen using the render pipeline
+
     void draw()
     {
         // Setup initial position
@@ -22,6 +33,8 @@ public:
 
         // Set up counter to know when to start the next row
         std::size_t row_cnt = 1;
+        std::size_t firstRow = 0;
+        std::size_t lastRow = std::max()
 
         for (const Tile_s& t : MapFile.tiles())
         {
@@ -49,6 +62,9 @@ public:
             row_cnt++;
         }
     }
+
+
+    // Constructs the map from a map file (TMF)
 
     explicit Map_c(const std::string& mapFile) :
         MapFile(mapFile)
