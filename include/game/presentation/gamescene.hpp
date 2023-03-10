@@ -1,8 +1,7 @@
 #pragma once
 
-#include <memory>
-
 #include <glkit/window/scene.hpp>
+
 #include <game/map/map.hpp>
 #include <game/ball/ball.hpp>
 #include <game/presentation/renderpipeline.hpp>
@@ -13,8 +12,8 @@ namespace trailblazer::presentation
 
 class GameScene_c : public glkit::window::Scene_i
 {
-    std::shared_ptr<map::Map_c> Map;
-    std::shared_ptr<ball::Ball_c> Ball;
+    map::Map_c& Map;
+    ball::Ball_c& Ball;
 
     // Updates the scene's globals (camera and lightning uniforms)
     // to follow the movement of the ball
@@ -43,28 +42,20 @@ class GameScene_c : public glkit::window::Scene_i
     }
 
 public:
-
-    void setMap(std::shared_ptr<map::Map_c> map)
-    {
-        Map = map;
-    }
+    // Redraw the scene
 
     void draw()
     {
-        if (!Map)
-        {
-            throw std::runtime_error
-                ("GameScene_c::draw: no Map selected to draw");
-        }
-
-        // Update positions in the global uniforms
+        // Update positions in the global uniforms (camera, lightning)
         updateGlobals(Ball->getPosition());
 
         // Redraw scene
-        Map->draw();
-        Ball->draw();
+        Map.draw();
+        Ball.draw();
     }
 
+    // Setup the uniforms of the render pipeline, which won't change
+    // during the lifetime of the scene: projection matrix, lighning color
     void setup()
     {
         // Setup projection matrix
@@ -80,12 +71,11 @@ public:
         RenderPipeline_i::LightningColorConfig.Color.B = 1.F;
     }
 
-    GameScene_c(ball::Ball_c* bptr)
+    GameScene_c(map::Map& map, ball::Ball_c& ball) :
+        Map(map),
+        Ball(ball)
     {
         setup();
-
-        Map = nullptr;
-        Ball = std::shared_ptr<ball::Ball_c>(bptr);
 
         // Setup the initial positions according to the ball's properties
         updateGlobals(Ball->getPosition());

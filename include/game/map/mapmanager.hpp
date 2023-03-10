@@ -11,7 +11,7 @@ namespace trailblazer::map
 class MapManager_c
 {
     int ActualMapIndex;
-    std::vector<std::shared_ptr<Map_c>> Maps;
+    std::vector<Map_c> Maps;
 
     void collectMapFiles(std::string path)
     {
@@ -34,14 +34,14 @@ class MapManager_c
                 // Construct Map objects from the filename
                 std::string tmf = f.path().filename().string();
                 
-                Maps.push_back(std::make_shared<Map_c>(path + "/" + tmf));
+                Maps.push_back(Map_c(path + "/" + tmf));
                 std::cout << "Mapfile " << tmf << " found." << std::endl;
             }
         }
     }
 
 public:
-    std::shared_ptr<Map_c> getNextMap()
+    Map_c& getNextMap()
     {
         ActualMapIndex++;
         return Maps.at(ActualMapIndex);
