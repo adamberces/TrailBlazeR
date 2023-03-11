@@ -24,7 +24,7 @@ class GameScene_c : public glkit::window::Scene_i
         RenderPipeline_i::LightningPositionConfig.Position.X =
             ballPos.X;
         RenderPipeline_i::LightningPositionConfig.Position.Y =
-            ballPos.Y - Ball->diameter();
+            ballPos.Y - Ball.diameter();
         RenderPipeline_i::LightningPositionConfig.Position.Z = 0.5F;
 
         // Update camera positions
@@ -47,7 +47,7 @@ public:
     void draw()
     {
         // Update positions in the global uniforms (camera, lightning)
-        updateGlobals(Ball->getPosition());
+        updateGlobals(Ball.getPosition());
 
         // Redraw scene
         Map.draw();
@@ -71,14 +71,14 @@ public:
         RenderPipeline_i::LightningColorConfig.Color.B = 1.F;
     }
 
-    GameScene_c(map::Map& map, ball::Ball_c& ball) :
+    GameScene_c(map::Map_c& map, ball::Ball_c& ball) :
         Map(map),
         Ball(ball)
     {
         setup();
 
         // Setup the initial positions according to the ball's properties
-        updateGlobals(Ball->getPosition());
+        updateGlobals(Ball.getPosition());
     }
 
 };

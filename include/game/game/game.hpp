@@ -24,7 +24,7 @@ public:
         {
             // Set up a new ball and a scene from the ball and the actual map
             // for the new level's scene
-            ball::Ball_c Ball(PostOffice);
+            ball::Ball_c Ball(&PostOffice);
             presentation::GameScene_c GameScene(MapManager.getNextMap(), Ball);
 
             presentation::GameWindow_c::WindowState_e WindowState =
@@ -40,7 +40,7 @@ public:
     Game() :
         PostOffice(),
         GameWindow(&PostOffice),
-        MapManager("./assets/maps"),
+        MapManager("./assets/maps")
     {
         
     }

@@ -32,7 +32,7 @@ public:
         return Width;
     }
 
-    decltype(Tiles)& tiles() const
+    const decltype(Tiles)& tiles() const
     {
         return Tiles;
     }
@@ -90,8 +90,8 @@ public:
         if (Tiles.size() % Width != 0)
         {
             throw std::runtime_error("MapFile_c::readTileData: "
-                    "Invalid color code " + std::to_string(static_cast<int>(c)) + 
-                    " at position: " + std::to_string(i));
+                "The last row in incomplete, expecting " + std::to_string(Width) +
+                "tiles, got " + std::to_string(Tiles.size() % Width));
         }
     }
 

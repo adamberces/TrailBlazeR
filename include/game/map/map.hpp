@@ -33,8 +33,8 @@ public:
 
         // Set up counter to know when to start the next row
         std::size_t row_cnt = 1;
-        std::size_t firstRow = 0;
-        std::size_t lastRow = std::max()
+        //std::size_t firstRow = 0;
+        //std::size_t lastRow = std::min(MapFile.tiles().size(), 1);
 
         for (const Tile_s& t : MapFile.tiles())
         {
