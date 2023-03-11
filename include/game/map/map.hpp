@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 #include <game/map/mapfile.hpp>
 #include <game/presentation/tilepipeline.hpp>
 
@@ -24,28 +26,37 @@ public:
 
     // Redraw the map on the screen using the render pipeline
 
-    void draw()
+    void draw(glkit::functors::point3d_t ballPosition)
     {
         // Setup initial position
         Pipeline.ModelConfig.Position.X = -1.F;
         Pipeline.ModelConfig.Position.Y =  0.F;
         Pipeline.ModelConfig.Position.Z = -0.05F;
 
+        // We will never render the whole map for each frame,
+        // so we shall discard some rows both from the beginning
+        // and from the end based on the ball's Y position
+        int ballPosY = static_cast<int>(::floor(ballPosition.Y));
+        int firstRow = std::max(ballPosY - 2, 0);
+        int lastRow = std::min(ballPosY + 20,static_cast<int>(MapFile.tiles().size()));
+
+        // Set up counter to know when to stop drawing
+        std::size_t rowCnt = 0;
+
         // Set up counter to know when to start the next row
-        std::size_t row_cnt = 1;
-        //std::size_t firstRow = 0;
-        //std::size_t lastRow = std::min(MapFile.tiles().size(), 1);
+        std::size_t colCnt = 1;
 
         for (const Tile_s& t : MapFile.tiles())
         {
             Pipeline.ModelColorConfig.Color = ColorCodes[static_cast<size_t>(t.Color)];
 
-            if (row_cnt > MapFile.width())
+            if (colCnt > MapFile.width())
             {
                 // Shift to next row
                 Pipeline.ModelConfig.Position.X = 0.F;
                 Pipeline.ModelConfig.Position.Y += 1.F;
-                row_cnt = 1;
+                rowCnt++;
+                colCnt = 1;
             }
             else
             {
@@ -54,12 +65,14 @@ public:
             }
 
             // Don't render anything if the tile type is a gap
-            if (t.Type != TileType_e::GAP)
+            if (t.Type != TileType_e::GAP &&
+                rowCnt >= firstRow &&
+                rowCnt <= lastRow )
             {
                 Pipeline.run();
             }
 
-            row_cnt++;
+            colCnt++;
         }
     }
 

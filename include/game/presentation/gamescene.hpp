@@ -50,7 +50,7 @@ public:
         updateGlobals(Ball.getPosition());
 
         // Redraw scene
-        Map.draw();
+        Map.draw(Ball.getPosition());
         Ball.draw();
     }
 

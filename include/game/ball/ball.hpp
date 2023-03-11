@@ -32,12 +32,11 @@ public:
 
     void sendMessage(std::any message) override
     {
-        std::cout << message.type().name() << std::endl;
         if (message.type() == typeid(messaging::KeyEvent_e))
         {
             messaging::KeyEvent_e e =
                 std::any_cast<messaging::KeyEvent_e>(message);
-            std::cout << (int)e << std::endl;
+
             switch(e)
             {
             case messaging::KeyEvent_e::JUMP:
@@ -71,6 +70,11 @@ public:
         Pipeline.ModelConfig.Position.Y += .01;
         Pipeline.ModelConfig.Rotation.Angle -= 1;
         Pipeline.run();
+
+        // Broadcast a message with the actual position of the ball
+        PO->broadcastMessage<messaging::BallPosition_t>(
+            { Pipeline.ModelConfig.Position }
+        );
     }
 
     Ball_c(messaging::PostOffice_c* po) :
