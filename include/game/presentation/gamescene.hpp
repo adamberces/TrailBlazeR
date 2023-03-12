@@ -4,6 +4,7 @@
 
 #include <game/map/map.hpp>
 #include <game/ball/ball.hpp>
+#include <game/presentation/bkgpipeline.hpp>
 #include <game/presentation/renderpipeline.hpp>
 
 
@@ -14,6 +15,8 @@ class GameScene_c : public glkit::window::Scene_i
 {
     map::Map_c& Map;
     ball::Ball_c& Ball;
+
+    std::unique_ptr<BackgroundPipeline_c> Background;
 
     // Updates the scene's globals (camera and lightning uniforms)
     // to follow the movement of the ball
@@ -50,6 +53,7 @@ public:
         updateGlobals(Ball.getPosition());
 
         // Redraw scene
+        Background->run();
         Map.draw(Ball.getPosition());
         Ball.draw();
     }
@@ -69,6 +73,9 @@ public:
         RenderPipeline_i::LightningColorConfig.Color.R = .5F;
         RenderPipeline_i::LightningColorConfig.Color.G = .5F;
         RenderPipeline_i::LightningColorConfig.Color.B = 1.F;
+
+        Background = std::make_unique<BackgroundPipeline_c>("./assets/bkg.jpg");
+        Background->setup();
     }
 
     GameScene_c(map::Map_c& map, ball::Ball_c& ball) :
