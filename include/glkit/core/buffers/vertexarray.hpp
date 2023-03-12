@@ -94,7 +94,9 @@ public:
         bind();
         glVertexAttribPointer(location, component_count,
             buffer_data_type_traits<BufferDataType>::type,
-            GL_FALSE, stride, (void*)offset);
+            GL_FALSE,
+            stride * sizeof(BufferDataType),
+            (void*)(offset * sizeof(BufferDataType)));
         glEnableVertexAttribArray(location);
         unbind();
     }
