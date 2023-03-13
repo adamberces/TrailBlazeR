@@ -14,6 +14,23 @@ const float fresnel_strength = 0.3F;
 
 out vec4 FragColor;
 
+float getFogFactor(float d)
+{
+    const float FogMax = 15.F;
+    const float FogMin = 10.F;
+
+    if (d >= FogMax)
+    {
+        return 1.F;
+    }
+    if (d <= FogMin)
+    {
+        return 0.F;
+    }
+
+    return float(1.F - (FogMax - d) / (FogMax - FogMin));
+}
+
 void main()
 {
     // Compute the diffuse and specular components of the reflection
@@ -39,5 +56,10 @@ void main()
     vec3 specular = specular_intensity * light_color;
     vec3 reflection_color = fresnel_factor * (ambient + diffuse + specular);
     
-    FragColor = vec4(reflection_color, 1.F);
+    float d = distance(FragPos, cam_position);
+    float alpha = getFogFactor(d);
+
+    vec4 mixed_color = vec4(reflection_color, alpha);
+    FragColor = mix(mixed_color, vec4(light_color, 1.0), alpha);
+    
 }
