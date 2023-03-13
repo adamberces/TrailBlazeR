@@ -70,9 +70,9 @@ public:
         RenderPipeline_i::ProjectionConfig.FarPlane = 100.F;
 
         // Setup lightning color
-        RenderPipeline_i::LightningColorConfig.Color.R = .5F;
-        RenderPipeline_i::LightningColorConfig.Color.G = .5F;
-        RenderPipeline_i::LightningColorConfig.Color.B = 1.F;
+        RenderPipeline_i::LightningColorConfig.Color.R = 0.51F;
+        RenderPipeline_i::LightningColorConfig.Color.G = 0.45F;
+        RenderPipeline_i::LightningColorConfig.Color.B = 0.57F;
 
         Background = std::make_unique<BackgroundPipeline_c>("./assets/bkg.jpg");
         Background->setup();

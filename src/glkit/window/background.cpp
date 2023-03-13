@@ -1,7 +1,6 @@
 #include <SOIL/SOIL.h>
 #include <glkit/window/background.hpp>
 
-#include <iostream>
 namespace glkit::window
 {
 
@@ -12,10 +11,12 @@ void GLKBackgound_c::activateTexture() const
 
 void GLKBackgound_c::draw() const
 {
+    glDisable(GL_DEPTH_TEST);
     VertexArrayObject->bind();
     glDrawElements(GL_TRIANGLES, NumberOfElements,
                     GL_UNSIGNED_INT, 0);
     VertexArrayObject->unbind();
+    glEnable(GL_DEPTH_TEST); 
 }
 
 std::pair<mesh::GLKMesh_i::vertex_vector_t, mesh::GLKMesh_i::element_vector_t>
@@ -24,10 +25,10 @@ GLKBackgound_c::constructVertexData()
     vertex_vector_t v =
     {
         // Position          // Texture coordinates
-        -1.0f, -1.0f, 0.0f,  0.0f, 0.0f,
-         1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
-         1.0f,  1.0f, 0.0f,  1.0f, 1.0f,
-        -1.0f,  1.0f, 0.0f,  0.0f, 1.0f
+        -1.0f, -1.0f, 0.0f,  1.0f, 1.0f,
+         1.0f, -1.0f, 0.0f,  0.0f, 1.0f,
+         1.0f,  1.0f, 0.0f,  0.0f, 0.0f,
+        -1.0f,  1.0f, 0.0f,  1.0f, 0.0f
     };
 
     element_vector_t e =

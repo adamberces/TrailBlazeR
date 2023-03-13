@@ -18,12 +18,12 @@ class Ball_c : public messaging::MessageRecipient_i
 public:
     void moveLeft()
     {
-        Pipeline.ModelConfig.Position.X -= .01;
+        Pipeline.ModelConfig.Position.X -= .05;
     }
 
     void moveRight()
     {
-        Pipeline.ModelConfig.Position.X += .01;
+        Pipeline.ModelConfig.Position.X += .05;
     }
 
     void jump()
@@ -67,8 +67,8 @@ public:
 
     void draw()
     {
-        Pipeline.ModelConfig.Position.Y += .01;
-        Pipeline.ModelConfig.Rotation.Angle -= 1;
+        Pipeline.ModelConfig.Position.Y += .05;
+        Pipeline.ModelConfig.Rotation.Angle -= 5;
         Pipeline.run();
 
         // Broadcast a message with the actual position of the ball
