@@ -115,7 +115,7 @@ public:
     {
         setVertexAttribute
             (location, component_count,
-             component_count * sizeof(BufferDataType));
+             component_count);
     }
 
     inline void bind() const
