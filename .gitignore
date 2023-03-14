@@ -30,7 +30,7 @@
 *.exe
 *.out
 *.app
-trailblazer
+bin/trailblazer
 
 # VS C0de
 .vscode
