@@ -4,10 +4,10 @@
 #include <unordered_map>
 #include <typeindex>
 #include <iostream>
-#include <game/messaging/recipient.hpp>
+#include <messaging/recipient.hpp>
 
 
-namespace trailblazer::messaging
+namespace messaging
 {
 
 class PostOffice_c
@@ -25,6 +25,7 @@ public:
     template <typename MessageType>
     void broadcastMessage(MessageType message)
     {
+        std::cout << "New message available of type " << typeid(MessageType).name() << std::endl;
         for (auto& r : Recipients[ std::type_index(typeid(MessageType)) ])
         {
             r->sendMessage(message);
@@ -32,4 +33,4 @@ public:
     }
 };
 
-} // namespace trailblazer::messaging
+} // namespace messaging

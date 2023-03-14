@@ -1,8 +1,8 @@
-#include <game/game/game.hpp>
+#include <trailblazer/game/game.hpp>
 
 int main()
 {
-    trailblazer::Game g;
+    trailblazer::Game_c g;
     g.gameLoop();
     return 0;
 }

@@ -3,22 +3,21 @@
 #include <any>
 
 
-namespace trailblazer::messaging
+namespace messaging
 {
 
 class PostOffice_c;
-
-/*
-class MessageProvider_i
-{
-public:
-    virtual void sendMessage(std::any) = 0;
-};*/
 
 class MessageRecipient_i
 {
 protected:
     PostOffice_c* PO;
+
+    template<typename MessageType>
+    inline bool isMessageType(std::any message)
+    {
+        return (message.type() == typeid(MessageType));
+    }
 
 public:
     virtual void sendMessage(std::any) = 0;
@@ -29,4 +28,4 @@ public:
     }
 };
 
-} // namespace trailblazer::messaging
+} // namespace messaging
