@@ -100,7 +100,7 @@ class BallControl_c :
         switch (tt)
         {
             case map::TileType_e::GAP:
-                BallState = BallState_e::LOST;
+                //BallState = BallState_e::LOST;
                 break;
             case map::TileType_e::SPEEDUP:
                 Velocity.Y += 0.1;
@@ -114,15 +114,16 @@ class BallControl_c :
         }
     }
 
-    void broadcastPosition()
+    void broadcastPosition(float delta_time)
     {
         // Calculate the horizontal speed of the
         // ball by zeroing the Z component
         rigidbody::Vector3D_s v = Velocity;
         v.Z = 0.F;
         float speed = v.magnitude();
-        msgBallPositionAndSpeed msg({  speed, {Position.X, Position.Y, Position.Z}});
-        PO->broadcastMessage<msgBallPositionAndSpeed>(msg);
+        float dist = speed * delta_time;
+        msgBallPositionAndDistance msg({ dist, {Position.X, Position.Y, Position.Z}});
+        PO->broadcastMessage<msgBallPositionAndDistance>(msg);
     }
 
 public:
@@ -132,7 +133,7 @@ public:
         addForces(dt);
         update(dt);
         applyConstraints();
-        broadcastPosition();
+        broadcastPosition(dt);
     }
 
     void sendMessage(std::any m) override

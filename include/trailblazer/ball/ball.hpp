@@ -24,13 +24,21 @@ public:
         {
             draw();
         }
-        else if (isMessageType<msgBallPositionAndSpeed>(m))
+        else if (isMessageType<msgBallPositionAndDistance>(m))
         {
-            msgBallPositionAndSpeed p =
-                std::any_cast<msgBallPositionAndSpeed>(m);
+            msgBallPositionAndDistance p =
+                std::any_cast<msgBallPositionAndDistance>(m);
             
             Pipeline.ModelConfig.Position = p.Position;
-            Pipeline.ModelConfig.Rotation.Angle -= 1;
+
+            // Calculate the angular rotation for 1 meters of distance
+            // taken by the ball on the ground from the circumference
+            // of a circle got from the diameter of the ball
+            constexpr float DegreePerMeter = 360.F / (Constants_s::BALL_DIAMETER * 3.14159);
+            
+            // Calculate the actual extent of rotation from the actual distance
+            // taken by the ball since the last frame
+            Pipeline.ModelConfig.Rotation.Angle -= p.Distance * DegreePerMeter;
 
             PO->broadcastMessage<msgBallPosition>({p.Position});
           }
@@ -61,7 +69,7 @@ public:
     {   
         // Manage subscriptions
         PO->subscribeRecipient<msgRedrawTrigger>(this);
-        PO->subscribeRecipient<msgBallPositionAndSpeed>(this);
+        PO->subscribeRecipient<msgBallPositionAndDistance>(this);
         setup();
     }
 

@@ -37,9 +37,9 @@ struct msgActualTileType
     map::TileType_e Type;
 };
 
-struct msgBallPositionAndSpeed
+struct msgBallPositionAndDistance
 {
-    double Speed;
+    float Distance;
     glkit::functors::point3d_t Position;
 };
 
