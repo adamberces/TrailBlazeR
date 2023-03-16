@@ -1,5 +1,6 @@
-#include <SOIL/SOIL.h>
+#include <stdexcept>
 #include <glkit/window/background.hpp>
+#include <png/loadpng.hpp>
 
 namespace glkit::window
 {
@@ -41,6 +42,7 @@ GLKBackgound_c::constructVertexData()
 }
 
 
+
 void GLKBackgound_c::initialize(const vertex_vector_t& vertices,
     const element_vector_t& indices) 
 {
@@ -51,15 +53,18 @@ void GLKBackgound_c::initialize(const vertex_vector_t& vertices,
     VertexArrayObject->setVertexAttribute(0, 3, 5);  
     VertexArrayObject->setVertexAttribute(1, 2, 5, 3);      
 
+    png::PngImage_c im(FileName);
+
     glGenTextures(1, &TextureID);
-    int width, height;
-    unsigned char* image = SOIL_load_image(FileName.c_str(), &width, &height, 0, SOIL_LOAD_RGB);
     glBindTexture(GL_TEXTURE_2D, TextureID);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-    glGenerateMipmap(GL_TEXTURE_2D);
+    glTexImage2D(GL_TEXTURE_2D, 0,
+                (im.hasAlpha() ? GL_RGBA : GL_RGB),
+                im.width(), im.height(), 0,
+                (im.hasAlpha() ? GL_RGBA : GL_RGB),
+                GL_UNSIGNED_BYTE, im.data());
 
-    SOIL_free_image_data(image);
+    glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
