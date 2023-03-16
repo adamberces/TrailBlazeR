@@ -9,6 +9,7 @@ namespace rigidbody
 
 class RigidBody_c
 {
+protected:
     float Mass;
 
     Vector3D_s Position;
@@ -28,7 +29,7 @@ public:
         return Velocity;
     }
 
-    void add_force(Vector3D_s force)
+    void addForce(Vector3D_s force)
     {
         Forces.push_back(force);
     }

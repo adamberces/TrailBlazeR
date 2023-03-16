@@ -25,7 +25,7 @@ public:
     template <typename MessageType>
     void broadcastMessage(MessageType message)
     {
-        std::cout << "New message available of type " << typeid(MessageType).name() << std::endl;
+        //std::cout << "New message available of type " << typeid(MessageType).name() << std::endl;
         for (auto& r : Recipients[ std::type_index(typeid(MessageType)) ])
         {
             r->sendMessage(message);

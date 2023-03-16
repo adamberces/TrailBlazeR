@@ -27,7 +27,7 @@ class GameScene_c : public messaging::MessageRecipient_i
             ballPos.X;
         RenderPipeline_i::LightningPositionConfig.Position.Y =
             ballPos.Y - .25; /*Ball.diameter()*/;
-        RenderPipeline_i::LightningPositionConfig.Position.Z = 0.5F;
+        RenderPipeline_i::LightningPositionConfig.Position.Z = ballPos.Z + 0.5F;
 
         // Update camera positions
 
@@ -60,10 +60,6 @@ public:
 
     void drawScene()
     {
-        printf("cam %f %f %f\n", RenderPipeline_i::LightningPositionConfig.Position.X,
-            RenderPipeline_i::LightningPositionConfig.Position.Y,
-            RenderPipeline_i::LightningPositionConfig.Position.Z); 
-
         // Redraw scene
         Background->run();
         PO->broadcastMessage<msgRedrawTrigger>({});

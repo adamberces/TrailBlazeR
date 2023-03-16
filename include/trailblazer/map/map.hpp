@@ -41,6 +41,7 @@ public:
             msgBallPosition p = std::any_cast<msgBallPosition>(m);
             int x = static_cast<int>(::floor(p.Position.X));
             int y = static_cast<int>(::floor(p.Position.Y));
+            printf("%d %d %d\r", x, y, int(getTile(x, y)));
             msgActualTileType tiletype({ getTile(x, y) });
             PO->broadcastMessage(tiletype);
         }
@@ -53,7 +54,7 @@ public:
         // Setup initial position
         Pipeline.ModelConfig.Position.X = -1.F;
         Pipeline.ModelConfig.Position.Y =  0.F;
-        Pipeline.ModelConfig.Position.Z = -0.05F;
+        Pipeline.ModelConfig.Position.Z = -0.25F;
 
         // We will never render the whole map for each frame,
         // so we shall discard some rows both from the beginning
@@ -109,6 +110,7 @@ public:
     {
         Pipeline.setup();
         PO->subscribeRecipient<msgRedrawTrigger>(this);
+        PO->subscribeRecipient<msgBallPosition>(this);
     }
 };
 

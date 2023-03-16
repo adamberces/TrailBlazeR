@@ -26,10 +26,10 @@ GLKBackgound_c::constructVertexData()
     vertex_vector_t v =
     {
         // Position          // Texture coordinates
-        -1.0f, -1.0f, 0.0f,  0.0f, 1.0f,
-         1.0f, -1.0f, 0.0f,  1.0f, 1.0f,
-         1.0f,  1.0f, 0.0f,  1.0f, 0.0f,
-        -1.0f,  1.0f, 0.0f,  0.0f, 0.0f
+        -1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
+         1.0f, -1.0f, 0.0f,  0.0f, 0.0f,
+         1.0f,  1.0f, 0.0f,  0.0f, 1.0f,
+        -1.0f,  1.0f, 0.0f,  1.0f, 1.0f
     };
 
     element_vector_t e =

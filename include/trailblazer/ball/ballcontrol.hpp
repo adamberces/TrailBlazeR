@@ -6,6 +6,7 @@
 
 #include <rigidbody/rigidbody.hpp>
 #include <trailblazer/game/clock.hpp>
+#include <trailblazer/game/constants.hpp>
 
 #include <iostream>
 
@@ -21,61 +22,142 @@ enum class BallState_e
 };
 
 
-class BallControl_c : public messaging::MessageRecipient_i
+class BallControl_c :
+    public messaging::MessageRecipient_i,
+    public rigidbody::RigidBody_c
 {   
     BallState_e BallState;
-    rigidbody::RigidBody_c BallPhysics;
-    
+    double JumpTimer;
+
+
     void moveLeft()
     {
-        BallPhysics.add_force(rigidbody::Vector3D_s(-1, 0, 0));
+        addForce(rigidbody::Vector3D_s(-4, 0, 0));
     }
 
     void moveRight()
     {
-        BallPhysics.add_force(rigidbody::Vector3D_s(1, 0, 0));
+        addForce(rigidbody::Vector3D_s(4, 0, 0));
     }
 
     void jump()
     {
-        BallPhysics.add_force(rigidbody::Vector3D_s(0, 0, 1));
+        if (BallState == BallState_e::NORMAL)
+        {
+            JumpTimer = 0;
+            BallState = BallState_e::JUMPING;
+        }
+    }
+
+    void applyConstraints()
+    {
+        if (Position.X < 0)
+        {
+            Position.X = 0;
+        }
+        if (Position.X > Constants_s::MAP_WIDTH - 1)
+        {
+            Position.X = Constants_s::MAP_WIDTH - 1;
+        }
+        if (BallState != BallState_e::LOST && Position.Z <= 0)
+        {
+            Position.Z = 0;
+            Velocity.Z = -Velocity.Z * (1 - .5);
+        }
+        if (Position.Z == 0)
+        {
+            BallState = BallState_e::NORMAL;
+        }
+    }
+
+    void addForces(float delta_time)
+    {
+        if (BallState == BallState_e::JUMPING)
+        {
+            float jump_velocity = .15;
+            float jump_force = Mass * jump_velocity / delta_time;
+
+            // Add the jump force to the ball
+            //addForce(rigidbody::Vector3D_s(0, 0, jump_force));
+
+            Velocity.Z = Velocity.Y * 4;
+
+            JumpTimer += delta_time;
+            if (JumpTimer >= 0.1)
+            {
+                BallState = BallState_e::FALLING;
+            }
+        }
+
+        addForce(rigidbody::Vector3D_s(0, 0, -9.81));
+        
     }
 
     void handleActualTile(map::TileType_e tt)
     {
         std::cout << (int)tt << std::endl;
-        /*
+        
         switch (tt)
         {
-           
             case map::TileType_e::GAP:
                 BallState = BallState_e::LOST;
                 break;
-        }*/
+            case map::TileType_e::SPEEDUP:
+                Velocity.Y += 0.1;
+                break;
+            case map::TileType_e::SPEEDDOWN:
+                Velocity.Y = 1;
+                break;
+            case map::TileType_e::FINISH:
+            case map::TileType_e::NORMAL:
+                break;
+        }
+    }
+
+    void broadcastPosition()
+    {
+        // Calculate the horizontal speed of the
+        // ball by zeroing the Z component
+        rigidbody::Vector3D_s v = Velocity;
+        v.Z = 0.F;
+        float speed = v.magnitude();
+        msgBallPositionAndSpeed msg({  speed, {Position.X, Position.Y, Position.Z}});
+        PO->broadcastMessage<msgBallPositionAndSpeed>(msg);
     }
 
 public:
+    void updatePosition()
+    {
+        double dt = GameClock_c::get().elapsedTime();
+        addForces(dt);
+        update(dt);
+        applyConstraints();
+        broadcastPosition();
+    }
+
     void sendMessage(std::any m) override
     {
         if (isMessageType<msgKeyEvent>(m))
         {
-            msgKeyEvent e = std::any_cast<msgKeyEvent>(m);
-
-            switch(e)
+            if (BallState == BallState_e::NORMAL)
             {
-            case msgKeyEvent::JUMP:
-                jump();
-                break;
-            case msgKeyEvent::LEFT:
-                moveLeft();
-                break;
-            case msgKeyEvent::RIGHT:
-                moveRight();
-                break;
-            case msgKeyEvent::NONE:
-                break;
-            }
+                msgKeyEvent e = std::any_cast<msgKeyEvent>(m);
 
+                switch(e)
+                {
+                case msgKeyEvent::JUMP:
+                    jump();
+                    break;
+                case msgKeyEvent::LEFT:
+                    moveLeft();
+                    break;
+                case msgKeyEvent::RIGHT:
+                    moveRight();
+                    break;
+                case msgKeyEvent::NONE:
+                    break;
+                }
+            }
             updatePosition();
         }
         else if (isMessageType<msgActualTileType>(m))
@@ -85,27 +167,10 @@ public:
         }
     }
 
-    void updatePosition()
-    {
-        double dt = GameClock_c::get().elapsedTime();
-        BallPhysics.update(dt);
-
-        rigidbody::Vector3D_s pos = BallPhysics.position();
-        rigidbody::Vector3D_s v = BallPhysics.velocity();
-
-        // Calculate the horizontal speed of the
-        // ball by zeroing the Z component
-        v.Z = 0.F;
-        float speed = v.magnitude();
-
-        msgBallPositionAndSpeed msg({  speed, {pos.X, pos.Y, pos.Z}});
-        PO->broadcastMessage<msgBallPositionAndSpeed>(msg);
-    }
-
     BallControl_c(messaging::PostOffice_c* po) :
         MessageRecipient_i(po),
-       // BallState(BallState_e::ROLLING),
-        BallPhysics(rigidbody::Vector3D_s(2.5, .375, .375), rigidbody::Vector3D_s(0, 1, 0), 1)
+        BallState(BallState_e::NORMAL),
+        RigidBody_c(rigidbody::Vector3D_s(2, 0, 0), rigidbody::Vector3D_s(0, 1, 0), 2)
     {   
         // Manage subscriptions
         PO->subscribeRecipient<msgKeyEvent>(this);

@@ -30,7 +30,7 @@ public:
                 std::any_cast<msgBallPositionAndSpeed>(m);
             
             Pipeline.ModelConfig.Position = p.Position;
-            Pipeline.ModelConfig.Rotation.Angle -= 5;
+            Pipeline.ModelConfig.Rotation.Angle -= 1;
 
             PO->broadcastMessage<msgBallPosition>({p.Position});
           }
@@ -44,12 +44,12 @@ public:
     void setup()
     {
         Pipeline.setup();
-        Pipeline.ModelConfig.Position.X = 2.5;
-        Pipeline.ModelConfig.Position.Y = .375;
-        Pipeline.ModelConfig.Position.Z = .375;
-        Pipeline.ModelConfig.Scale.X = Constants_c::BALL_DIAMETER;
-        Pipeline.ModelConfig.Scale.Y = Constants_c::BALL_DIAMETER;
-        Pipeline.ModelConfig.Scale.Z = Constants_c::BALL_DIAMETER;
+        Pipeline.ModelConfig.Position.X = 2;
+        Pipeline.ModelConfig.Position.Y = 0;
+        Pipeline.ModelConfig.Position.Z = 0;
+        Pipeline.ModelConfig.Scale.X = Constants_s::BALL_DIAMETER;
+        Pipeline.ModelConfig.Scale.Y = Constants_s::BALL_DIAMETER;
+        Pipeline.ModelConfig.Scale.Z = Constants_s::BALL_DIAMETER;
         Pipeline.ModelColorConfig.Color.R = 1.F;
         Pipeline.ModelColorConfig.Color.G = 0.F;
         Pipeline.ModelColorConfig.Color.B = 0.F;
