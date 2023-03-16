@@ -1,0 +1,14 @@
+title Message sequence diagram
+
+GameWindow->BallControl:msgKeyEvent
+note over BallControl:Generate forces and calculate next ball position 
+BallControl->GameScene:msgBallPosition
+note over GameScene:Update camera from ball position and draw scene
+GameScene->Ball:msgRedrawTrigger
+GameScene->Map:msgRedrawTrigger
+BallControl->Map:msgBallPosition
+note over Map:Calculate actual tile type from ball position
+Map->BallControl:msgActualTileType
+note over BallControl:Calculate ball state from actual tile type
+BallControl-->GameControl:msgBallLost
+note over GameControl:Handle ball lost event
