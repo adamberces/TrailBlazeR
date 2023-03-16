@@ -41,7 +41,7 @@ public:
             msgBallPosition p = std::any_cast<msgBallPosition>(m);
             int x = static_cast<int>(::floor(p.Position.X));
             int y = static_cast<int>(::floor(p.Position.Y));
-            printf("%d %d %d\r", x, y, int(getTile(x, y)));
+            printf("%f %f %d %d %d\r", p.Position.X, p.Position.Y, x, y, int(getTile(x, y)));
             msgActualTileType tiletype({ getTile(x, y) });
             PO->broadcastMessage(tiletype);
         }
