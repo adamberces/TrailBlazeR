@@ -4,7 +4,7 @@ project(trailblazer)
 set(EXE_NAME trailblazer)
 
 set(CCFLAGS -g -std=c++2a -Wall) # -Wpedantic -Werror)
-set (LINK_LIBS glfw GL SOIL dl m pthread)
+set (LINK_LIBS glfw GL png dl m pthread)
 ###############################################################################
 
 # Set variables for the main folder structure

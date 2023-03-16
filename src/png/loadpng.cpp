@@ -1,5 +1,7 @@
-#include <png.h>
+#include <cstring>
 #include <stdexcept>
+
+#include <png.h>
 #include <png/loadpng.hpp>
 
 
