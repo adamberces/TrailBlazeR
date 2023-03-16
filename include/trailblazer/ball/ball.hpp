@@ -38,9 +38,6 @@ public:
 
     void draw()
     {
-                    printf("%f %f %f\n", Pipeline.ModelConfig.Position.X,
-            Pipeline.ModelConfig.Position.Y,
-            Pipeline.ModelConfig.Position.Z);
         Pipeline.run();
     }
 

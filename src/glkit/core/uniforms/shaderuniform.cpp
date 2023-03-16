@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <glkit/core/uniforms/shaderuniform.hpp>
 
 

@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <stdexcept>
 
 #include <glkit/core/globject.hpp>
 

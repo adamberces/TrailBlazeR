@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include <stdexcept>
 
 #include <glkit/core/globject.hpp>
 #include <glkit/core/buffers/arraybuffer.hpp>

@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <trailblazer/pipelines/renderpipeline.hpp>  
 
 

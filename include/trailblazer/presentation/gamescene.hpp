@@ -85,7 +85,7 @@ public:
         RenderPipeline_i::LightningColorConfig.Color.G = 0.45F;
         RenderPipeline_i::LightningColorConfig.Color.B = 0.57F;
 
-        Background = std::make_unique<pipelines::BackgroundPipeline_c>("./assets/bkg.jpg");
+        Background = std::make_unique<pipelines::BackgroundPipeline_c>("./assets/bkg.png");
         Background->setup();
     }
 
