@@ -16,14 +16,6 @@ enum class msgGameState
     GAME_OVER
 };
 
-enum class msgKeyEvent
-{
-    NONE,
-    LEFT,
-    RIGHT,
-    JUMP
-};
-
 enum class msgBallEvent
 {
     ROLLING,
@@ -32,15 +24,24 @@ enum class msgBallEvent
     FALLING_OFF
 };
 
-struct msgActualTypeType
+enum class msgKeyEvent
+{
+    NONE,
+    LEFT,
+    RIGHT,
+    JUMP
+};
+
+struct msgActualTileType
 {
     map::TileType_e Type;
 };
 
-// Create a strong type for wrapping the Ball position
-// so it will have an unique signature when dealing with 
-// message types, if we may want to use another point3d_t
-// in the future...
+struct msgBallPositionAndSpeed
+{
+    double Speed;
+    glkit::functors::point3d_t Position;
+};
 
 struct msgBallPosition
 {

@@ -44,7 +44,7 @@ public:
     GameWindow_c(messaging::PostOffice_c* po) :
         GLWindow_i(1024, 768, "TrailBlazeR"),
         MessageRecipient_i(po)
-        {}
+    {}
 };
 
 } // namespace trailblazer::presentation

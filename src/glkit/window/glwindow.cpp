@@ -30,7 +30,7 @@ bool GLWindow_i::isPressed(int key) const
     return ret;
 }
 
-GLWindow_i::WindowState_e GLWindow_i::updateWindow(Scene_i* scene)
+GLWindow_i::WindowState_e GLWindow_i::updateWindow()
 {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClearDepth(1.0f);
@@ -38,8 +38,6 @@ GLWindow_i::WindowState_e GLWindow_i::updateWindow(Scene_i* scene)
 
     handleESC();
     handleKeypressEvents();
-
-    scene->draw();
 
     glfwSwapBuffers(Window);
     glfwPollEvents();

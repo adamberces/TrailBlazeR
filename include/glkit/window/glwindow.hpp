@@ -2,7 +2,6 @@
 
 #include <string>
 #include <glkit/core/ogl_headers.hpp>
-#include <glkit/window/scene.hpp>
 
 
 namespace glkit::window
@@ -28,7 +27,7 @@ public:
         CLOSING
     };
 
-    WindowState_e updateWindow(Scene_i*);
+    WindowState_e updateWindow();
 
     GLWindow_i(int width, int height, std::string title);
 

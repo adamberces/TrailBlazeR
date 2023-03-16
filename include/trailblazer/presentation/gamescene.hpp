@@ -1,7 +1,5 @@
 #pragma once
 
-#include <glkit/window/scene.hpp>
-
 #include <messaging/postoffice.hpp>
 #include <messaging/recipient.hpp>
 #include <trailblazer/game/messagetypes.hpp>
@@ -15,9 +13,7 @@ namespace trailblazer::presentation
 
 using pipelines::RenderPipeline_i;
 
-class GameScene_c :
-    public messaging::MessageRecipient_i,
-    public glkit::window::Scene_i
+class GameScene_c : public messaging::MessageRecipient_i
 {
     std::unique_ptr<pipelines::BackgroundPipeline_c> Background;
 
@@ -54,6 +50,7 @@ class GameScene_c :
             msgBallPosition p =
                 std::any_cast<msgBallPosition>(m);
             updateGlobals(p.Position);
+            drawScene();
         }
     }
 
@@ -61,8 +58,12 @@ class GameScene_c :
 public:
     // Redraw the scene
 
-    void draw()
+    void drawScene()
     {
+        printf("cam %f %f %f\n", RenderPipeline_i::LightningPositionConfig.Position.X,
+            RenderPipeline_i::LightningPositionConfig.Position.Y,
+            RenderPipeline_i::LightningPositionConfig.Position.Z); 
+
         // Redraw scene
         Background->run();
         PO->broadcastMessage<msgRedrawTrigger>({});
