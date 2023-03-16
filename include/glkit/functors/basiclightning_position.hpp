@@ -12,7 +12,7 @@ UNIFORM_ARGS(LightningPositionConfig_s)
     point3d_t Position;
 };
 
-auto BasicLightningPosition_f =
+static auto BasicLightningPosition_f =
     [](core::uniforms::uniform_args_ptr_t ptr) -> core::uniforms::uniform_types_t
 {
     LightningPositionConfig_s* cfg = dynamic_cast<LightningPositionConfig_s*>(ptr);

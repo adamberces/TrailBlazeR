@@ -12,7 +12,7 @@ UNIFORM_ARGS(LightningColorConfig_s)
     rgb_t Color;
 };
 
-auto BasicLightningColor_f =
+static auto BasicLightningColor_f =
     [](core::uniforms::uniform_args_ptr_t ptr) -> core::uniforms::uniform_types_t
 {
     LightningColorConfig_s* cfg = dynamic_cast<LightningColorConfig_s*>(ptr);

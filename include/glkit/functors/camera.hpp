@@ -13,7 +13,7 @@ UNIFORM_ARGS(CameraConfig_s)
     point3d_t Direction;
 };
 
-auto Camera_f =
+static auto Camera_f =
     [](core::uniforms::uniform_args_ptr_t ptr) -> core::uniforms::uniform_types_t
 {
     CameraConfig_s* cfg = dynamic_cast<CameraConfig_s*>(ptr);

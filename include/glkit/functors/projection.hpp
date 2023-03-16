@@ -17,7 +17,7 @@ UNIFORM_ARGS(ProjectionConfig_s)
     float FarPlane;
 };
 
-auto PerspectiveProjection_f =
+static auto PerspectiveProjection_f =
     [](core::uniforms::uniform_args_ptr_t ptr) -> core::uniforms::uniform_types_t
 {
     ProjectionConfig_s* cfg = dynamic_cast<ProjectionConfig_s*>(ptr);
