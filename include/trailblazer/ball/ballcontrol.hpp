@@ -17,7 +17,7 @@ enum class BallState_e
 {
     NORMAL,
     JUMPING,
-    FALLING,
+    IN_AIR,
     LOST
 };
 
@@ -32,12 +32,12 @@ class BallControl_c :
 
     void moveLeft()
     {
-        addForce(rigidbody::Vector3D_s(-4, 0, 0));
+        addForce(rigidbody::Vector3D_s(-5, 0, 0));
     }
 
     void moveRight()
     {
-        addForce(rigidbody::Vector3D_s(4, 0, 0));
+        addForce(rigidbody::Vector3D_s(5, 0, 0));
     }
 
     void jump()
@@ -55,18 +55,28 @@ class BallControl_c :
         {
             Position.X = 0;
         }
-        if (Position.X > Constants_s::MAP_WIDTH - 1)
+        else if (Position.X > Constants_s::MAP_WIDTH - 1)
         {
             Position.X = Constants_s::MAP_WIDTH - 1;
         }
+
         if (BallState != BallState_e::LOST && Position.Z <= 0)
         {
             Position.Z = 0;
             Velocity.Z = -Velocity.Z * (1 - .5);
         }
-        if (Position.Z == 0)
+        
+        printf("Z %f\n", Position.Z);
+        if (BallState != BallState_e::LOST)
         {
-            BallState = BallState_e::NORMAL;
+            if (Position.Z == 0)
+            {
+                BallState = BallState_e::NORMAL;
+            }
+            else
+            {
+                BallState = BallState_e::IN_AIR;
+            }
         }
     }
 
@@ -74,18 +84,12 @@ class BallControl_c :
     {
         if (BallState == BallState_e::JUMPING)
         {
-            float jump_velocity = .15;
-            float jump_force = Mass * jump_velocity / delta_time;
-
-            // Add the jump force to the ball
-            //addForce(rigidbody::Vector3D_s(0, 0, jump_force));
-
-            Velocity.Z = Velocity.Y * 4;
+            Velocity.Z = 4;
 
             JumpTimer += delta_time;
             if (JumpTimer >= 0.1)
             {
-                BallState = BallState_e::FALLING;
+                BallState = BallState_e::IN_AIR;
             }
         }
 
@@ -100,13 +104,22 @@ class BallControl_c :
         switch (tt)
         {
             case map::TileType_e::GAP:
-                //BallState = BallState_e::LOST;
+                if (BallState == BallState_e::NORMAL)
+                {
+                    BallState = BallState_e::LOST;
+                }
                 break;
             case map::TileType_e::SPEEDUP:
-                Velocity.Y += 0.1;
+                if (BallState == BallState_e::NORMAL)
+                {
+                    Velocity.Y += 0.1;
+                }
                 break;
             case map::TileType_e::SPEEDDOWN:
-                Velocity.Y = 1;
+                if (BallState == BallState_e::NORMAL)
+                {
+                    Velocity.Y = 1;
+                }
                 break;
             case map::TileType_e::FINISH:
             case map::TileType_e::NORMAL:
@@ -122,6 +135,7 @@ class BallControl_c :
         v.Z = 0.F;
         float speed = v.magnitude();
         float dist = speed * delta_time;
+        
         msgBallPositionAndDistance msg({ dist, {Position.X, Position.Y, Position.Z}});
         PO->broadcastMessage<msgBallPositionAndDistance>(msg);
     }

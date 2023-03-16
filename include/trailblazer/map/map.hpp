@@ -39,9 +39,8 @@ public:
             // can be actually found and return it's tile type
             // for collision detection in the game control
             msgBallPosition p = std::any_cast<msgBallPosition>(m);
-            int x = static_cast<int>(::floor(p.Position.X));
-            int y = static_cast<int>(::floor(p.Position.Y));
-            printf("%f %f %d %d %d\r", p.Position.X, p.Position.Y, x, y, int(getTile(x, y)));
+            int x = static_cast<int>(::floor(p.Position.X + .5));
+            int y = static_cast<int>(::floor(p.Position.Y + 0.75));
             msgActualTileType tiletype({ getTile(x, y) });
             PO->broadcastMessage(tiletype);
         }
@@ -54,7 +53,7 @@ public:
         // Setup initial position
         Pipeline.ModelConfig.Position.X = -1.F;
         Pipeline.ModelConfig.Position.Y =  0.F;
-        Pipeline.ModelConfig.Position.Z = -0.25F;
+        Pipeline.ModelConfig.Position.Z =  -.25F - .1F;
 
         // We will never render the whole map for each frame,
         // so we shall discard some rows both from the beginning
