@@ -16,7 +16,7 @@ def generate_map(num_lines):
         line = line.replace("22", "29").replace("99", "96")
         zeros = ""
         for j in range(5):
-            zeros += "0" if random.random() < 0.1 else ""
+            zeros += "0" if random.random() < 0.2 else ""
         line = zeros + line + zeros[::-1]
         map += line
         
@@ -25,7 +25,7 @@ def generate_map(num_lines):
         line = line.replace("22", "29").replace("99", "96")
         zeros = ""
         for j in range(5):
-            zeros += "0" if random.random() < 0.1 else ""
+            zeros += "0" if random.random() < 0.2 else ""
         line = zeros + line + zeros[::-1]
         map += line 
     return map

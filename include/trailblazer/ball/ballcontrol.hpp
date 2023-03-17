@@ -31,14 +31,42 @@ class BallControl_c :
 
     void moveLeft()
     {
-        addForce(rigidbody::Vector3D_s(-10, 0, 0));
+        addForce(rigidbody::Vector3D_s(-10.F, 0.F, 0.F));
     }
 
     void moveRight()
     {
-        addForce(rigidbody::Vector3D_s(10, 0, 0));
+        addForce(rigidbody::Vector3D_s(10.F, 0.F, 0.F));
     }
 
+    void addFriction(float rigidbody::Vector3D_s::*component, float coefficient)
+    {
+        // Get the direction of the force
+        rigidbody::Vector3D_s v = Velocity.normalize();
+        float velocityComponent = v.*component;
+        constexpr float normalForce = Constants_s::BALL_MASS * Constants_s::GRAVITY;
+        float frictionMagnitude = velocityComponent * normalForce * -1 * coefficient;
+
+        rigidbody::Vector3D_s frictionForce(0.F, 0.F, 0.F);
+        frictionForce.*component = frictionMagnitude;
+        addForce(frictionForce);
+    }
+
+    void addDrag()
+    {
+        float dragCoefficient = 0.47F;
+        float airDensity = 1.29F;
+        constexpr float crossectionArea = Constants_s::BALL_DIAMETER * Constants_s::BALL_DIAMETER * 3.14159F;
+        float dragMagnitude = -0.5F * dragCoefficient * airDensity * crossectionArea * (Velocity.Z * Velocity.Z);
+        if (Velocity.Z < 0.F)
+        {
+            dragMagnitude *= -1;
+        }
+        rigidbody::Vector3D_s dragForce(0.F, 0.F, dragMagnitude);
+        addForce(dragForce);
+    }
+        
+    
     void jump()
     {
         if (BallState == BallState_e::NORMAL)
@@ -47,27 +75,6 @@ class BallControl_c :
             BallState = BallState_e::JUMPING;
         }
     }
-
-    float calculateFrictionMagnitude(float rigidbody::Vector3D_s::*component, float coefficient)
-    {
-        // Get the direction of the force
-        rigidbody::Vector3D_s v = Velocity.normalize();
-        float velocityComponent = v.*component;
-        constexpr float normalForce = Constants_s::BALL_MASS * Constants_s::GRAVITY;
-        float ret = velocityComponent * normalForce * -1 * coefficient;
-        printf("%f\n", ret);
-        return ret;
-    }
-
-    rigidbody::Vector3D_s calculateDragForce()
-    {
-        float dragCoefficient = 0.47;
-        float airDensity = 1.29;
-        constexpr float crossectionArea = Constants_s::BALL_DIAMETER * Constants_s::BALL_DIAMETER * 3.14159F;
-        float dragForce = -0.5F * dragCoefficient * airDensity * crossectionArea * (Velocity.Z * Velocity.Z);
-        return rigidbody::Vector3D_s(0, 0, dragForce);
-    }
-        
 
 
     void applyConstraints()
@@ -86,29 +93,15 @@ class BallControl_c :
         if (BallState != BallState_e::LOST && Position.Z <= 0)
         {
             Position.Z = 0;
-            Velocity.Z = -Velocity.Z;// * .5;
-            addForce(rigidbody::Vector3D_s(0, 0, calculateFrictionMagnitude(&rigidbody::Vector3D_s::Z, 50.F)));
-        }
-        
-        if (BallState != BallState_e::LOST)
-        {
-            if (Position.Z == 0)
-            {
-                BallState = BallState_e::NORMAL;
-            }
-            else
-            {
-                BallState = BallState_e::IN_AIR;
-            }
+            Velocity.Z = -Velocity.Z;
+            addFriction(&rigidbody::Vector3D_s::Z, 5.F);
         }
 
-        //printf("Z %f %d\n", Position.Z, (int)BallState);
+        printf("Z %f v%f %d\n", Position.Z, Velocity.Z, (int)BallState);
     }
 
     void addForces(float delta_time)
     {
-        addForce(rigidbody::Vector3D_s(0, 0, -(Constants_s::GRAVITY)));
-
         if (BallState == BallState_e::JUMPING)
         {
             Velocity.Z = 4;
@@ -121,14 +114,15 @@ class BallControl_c :
         }
         if (BallState != BallState_e::NORMAL)
         {
+            addForce(rigidbody::Vector3D_s(0, 0, -(Constants_s::GRAVITY)));
             if (Velocity.Z > 0)
             {
-                addForce(calculateDragForce());
+                addDrag();
             }
         }
         else
         {
-            addForce(rigidbody::Vector3D_s(calculateFrictionMagnitude(&rigidbody::Vector3D_s::X, .2F), 0, 0));
+            addFriction(&rigidbody::Vector3D_s::X, .2F);
         }
 
     }
@@ -138,8 +132,10 @@ class BallControl_c :
         switch (tt)
         {
             case map::TileType_e::GAP:
-                if (BallState == BallState_e::NORMAL)
+                if (BallState == BallState_e::NORMAL &&
+                    Velocity.Z <= 0.1F)
                 {
+                    printf("lost\n");
                     BallState = BallState_e::LOST;
                 }
                 break;
@@ -158,6 +154,18 @@ class BallControl_c :
             case map::TileType_e::FINISH:
             case map::TileType_e::NORMAL:
                 break;
+        }
+        
+        if (BallState != BallState_e::LOST)
+        {
+            if (Position.Z == 0)
+            {
+                BallState = BallState_e::NORMAL;
+            }
+            else
+            {
+                BallState = BallState_e::IN_AIR;
+            }
         }
     }
 
