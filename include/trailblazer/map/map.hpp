@@ -39,8 +39,8 @@ public:
             // can be actually found and return it's tile type
             // for collision detection in the game control
             msgBallPosition p = std::any_cast<msgBallPosition>(m);
-            int x = static_cast<int>(::floor(p.Position.X + .5));
-            int y = static_cast<int>(::floor(p.Position.Y + 0.75));
+            int x = static_cast<int>(::floor(p.Position.X + 0.5F));
+            int y = static_cast<int>(::floor(p.Position.Y + 0.5F));
             msgActualTileType tiletype({ getTile(x, y) });
             PO->broadcastMessage(tiletype);
         }
