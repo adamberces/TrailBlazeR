@@ -22,11 +22,13 @@ public:
         msgKeyEvent e =
            msgKeyEvent::NONE;
 
-        if (isPressed(GLFW_KEY_A))
+        if (isPressed(GLFW_KEY_A) ||
+            isPressed(GLFW_KEY_LEFT))
         {
             e = msgKeyEvent::LEFT;
         }
-        else if (isPressed(GLFW_KEY_D))
+        else if (isPressed(GLFW_KEY_D) ||
+                 isPressed(GLFW_KEY_RIGHT))
         {
             e = msgKeyEvent::RIGHT;
         }
