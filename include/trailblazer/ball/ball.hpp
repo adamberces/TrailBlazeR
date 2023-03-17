@@ -34,7 +34,7 @@ public:
             // Calculate the angular rotation for 1 meters of distance
             // taken by the ball on the ground from the circumference
             // of a circle got from the diameter of the ball
-            constexpr float DegreePerMeter = 360.F / (Constants_s::BALL_DIAMETER * 3.14159);
+            constexpr float DegreePerMeter = 360.F / (Constants_s::BALL_DIAMETER * 3.14159F);
             
             // Calculate the actual extent of rotation from the actual distance
             // taken by the ball since the last frame

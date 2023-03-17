@@ -53,15 +53,19 @@ public:
         return std::sqrt(X * X + Y * Y + Z * Z);
     }
 
-    void normalize()
+    Vector3D_s normalize() const
     {
+        Vector3D_s ret = *this;
+
         float len = magnitude();
         if (len > 0.F)
         {
-            X /= len;
-            Y /= len;
-            Z /= len;
+            ret.X /= len;
+            ret.Y /= len;
+            ret.Z /= len;
         }
+
+        return ret;
     }
 };
 

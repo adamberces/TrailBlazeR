@@ -21,7 +21,6 @@ enum class BallState_e
     LOST
 };
 
-
 class BallControl_c :
     public messaging::MessageRecipient_i,
     public rigidbody::RigidBody_c
@@ -32,12 +31,12 @@ class BallControl_c :
 
     void moveLeft()
     {
-        addForce(rigidbody::Vector3D_s(-5, 0, 0));
+        addForce(rigidbody::Vector3D_s(-10, 0, 0));
     }
 
     void moveRight()
     {
-        addForce(rigidbody::Vector3D_s(5, 0, 0));
+        addForce(rigidbody::Vector3D_s(10, 0, 0));
     }
 
     void jump()
@@ -49,24 +48,48 @@ class BallControl_c :
         }
     }
 
+    float calculateFrictionMagnitude(float rigidbody::Vector3D_s::*component, float coefficient)
+    {
+        // Get the direction of the force
+        rigidbody::Vector3D_s v = Velocity.normalize();
+        float velocityComponent = v.*component;
+        constexpr float normalForce = Constants_s::BALL_MASS * Constants_s::GRAVITY;
+        float ret = velocityComponent * normalForce * -1 * coefficient;
+        printf("%f\n", ret);
+        return ret;
+    }
+
+    rigidbody::Vector3D_s calculateDragForce()
+    {
+        float dragCoefficient = 0.47;
+        float airDensity = 1.29;
+        constexpr float crossectionArea = Constants_s::BALL_DIAMETER * Constants_s::BALL_DIAMETER * 3.14159F;
+        float dragForce = -0.5F * dragCoefficient * airDensity * crossectionArea * (Velocity.Z * Velocity.Z);
+        return rigidbody::Vector3D_s(0, 0, dragForce);
+    }
+        
+
+
     void applyConstraints()
     {
         if (Position.X < 0)
         {
             Position.X = 0;
+            Velocity.X = 0;
         }
         else if (Position.X > Constants_s::MAP_WIDTH - 1)
         {
             Position.X = Constants_s::MAP_WIDTH - 1;
+            Velocity.X = 0;
         }
 
         if (BallState != BallState_e::LOST && Position.Z <= 0)
         {
             Position.Z = 0;
-            Velocity.Z = -Velocity.Z * (1 - .5);
+            Velocity.Z = -Velocity.Z;// * .5;
+            addForce(rigidbody::Vector3D_s(0, 0, calculateFrictionMagnitude(&rigidbody::Vector3D_s::Z, 50.F)));
         }
         
-        printf("Z %f\n", Position.Z);
         if (BallState != BallState_e::LOST)
         {
             if (Position.Z == 0)
@@ -78,10 +101,14 @@ class BallControl_c :
                 BallState = BallState_e::IN_AIR;
             }
         }
+
+        //printf("Z %f %d\n", Position.Z, (int)BallState);
     }
 
     void addForces(float delta_time)
     {
+        addForce(rigidbody::Vector3D_s(0, 0, -(Constants_s::GRAVITY)));
+
         if (BallState == BallState_e::JUMPING)
         {
             Velocity.Z = 4;
@@ -92,15 +119,22 @@ class BallControl_c :
                 BallState = BallState_e::IN_AIR;
             }
         }
+        if (BallState != BallState_e::NORMAL)
+        {
+            if (Velocity.Z > 0)
+            {
+                addForce(calculateDragForce());
+            }
+        }
+        else
+        {
+            addForce(rigidbody::Vector3D_s(calculateFrictionMagnitude(&rigidbody::Vector3D_s::X, .2F), 0, 0));
+        }
 
-        addForce(rigidbody::Vector3D_s(0, 0, -9.81));
-        
     }
 
     void handleActualTile(map::TileType_e tt)
     {
-        std::cout << (int)tt << std::endl;
-        
         switch (tt)
         {
             case map::TileType_e::GAP:
@@ -185,7 +219,7 @@ public:
     BallControl_c(messaging::PostOffice_c* po) :
         MessageRecipient_i(po),
         BallState(BallState_e::NORMAL),
-        RigidBody_c(rigidbody::Vector3D_s(2, 0, 0), rigidbody::Vector3D_s(0, 1, 0), 2)
+        RigidBody_c(rigidbody::Vector3D_s(2, 0, 0), rigidbody::Vector3D_s(0, 1, 0), Constants_s::BALL_MASS)
     {   
         // Manage subscriptions
         PO->subscribeRecipient<msgKeyEvent>(this);
