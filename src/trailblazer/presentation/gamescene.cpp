@@ -47,6 +47,7 @@ void GameScene_c::drawScene()
 {
     Background->run();
     PO->broadcastMessage<msgRedrawTrigger>({});
+    TestText->run();
 }
 
 void GameScene_c::setup()
@@ -65,6 +66,8 @@ void GameScene_c::setup()
 
     Background = std::make_unique<pipelines::BackgroundPipeline_c>("./assets/bkg.png");
     Background->setup();
+    TestText->setup();
+
 }
 
 GameScene_c::GameScene_c(messaging::PostOffice_c* po) :

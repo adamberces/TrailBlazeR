@@ -6,7 +6,7 @@
 
 #include <trailblazer/pipelines/renderpipeline.hpp>
 #include <trailblazer/pipelines/pipeline_bkg.hpp>
-
+#include <trailblazer/pipelines/pipeline_text.hpp>
 
 namespace trailblazer::presentation
 {
@@ -25,6 +25,8 @@ using pipelines::RenderPipeline_i;
 
 class GameScene_c : public messaging::MessageRecipient_i
 {
+    std::unique_ptr<pipelines::TextPipeline_c> TestText;
+
     // The background drawer pipeline object is owned by the scene
     // the rest of the objects (ball, tiles) are independent
     // and redrawn on the msgRedrawTrigger message
