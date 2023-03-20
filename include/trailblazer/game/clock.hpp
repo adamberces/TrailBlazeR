@@ -2,6 +2,7 @@
 
 #include <chrono>
 
+#include <stdio.h>
 
 namespace trailblazer
 {
@@ -14,10 +15,11 @@ class GameClock_c
 {
 
     static time_point<steady_clock> LastTimePoint;
+    static float ElapsedTime;
 
     GameClock_c()
     {
-        elapsedTime();
+        tick();
     }
 
 public:
@@ -26,14 +28,20 @@ public:
         return gameClock;
     }
 
-    static double elapsedTime()
+    static inline float elapsedTime()
+    {
+        printf("t %f\n", ElapsedTime);
+        return ElapsedTime;
+    }
+
+    static inline void tick()
     {
         auto now = std::chrono::steady_clock::now();
-        duration<double> delta =
-            std::chrono::duration_cast<duration<double>>(now - LastTimePoint);
+        duration<float> delta =
+            std::chrono::duration_cast<duration<float>>(now - LastTimePoint);
         LastTimePoint = now;
 
-        return delta.count();
+        ElapsedTime = delta.count();
     }
 };
 

@@ -18,16 +18,17 @@ enum class BallState_e
     NORMAL,
     JUMPING,
     IN_AIR,
-    LOST
+    LOST,
+    LEVEL_WON
 };
 
 class BallControl_c :
     public messaging::MessageRecipient_i,
     public rigidbody::RigidBody_c
 {   
+    map::TileType_e LastTileType;
     BallState_e BallState;
     double JumpTimer;
-
 
     void moveLeft()
     {
@@ -64,8 +65,7 @@ class BallControl_c :
         }
         rigidbody::Vector3D_s dragForce(0.F, 0.F, dragMagnitude);
         addForce(dragForce);
-    }
-        
+    }      
     
     void jump()
     {
@@ -90,14 +90,24 @@ class BallControl_c :
             Velocity.X = 0;
         }
 
-        if (BallState != BallState_e::LOST && Position.Z <= 0)
+        // Add bouncing to the ball when falling
+        // (except when the level is won when we want to stop
+        // the ball as soon as possible)
+        if (BallState != BallState_e::LOST &&
+            Position.Z <= 0)
         {
             Position.Z = 0;
-            Velocity.Z = -Velocity.Z;
-            addFriction(&rigidbody::Vector3D_s::Z, 5.F);
+
+            if (BallState != BallState_e::LEVEL_WON &&
+                LastTileType != map::TileType_e::GAP)
+            {
+                printf("bounce back\n");
+                Velocity.Z = -Velocity.Z;
+                addFriction(&rigidbody::Vector3D_s::Z, 10.F);
+            }
         }
 
-        printf("Z %f v%f %d\n", Position.Z, Velocity.Z, (int)BallState);
+        printf("Z %f v%f state %d ", Position.Z, Velocity.Z, (int)BallState);
     }
 
     void addForces(float delta_time)
@@ -112,6 +122,7 @@ class BallControl_c :
                 BallState = BallState_e::IN_AIR;
             }
         }
+
         if (BallState != BallState_e::NORMAL)
         {
             addForce(rigidbody::Vector3D_s(0, 0, -(Constants_s::GRAVITY)));
@@ -125,18 +136,30 @@ class BallControl_c :
             addFriction(&rigidbody::Vector3D_s::X, .2F);
         }
 
+        if (BallState == BallState_e::LEVEL_WON)
+        {
+            if (Position.Z <= 0)
+            {
+                Position.Z = 0;
+            }
+            addFriction(&rigidbody::Vector3D_s::X, .5F);
+            addFriction(&rigidbody::Vector3D_s::Y, .5F);
+        }
+
     }
 
-    void handleActualTile(map::TileType_e tt)
+    void handleActualTile()
     {
-        switch (tt)
+        printf("tile %d \n", (int)LastTileType);
+        switch (LastTileType)
         {
             case map::TileType_e::GAP:
                 if (BallState == BallState_e::NORMAL &&
-                    Velocity.Z <= 0.1F)
+                    Position.Z <= 0.2F)
                 {
                     printf("lost\n");
                     BallState = BallState_e::LOST;
+                    PO->broadcastMessage<msgGameStateChange>(msgGameStateChange::BALL_LOST);
                 }
                 break;
             case map::TileType_e::SPEEDUP:
@@ -152,11 +175,19 @@ class BallControl_c :
                 }
                 break;
             case map::TileType_e::FINISH:
+                if (BallState != BallState_e::LEVEL_WON)
+                {
+                    BallState = BallState_e::LEVEL_WON;
+                    PO->broadcastMessage<msgGameStateChange>(msgGameStateChange::LEVEL_WON);
+                }
+                 break;
             case map::TileType_e::NORMAL:
                 break;
         }
         
-        if (BallState != BallState_e::LOST)
+        if (BallState != BallState_e::JUMPING &&
+            BallState != BallState_e::LOST &&
+            BallState != BallState_e::LEVEL_WON)
         {
             if (Position.Z == 0)
             {
@@ -186,9 +217,12 @@ public:
     void updatePosition()
     {
         double dt = GameClock_c::get().elapsedTime();
+        
+        handleActualTile();
         addForces(dt);
         update(dt);
         applyConstraints();
+        
         broadcastPosition(dt);
     }
 
@@ -220,14 +254,15 @@ public:
         else if (isMessageType<msgActualTileType>(m))
         {
             msgActualTileType tt = std::any_cast<msgActualTileType>(m);
-            handleActualTile(tt.Type);
+            LastTileType = tt.Type;
         }
     }
 
     BallControl_c(messaging::PostOffice_c* po) :
         MessageRecipient_i(po),
-        BallState(BallState_e::NORMAL),
-        RigidBody_c(rigidbody::Vector3D_s(2, 0, 0), rigidbody::Vector3D_s(0, 1, 0), Constants_s::BALL_MASS)
+        LastTileType(map::TileType_e::NORMAL),
+        BallState(BallState_e::IN_AIR),
+        RigidBody_c(rigidbody::Vector3D_s(2, 0, 2), rigidbody::Vector3D_s(0, 1, 0), Constants_s::BALL_MASS)
     {   
         // Manage subscriptions
         PO->subscribeRecipient<msgKeyEvent>(this);
