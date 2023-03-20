@@ -30,7 +30,6 @@ public:
 
     static inline float elapsedTime()
     {
-        printf("t %f\n", ElapsedTime);
         return ElapsedTime;
     }
 
