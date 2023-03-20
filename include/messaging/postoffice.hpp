@@ -22,6 +22,11 @@ public:
         Recipients[ std::type_index(typeid(MessageType)) ].push_back(r);
     }
 
+    void unsubscribeAll()
+    {
+        Recipients.clear();
+    }
+
     template <typename MessageType>
     void broadcastMessage(MessageType message)
     {
