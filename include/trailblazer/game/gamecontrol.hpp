@@ -10,54 +10,75 @@ namespace trailblazer
 
 enum class GameState_e
 {
-    MAIN_MENU,
-    LEVEL_START,
-    LEVEL_RUNNING,
-    LEVEL_END,
-    GAME_END,
+    NORMAL,
+    BALL_LOST,
+    LEVEL_WON,
     GAME_OVER
 };
-
-enum class BallState_e
-{
-    NORMAL,
-    JUMPING,
-    FALLING,
-    FALLING_OFF
-};
-
 
 
 class GameControl_c : public messaging::MessageRecipient_i
 {   
     GameState_e GameState;
-    BallState_e BallState = ROLLING;
 
-    void handleActualTile(map::TileType_e tt)
-    {
-        switch (tt)
-        {
-            case map::TileType_e::GAP:
+    int Lives;
 
-        }
-    }
+    // Counter to measure the the short time before switching
+    // or restarting scene after the ball is lost or the level is won
+    float WaitTimer;
 
 public:
+    GameState_e getGameState()
+    {
+        if (GameState == GameState_e::BALL_LOST ||
+            GameState == GameState_e::LEVEL_WON)
+        {
+            WaitTimer += GameClock_c::get().elapsedTime();
+            if (WaitTimer >= Constants_s::WAIT_TIME)
+            {
+                WaitTimer = 0;
+                if (GameState == GameState_e::BALL_LOST)
+                {
+                    Lives--;
+                    if (Lives == 0)
+                    {
+                        printf("Live lost\n");
+                        GameState = GameState_e::GAME_OVER;
+                    }
+                }
+                return GameState;
+            }
+        }
+
+        return GameState_e::NORMAL;
+    }
+
     void sendMessage(std::any m) override
     {
-        if (isMessageType<msgActualTileType>(m))
+        if (isMessageType<msgGameStateChange>(m))
         {
-            msgActualTileType tt = std::any_cast<msgActualTileType>(m);
-            handleActualTile(tt);
+            msgGameStateChange s = std::any_cast<msgGameStateChange>(m);
+            
+            switch(s)
+            {
+                case msgGameStateChange::BALL_LOST:
+                    GameState = GameState_e::BALL_LOST;
+                    break;
+                case msgGameStateChange::LEVEL_WON:
+                    GameState = GameState_e::LEVEL_WON;
+                    break;
+            }
         }
     }
 
     GameControl_c(messaging::PostOffice_c* po) :
-        MessageRecipient_i(po)
+        MessageRecipient_i(po),
+        GameState(GameState_e::NORMAL),
+        Lives(Constants_s::INITIAL_LIVES),
+        WaitTimer(0.F)
     {   
         // Manage subscriptions
-        PO->subscribeRecipient<msgActualTileType>(this);
-        PO->subscribeRecipient<msgKeyEvent>(this);
+        PO->subscribeRecipient<msgGameStateChange>(this);
     }
 
 };

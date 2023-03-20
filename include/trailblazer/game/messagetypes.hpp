@@ -3,17 +3,16 @@
 #include <glkit/functors/functor_types.hpp>
 #include <trailblazer/map/tile.hpp>
 
+#include <trailblazer/game/clock.hpp>
+#include <trailblazer/game/constants.hpp>
+
 namespace trailblazer
 {
 
-enum class msgGameState
+enum class msgGameStateChange
 {
-    MAIN_MENU,
-    LEVEL_START,
-    LEVEL_RUNNING,
-    LEVEL_END,
-    GAME_END,
-    GAME_OVER
+    BALL_LOST,
+    LEVEL_WON
 };
 
 enum class msgBallEvent
