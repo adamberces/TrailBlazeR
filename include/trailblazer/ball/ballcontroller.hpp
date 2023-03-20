@@ -14,7 +14,12 @@ namespace trailblazer::ball
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// 
+// Represents the current state of the ball:
+// - moving on ground (for convience, the ground level is defined as Z = 0)
+// - the force to perform a jump is actively maintained
+// - the ball is in air (because of the remaining velocity from the jumping force, eg. bouncing)
+// - ball felling down in a gap and level will restart soon
+// - the finish line is reached by the ball and next level will start soon
 
 enum class BallState_e
 {
