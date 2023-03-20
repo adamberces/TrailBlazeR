@@ -4,6 +4,9 @@ namespace trailblazer
 {
 struct Constants_s
 {
+    static constexpr int INITIAL_LIVES = 3;
+    static constexpr float WAIT_TIME = 3.F; //sec
+
     static constexpr float BALL_DIAMETER = .25F;
     static constexpr float BALL_MASS = 2.F;
 
