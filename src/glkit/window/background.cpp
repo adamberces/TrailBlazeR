@@ -1,6 +1,6 @@
 #include <stdexcept>
 #include <glkit/window/background.hpp>
-#include <png/loadpng.hpp>
+#include <png/pngimage.hpp>
 
 namespace glkit::window
 {

@@ -2,7 +2,7 @@
 #include <stdexcept>
 
 #include <png.h>
-#include <png/loadpng.hpp>
+#include <png/pngimage.hpp>
 
 
 namespace png
