@@ -1,37 +1,36 @@
 import random
 
+prefix = "1616116161161611616116161161611616116161"
+end = "F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8"
+
 def generate_line():
-    digits = "1296"
-    line = ""
-    for i in range(5):
-        d1 = random.choice(digits)
-        d2 = random.choice(digits)
-        line += d1 + d2 + d1 + d2
-    return line
+    #patterns = [ "1616161616161616161616161616161616161616", "99999", "3636363636363636363636363636363636363636", "9191919191919191919191919191919191919191" ]
+    patterns = ["49494949494949494949"]
+    return random.choice(patterns)
 
 def generate_map(num_lines):
-    map = ""
-    for i in range(num_lines//2):
+    map = prefix
+   #map=""
+    for i in range(num_lines):
         line = generate_line()
-        line = line.replace("22", "29").replace("99", "96")
-        zeros = ""
-        for j in range(5):
-            zeros += "0" if random.random() < 0.2 else ""
-        line = zeros + line + zeros[::-1]
-        map += line
         
-    for i in range(num_lines//2, num_lines):
-        line = generate_line()
-        line = line.replace("22", "29").replace("99", "96")
-        zeros = ""
-        for j in range(5):
-            zeros += "0" if random.random() < 0.2 else ""
-        line = zeros + line + zeros[::-1]
-        map += line 
+        line = list(line)
+
+        for i in range(len(line)):
+            letter = line[i]
+            line[i] = "0" if random.random() < 0.2 else line[i]
+            line[i] = "A" if random.random() < 0.05 else line[i]
+            line[i] = "C" if random.random() < 0.02 else line[i]
+   
+        line = ''.join(line)
+
+        map += line
+    map += end
     return map
     
-m = generate_map(100)    
-f = open("1.tmf", "w")
+m = generate_map(100)  
+print(m)  
+f = open("../bin/assets/maps/2.tmf", "w")
 f.write("TMF")
 f.write(chr(5))
 for char in m:
