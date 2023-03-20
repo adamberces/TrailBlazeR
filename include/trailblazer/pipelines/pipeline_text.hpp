@@ -2,6 +2,7 @@
 
 #include <glkit/window/background.hpp>
 #include <string>
+#include <map>
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
@@ -23,7 +24,7 @@ class TextPipeline_c
     std::map<GLchar, Character> Characters;
     unsigned int VAO, VBO;
 
-    void setupFreeType()
+    int setupFreeType()
     {
          // FreeType
     // --------
@@ -36,7 +37,7 @@ class TextPipeline_c
     }
 
 	// find path to font
-    std::string font_name = FileSystem::getPath("./assets/fonts/retropc.otf");
+    std::string font_name = "./assets/fonts/retropc.otf";
     if (font_name.empty())
     {
         std::cout << "ERROR::FREETYPE: Failed to load font_name" << std::endl;
@@ -105,7 +106,7 @@ class TextPipeline_c
 void RenderText(std::string text, float x, float y, float scale, glm::vec3 color)
 {
     // activate corresponding render state	
-    shader.use();
+    ShaderProgram->use();
     glUniform3f(glGetUniformLocation(ShaderProgram->getId(), "textColor"), color.x, color.y, color.z);
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(VAO);
@@ -174,7 +175,7 @@ public:
 
         ShaderProgram->use();
         glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(1024), 0.0f, static_cast<float>(768));
-        glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv(glGetUniformLocation(ShaderProgram->getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
         setupFreeType();
 
