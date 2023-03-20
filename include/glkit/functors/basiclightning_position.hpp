@@ -7,6 +7,9 @@
 namespace glkit::functors
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Uniform functor for scene light source position
+
 UNIFORM_ARGS(LightningPositionConfig_s)
 {
     point3d_t Position;

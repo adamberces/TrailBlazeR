@@ -27,7 +27,7 @@ class Map_c : public messaging::MessageRecipient_i
     }
 
 public:
-    void sendMessage(std::any m) override
+    void sendMessage(msg_t m) override
     {
         if (isMessageType<msgRedrawTrigger>(m))
         {
@@ -38,7 +38,7 @@ public:
             // Calculate the tile's index on which the ball
             // can be actually found and return it's tile type
             // for collision detection in the game control
-            msgBallPosition p = std::any_cast<msgBallPosition>(m);
+            msgBallPosition p = msg_cast<msgBallPosition>(m);
             int x = static_cast<int>(::floor(p.Position.X + 0.5F));
             int y = static_cast<int>(::floor(p.Position.Y + 0.5F));
             msgActualTileType tiletype({ getTile(x, y) });

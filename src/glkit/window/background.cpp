@@ -5,6 +5,9 @@
 namespace glkit::window
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// GLKBackgound_c implementation
+
 void GLKBackgound_c::activateTexture() const
 {
     glBindTexture(GL_TEXTURE_2D, TextureID);
@@ -40,8 +43,6 @@ GLKBackgound_c::constructVertexData()
 
     return std::make_pair(v, e);
 }
-
-
 
 void GLKBackgound_c::initialize(const vertex_vector_t& vertices,
     const element_vector_t& indices) 

@@ -6,6 +6,9 @@
 namespace glkit::functors
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Uniform functor for perspective projection matrix generation
+
 UNIFORM_ARGS(ProjectionConfig_s)
 {
     float FOV;

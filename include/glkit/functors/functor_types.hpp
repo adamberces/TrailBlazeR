@@ -4,6 +4,9 @@
 namespace glkit::functors
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Type definitions for data transfer towards uniforms and functors 
+
 struct point3d_t
 {
     float X = 0.F;
@@ -17,7 +20,6 @@ struct scale_t
     float Y = 1.F;
     float Z = 1.F;
 };
-
 
 struct rotation3d_t
 {

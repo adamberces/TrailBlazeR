@@ -52,11 +52,11 @@ public:
         return GameState_e::NORMAL;
     }
 
-    void sendMessage(std::any m) override
+    void sendMessage(msg_t m) override
     {
         if (isMessageType<msgGameStateChange>(m))
         {
-            msgGameStateChange s = std::any_cast<msgGameStateChange>(m);
+            msgGameStateChange s = msg_cast<msgGameStateChange>(m);
             
             switch(s)
             {

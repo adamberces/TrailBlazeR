@@ -61,7 +61,7 @@ class BallController_c :
     void broadcastPosition(float delta_time);
 
 public:
-    void sendMessage(std::any m) override;
+    void sendMessage(msg_t m) override;
     BallController_c(messaging::PostOffice_c* po);
 };
 

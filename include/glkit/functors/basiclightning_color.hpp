@@ -7,6 +7,9 @@
 namespace glkit::functors
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Uniform functor for scene light source color
+
 UNIFORM_ARGS(LightningColorConfig_s)
 {
     rgb_t Color;

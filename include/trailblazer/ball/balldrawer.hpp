@@ -18,7 +18,7 @@ class BallDrawer_c : public messaging::MessageRecipient_i
 
 public:
 
-    void sendMessage(std::any m) override
+    void sendMessage(msg_t m) override
     {
         if (isMessageType<msgRedrawTrigger>(m))
         {
@@ -26,8 +26,7 @@ public:
         }
         else if (isMessageType<msgBallPositionAndDistance>(m))
         {
-            msgBallPositionAndDistance p =
-                std::any_cast<msgBallPositionAndDistance>(m);
+            msgBallPositionAndDistance p = msg_cast<msgBallPositionAndDistance>(m);
             
             Pipeline.ModelConfig.Position = p.Position;
 

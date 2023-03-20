@@ -8,6 +8,9 @@
 namespace png
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// PngImage_c implementation
+
 bool PngImage_c::loadPNG(std::string fileName)
 {
     png_structp png_ptr;

@@ -4,6 +4,10 @@
 namespace glkit::mesh
 {
 
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// GLKMesh_i implementation
+
 void GLKMesh_i::draw() const
 {
     VertexArrayObject->bind();

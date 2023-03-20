@@ -5,6 +5,9 @@
 namespace glkit::window
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// GLWindow_i implementation
+
 void GLWindow_i::resizeCallback(GLFWwindow*, int w, int h)
 {
     glViewport(0, 0, w, h);

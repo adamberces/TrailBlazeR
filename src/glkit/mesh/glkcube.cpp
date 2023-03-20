@@ -3,6 +3,9 @@
 
 namespace glkit::mesh
 {
+    
+/////////////////////////////////////////////////////////////////////////////////////////
+// GLKCube_c implementation
 
 std::pair<GLKMesh_i::vertex_vector_t, GLKMesh_i::element_vector_t>
 GLKCube_c::constructCubeVertexData

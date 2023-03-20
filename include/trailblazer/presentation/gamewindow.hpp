@@ -40,7 +40,7 @@ public:
         PO->broadcastMessage<msgKeyEvent>(e);
     }
 
-    void sendMessage(std::any message) override
+    void sendMessage(msg_t message) override
     {}
 
     GameWindow_c(messaging::PostOffice_c* po) :

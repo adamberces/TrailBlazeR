@@ -7,6 +7,9 @@
 namespace glkit::functors
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Uniform functor for model transformations (translate-rotate-scale) calculation
+
 UNIFORM_ARGS(ModelConfig_s)
 {
     point3d_t Position;

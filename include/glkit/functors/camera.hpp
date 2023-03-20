@@ -7,6 +7,9 @@
 namespace glkit::functors
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Uniform functor for scene camera matrix calculation
+
 UNIFORM_ARGS(CameraConfig_s)
 {
     point3d_t Position;

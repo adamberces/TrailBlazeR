@@ -282,16 +282,16 @@ void BallController_c::jump()
 /////////////////////////////////////////////////////////////////////////////////////////
 // Messaging and constructor
 
-void BallController_c::sendMessage(std::any m)
+void BallController_c::sendMessage(msg_t m)
 {
     if (isMessageType<msgKeyEvent>(m))
     {
-        msgKeyEvent e = std::any_cast<msgKeyEvent>(m);
+        msgKeyEvent e = msg_cast<msgKeyEvent>(m);
         handleKeyboardInput(e);
     }
     else if (isMessageType<msgActualTileType>(m))
     {
-        msgActualTileType tt = std::any_cast<msgActualTileType>(m);
+        msgActualTileType tt = msg_cast<msgActualTileType>(m);
         LastTileType = tt.Type;
     }
 }

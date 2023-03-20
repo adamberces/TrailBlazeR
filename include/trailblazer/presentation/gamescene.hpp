@@ -43,12 +43,12 @@ class GameScene_c : public messaging::MessageRecipient_i
             RenderPipeline_i::CameraConfig.Position;
     }
 
-    void sendMessage(std::any m) override
+    void sendMessage(msg_t m) override
     {
         if (isMessageType<msgBallPosition>(m))
         {
             msgBallPosition p =
-                std::any_cast<msgBallPosition>(m);
+                msg_cast<msgBallPosition>(m);
             updateGlobals(p.Position);
             drawScene();
         }

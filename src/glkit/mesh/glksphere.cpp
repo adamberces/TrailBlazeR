@@ -6,6 +6,9 @@
 namespace glkit::mesh
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// GLKSphere_c implementation
+
 static constexpr float Pi = 3.141592653589;
 
 std::pair<GLKMesh_i::vertex_vector_t, GLKMesh_i::element_vector_t>

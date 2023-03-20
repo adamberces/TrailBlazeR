@@ -5,6 +5,9 @@
 namespace trailblazer::pipelines
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Implementation for RenderPipeline_i
+
 // Define static members of RenderPipeline_i
 glkit::functors::ProjectionConfig_s RenderPipeline_i::ProjectionConfig =
     glkit::functors::ProjectionConfig_s {};

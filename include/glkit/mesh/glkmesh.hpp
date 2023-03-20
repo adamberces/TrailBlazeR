@@ -9,6 +9,9 @@
 namespace glkit::mesh
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Interface class for drawing 3D objects using GLKit
+// Maintains a VAO (with VBO and EBO) and provides a draw function
 class GLKMesh_i
 {
 protected:
