@@ -13,6 +13,9 @@
 namespace trailblazer::ball
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// 
+
 enum class BallState_e
 {
     ON_GROUND,
@@ -21,6 +24,15 @@ enum class BallState_e
     LOST,
     LEVEL_WON
 };
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Represents the ball's movement in the 3D space, inheriting from RigidBody_c
+// and realizes the core game physics
+//
+// Inherits from MessageRecipient_i:
+// Provides the msgBallPositionAndDistance message for Ball Drawer
+// Receives the msgKeyEvent message from Game Window
+// Receives the msgActualTileType message from Map
 
 class BallController_c :
     public messaging::MessageRecipient_i,

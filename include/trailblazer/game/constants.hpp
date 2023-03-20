@@ -15,9 +15,9 @@ struct Constants_s
     // Ball properties
     static constexpr float BALL_DIAMETER = .25F;
     static constexpr float BALL_MASS = 2.F;
-    static constexpr float BallDrawer_cOLOR_R = 1.F;
-    static constexpr float BallDrawer_cOLOR_G = 0.F;
-    static constexpr float BallDrawer_cOLOR_B = 0.F;
+    static constexpr float BALL_COLOR_R = 1.F;
+    static constexpr float BALL_COLOR_G = 0.F;
+    static constexpr float BALL_COLOR_B = 0.F;
 
     // Global physics constants
     static constexpr float PI = 3.14159265359F;

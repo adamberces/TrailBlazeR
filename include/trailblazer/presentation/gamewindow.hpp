@@ -11,42 +11,22 @@
 namespace trailblazer::presentation
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Represents the main game window.
+//
+// Inherits from MessageRecipient_i:
+// Provides the msgKeyEvent message
+// It is the initial provider of messages, does not subscribed to anything
+
 class GameWindow_c :
     public glkit::window::GLWindow_i,
     public messaging::MessageRecipient_i
-
 {
 public:
-    void handleKeypressEvents() override
-    {
-        msgKeyEvent e =
-           msgKeyEvent::NONE;
-
-        if (isPressed(GLFW_KEY_A) ||
-            isPressed(GLFW_KEY_LEFT))
-        {
-            e = msgKeyEvent::LEFT;
-        }
-        else if (isPressed(GLFW_KEY_D) ||
-                 isPressed(GLFW_KEY_RIGHT))
-        {
-            e = msgKeyEvent::RIGHT;
-        }
-        else if (isPressed(GLFW_KEY_SPACE))
-        {
-            e = msgKeyEvent::JUMP;
-        }
-
-        PO->broadcastMessage<msgKeyEvent>(e);
-    }
-
-    void sendMessage(msg_t message) override
-    {}
-
-    GameWindow_c(messaging::PostOffice_c* po) :
-        GLWindow_i(1024, 768, "TrailBlazeR"),
-        MessageRecipient_i(po)
-    {}
+    void handleKeypressEvents() override;
+    void sendMessage(msg_t message) override {}
+    
+    GameWindow_c(messaging::PostOffice_c* po);
 };
 
 } // namespace trailblazer::presentation
