@@ -19,7 +19,6 @@ class Game_c
     messaging::PostOffice_c PostOffice;
     presentation::GameWindow_c GameWindow;
     map::MapManager_c MapManager;
-    GameControl_c GameControl;
     
 public:
     void gameLoop()
@@ -28,12 +27,15 @@ public:
         size_t actualMap = 0;
         for (; actualMap < mapCount;)
         {
+            std::string mapFileName = MapManager.mapFiles().at(actualMap);
+
             // Set up a new ball and a scene from the ball and the actual map
             // for the new level's scene
             ball::Ball_c Ball(&PostOffice);
             ball::BallControl_c BallControl(&PostOffice);
             map::Map_c Map(&PostOffice, mapFileName);
             presentation::GameScene_c GameScene(&PostOffice);
+            GameControl_c GameControl(&PostOffice);
 
             presentation::GameWindow_c::WindowState_e WindowState =
                 presentation::GameWindow_c::WindowState_e::OK;
@@ -50,14 +52,15 @@ public:
             {
                 actualMap++;
             }
+
+            PostOffice.unsubscribeAll();
         }
     }
 
     Game_c() :
         PostOffice(),
         GameWindow(&PostOffice),
-        MapManager("./assets/maps"),
-        GameControl(&PostOffice)
+        MapManager("./assets/maps")
     {
         
     }

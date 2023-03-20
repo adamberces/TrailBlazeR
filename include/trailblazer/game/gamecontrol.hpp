@@ -42,7 +42,6 @@ public:
                     Lives--;
                     if (Lives == 0)
                     {
-                        printf("Live lost\n");
                         GameState = GameState_e::GAME_OVER;
                     }
                 }
