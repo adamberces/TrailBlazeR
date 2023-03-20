@@ -54,7 +54,7 @@ public:
         Pipeline.setup();
         Pipeline.ModelConfig.Position.X = 2;
         Pipeline.ModelConfig.Position.Y = 0;
-        Pipeline.ModelConfig.Position.Z = 0;
+        Pipeline.ModelConfig.Position.Z = 2;
         Pipeline.ModelConfig.Scale.X = Constants_s::BALL_DIAMETER;
         Pipeline.ModelConfig.Scale.Y = Constants_s::BALL_DIAMETER;
         Pipeline.ModelConfig.Scale.Z = Constants_s::BALL_DIAMETER;
