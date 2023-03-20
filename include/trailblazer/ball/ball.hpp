@@ -34,7 +34,7 @@ public:
             // Calculate the angular rotation for 1 meters of distance
             // taken by the ball on the ground from the circumference
             // of a circle got from the diameter of the ball
-            constexpr float DegreePerMeter = 360.F / (Constants_s::BALL_DIAMETER * 3.14159F);
+            constexpr float DegreePerMeter = 360.F / (Constants_s::BALL_DIAMETER * Constants_s::PI);
             
             // Calculate the actual extent of rotation from the actual distance
             // taken by the ball since the last frame
@@ -52,15 +52,12 @@ public:
     void setup()
     {
         Pipeline.setup();
-        Pipeline.ModelConfig.Position.X = 2;
-        Pipeline.ModelConfig.Position.Y = 0;
-        Pipeline.ModelConfig.Position.Z = 2;
         Pipeline.ModelConfig.Scale.X = Constants_s::BALL_DIAMETER;
         Pipeline.ModelConfig.Scale.Y = Constants_s::BALL_DIAMETER;
         Pipeline.ModelConfig.Scale.Z = Constants_s::BALL_DIAMETER;
-        Pipeline.ModelColorConfig.Color.R = 1.F;
-        Pipeline.ModelColorConfig.Color.G = 0.F;
-        Pipeline.ModelColorConfig.Color.B = 0.F;
+        Pipeline.ModelColorConfig.Color.R = Constants_s::BALL_COLOR_R;
+        Pipeline.ModelColorConfig.Color.G = Constants_s::BALL_COLOR_G;
+        Pipeline.ModelColorConfig.Color.B = Constants_s::BALL_COLOR_B;
     }
 
     Ball_c(messaging::PostOffice_c* po) :

@@ -32,12 +32,12 @@ class BallControl_c :
 
     void moveLeft()
     {
-        addForce(rigidbody::Vector3D_s(-10.F, 0.F, 0.F));
+        addForce(rigidbody::Vector3D_s(-(Constants_s::CONTROL_FORCE_X), 0.F, 0.F));
     }
 
     void moveRight()
     {
-        addForce(rigidbody::Vector3D_s(10.F, 0.F, 0.F));
+        addForce(rigidbody::Vector3D_s(Constants_s::CONTROL_FORCE_X, 0.F, 0.F));
     }
 
     void addFriction(float rigidbody::Vector3D_s::*component, float coefficient)
@@ -55,14 +55,19 @@ class BallControl_c :
 
     void addDrag()
     {
-        float dragCoefficient = 0.47F;
-        float airDensity = 1.29F;
-        constexpr float crossectionArea = Constants_s::BALL_DIAMETER * Constants_s::BALL_DIAMETER * 3.14159F;
-        float dragMagnitude = -0.5F * dragCoefficient * airDensity * crossectionArea * (Velocity.Z * Velocity.Z);
+        constexpr float crossectionArea =
+            Constants_s::BALL_DIAMETER * Constants_s::BALL_DIAMETER * Constants_s::PI;
+
+        float dragMagnitude =
+            -0.5F * Constants_s::SPHERE_DRAG_COEFFICIENT *
+            Constants_s::AIR_DENSITY * crossectionArea *
+            (Velocity.Z * Velocity.Z);
+
         if (Velocity.Z < 0.F)
         {
             dragMagnitude *= -1;
         }
+
         rigidbody::Vector3D_s dragForce(0.F, 0.F, dragMagnitude);
         addForce(dragForce);
     }      
@@ -101,23 +106,23 @@ class BallControl_c :
             if (BallState != BallState_e::LEVEL_WON &&
                 LastTileType != map::TileType_e::GAP)
             {
-                printf("bounce back\n");
                 Velocity.Z = -Velocity.Z;
-                addFriction(&rigidbody::Vector3D_s::Z, 10.F);
+                addFriction(&rigidbody::Vector3D_s::Z,
+                    Constants_s::FRICITON_COEFFICIENT_Z);
             }
         }
 
-        printf("Z %f v%f state %d ", Position.Z, Velocity.Z, (int)BallState);
+        //printf("Z %f v%f state %d ", Position.Z, Velocity.Z, (int)BallState);
     }
 
     void addForces(float delta_time)
     {
         if (BallState == BallState_e::JUMPING)
         {
-            Velocity.Z = 4;
+            Velocity.Z = Constants_s::JUMP_VELOCITY;
 
             JumpTimer += delta_time;
-            if (JumpTimer >= 0.1)
+            if (JumpTimer >= Constants_s::JUMP_TIME)
             {
                 BallState = BallState_e::IN_AIR;
             }
@@ -133,7 +138,8 @@ class BallControl_c :
         }
         else
         {
-            addFriction(&rigidbody::Vector3D_s::X, .2F);
+            addFriction(&rigidbody::Vector3D_s::X,
+                Constants_s::FRICITON_COEFFICIENT_X);
         }
 
         if (BallState == BallState_e::LEVEL_WON)
@@ -142,22 +148,23 @@ class BallControl_c :
             {
                 Position.Z = 0;
             }
-            addFriction(&rigidbody::Vector3D_s::X, .5F);
-            addFriction(&rigidbody::Vector3D_s::Y, .5F);
+
+            addFriction(&rigidbody::Vector3D_s::X,
+                Constants_s::FRICITON_COEFFICIENT_ENDLEVEL);
+            addFriction(&rigidbody::Vector3D_s::Y,
+                Constants_s::FRICITON_COEFFICIENT_ENDLEVEL);
         }
 
     }
 
     void handleActualTile()
     {
-        printf("tile %d \n", (int)LastTileType);
         switch (LastTileType)
         {
             case map::TileType_e::GAP:
                 if (BallState == BallState_e::NORMAL &&
                     Position.Z <= 0.2F)
                 {
-                    printf("lost\n");
                     BallState = BallState_e::LOST;
                     PO->broadcastMessage<msgGameStateChange>(msgGameStateChange::BALL_LOST);
                 }
@@ -165,13 +172,13 @@ class BallControl_c :
             case map::TileType_e::SPEEDUP:
                 if (BallState == BallState_e::NORMAL)
                 {
-                    Velocity.Y += 0.1;
+                    Velocity.Y += Constants_s::SPEEDUP_ADDED_VELOCITY;
                 }
                 break;
             case map::TileType_e::SPEEDDOWN:
                 if (BallState == BallState_e::NORMAL)
                 {
-                    Velocity.Y = 1;
+                    Velocity.Y = Constants_s::START_VELOCITY;
                 }
                 break;
             case map::TileType_e::FINISH:
@@ -180,7 +187,7 @@ class BallControl_c :
                     BallState = BallState_e::LEVEL_WON;
                     PO->broadcastMessage<msgGameStateChange>(msgGameStateChange::LEVEL_WON);
                 }
-                 break;
+                break;
             case map::TileType_e::NORMAL:
                 break;
         }
@@ -189,7 +196,7 @@ class BallControl_c :
             BallState != BallState_e::LOST &&
             BallState != BallState_e::LEVEL_WON)
         {
-            if (Position.Z == 0)
+            if (Position.Z == 0.F)
             {
                 BallState = BallState_e::NORMAL;
             }
@@ -262,7 +269,11 @@ public:
         MessageRecipient_i(po),
         LastTileType(map::TileType_e::NORMAL),
         BallState(BallState_e::IN_AIR),
-        RigidBody_c(rigidbody::Vector3D_s(2, 0, 2), rigidbody::Vector3D_s(0, 1, 0), Constants_s::BALL_MASS)
+        RigidBody_c(rigidbody::Vector3D_s(Constants_s::START_POSITION_X,
+                                          Constants_s::START_POSITION_Y,
+                                          Constants_s::START_POSITION_Z),
+                    rigidbody::Vector3D_s(0, Constants_s::START_VELOCITY, 0),
+                    Constants_s::BALL_MASS)
     {   
         // Manage subscriptions
         PO->subscribeRecipient<msgKeyEvent>(this);
