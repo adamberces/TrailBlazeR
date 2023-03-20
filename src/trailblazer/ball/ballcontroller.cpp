@@ -19,6 +19,10 @@ void BallController_c::updateBall()
     broadcastPosition(dt);
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Handle the actual tile type on/above which the ball is
+// and do a state transition of BallState if needed
+
 void BallController_c::handleActualTile()
 {
     switch (LastTileType)
@@ -32,18 +36,21 @@ void BallController_c::handleActualTile()
                 PO->broadcastMessage<msgGameStateChange>(msgGameStateChange::BALL_LOST);
             }
             break;
+            
         case map::TileType_e::SPEEDUP:
             if (BallState == BallState_e::ON_GROUND)
             {
                 Velocity.Y += Constants_s::SPEEDUP_ADDED_VELOCITY;
             }
             break;
+
         case map::TileType_e::SLOWDOWN:
             if (BallState == BallState_e::ON_GROUND)
             {
                 Velocity.Y = Constants_s::START_VELOCITY;
             }
             break;
+
         case map::TileType_e::FINISH:
             if (BallState != BallState_e::LEVEL_WON)
             {
@@ -53,11 +60,11 @@ void BallController_c::handleActualTile()
                 PO->broadcastMessage<msgGameStateChange>(msgGameStateChange::LEVEL_WON);
             }
             break;
+
         case map::TileType_e::NORMAL:
             break;
     }
     
-
     // Do the state transition between In air vs. On ground
     // if the ball is on the ground level (Z == 0) and no 
     // other special states are present

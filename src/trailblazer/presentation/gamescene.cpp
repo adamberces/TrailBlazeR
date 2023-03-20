@@ -1,5 +1,3 @@
-#pragma once
-
 #include <trailblazer/presentation/gamescene.hpp>
 
 
