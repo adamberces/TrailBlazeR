@@ -25,7 +25,7 @@ enum class TileType_e
     NORMAL,
     FINISH,
     SPEEDUP,
-    SPEEDDOWN,
+    SLOWDOWN,
 };
 
 
@@ -83,7 +83,7 @@ static std::unordered_map<Color_e, TileType_e> SpecialRules =
 {
     { Color_e::NONE, TileType_e::GAP },
     { Color_e::LIGHT_GREEN, TileType_e::SPEEDUP },
-    { Color_e::LIGHT_RED, TileType_e::SPEEDDOWN },
+    { Color_e::LIGHT_RED, TileType_e::SLOWDOWN },
     { Color_e::DARK_GRAY, TileType_e::FINISH },
     { Color_e::WHITE, TileType_e::FINISH }
 };

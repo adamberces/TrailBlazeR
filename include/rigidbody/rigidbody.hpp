@@ -19,22 +19,12 @@ protected:
     std::vector<Vector3D_s> Forces;
 
 public:
-    Vector3D_s position() const
-    {
-        return Position;
-    }
-
-    Vector3D_s velocity() const
-    {
-        return Velocity;
-    }
-
     void addForce(Vector3D_s force)
     {
         Forces.push_back(force);
     }
 
-    void update(float delta_time)
+    void updatePosition(float delta_time)
     {
         // Calculate total force acting on the rigid body
         Vector3D_s total_force(0, 0, 0);
