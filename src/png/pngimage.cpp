@@ -76,6 +76,39 @@ bool PngImage_c::loadPNG(std::string fileName)
     return true;
 }
 
+std::shared_ptr<PngImage_c> PngImage_c::crop(int x, int y, int w, int h) const
+{
+    std::shared_ptr<PngImage_c> cropped = std::make_shared<PngImage_c>();
+    cropped->Width = w;
+    cropped->Height = h;
+    cropped->HasAlpha = HasAlpha;
+
+    int bpp = (HasAlpha ? 4 : 3);
+    cropped->Data = (unsigned char*)malloc(w * h * bpp);
+
+    unsigned char* p;
+    unsigned char* original_ptr = Data;
+    unsigned char* cropped_ptr = cropped->Data;
+    
+    int stride = Width * bpp;
+    int start = stride * y + x * bpp;
+
+    for (int i = 0; i < h; i++)
+    {
+        p = original_ptr + start;
+        start += stride;
+        for (int j = 0; j < w; j++)
+        {
+            memcpy(cropped_ptr, p, bpp);
+            cropped_ptr += bpp;
+            p += bpp;
+        }
+    }
+
+    return cropped;
+}
+
+
 PngImage_c::PngImage_c(std::string fileName)
 {
     if (!loadPNG(fileName))
@@ -84,9 +117,14 @@ PngImage_c::PngImage_c(std::string fileName)
     }
 }
 
+PngImage_c::PngImage_c()
+{
+
+}
+
 PngImage_c::~PngImage_c()
 {
-    free(this->Data);
+    free(Data);
 }
 
 } // namespace png

@@ -65,6 +65,7 @@ void GameScene_c::setup()
     RenderPipeline_i::LightningColorConfig.Color.B = 0.57F;
 
     Background = std::make_unique<pipelines::BackgroundPipeline_c>("./assets/bkg.png");
+    TestText = std::make_unique<pipelines::TextPipeline_c>();
     Background->setup();
     TestText->setup();
 

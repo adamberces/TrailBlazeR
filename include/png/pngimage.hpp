@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 
 namespace png
@@ -17,6 +18,7 @@ class PngImage_c
     int Height;
     bool HasAlpha;
     unsigned char* Data;
+    std::string FileName;
 
     bool loadPNG(std::string fileName);
 
@@ -41,7 +43,11 @@ public:
         return Data;
     }
 
+    std::shared_ptr<PngImage_c> crop(int x, int y, int w, int h) const;
+
     explicit PngImage_c(std::string fileName);
+
+    explicit PngImage_c();
 
     ~PngImage_c();
 };

@@ -1,5 +1,5 @@
 #version 330 core
-ű
+
 in vec2 TexCoords;
 out vec4 color;
 
