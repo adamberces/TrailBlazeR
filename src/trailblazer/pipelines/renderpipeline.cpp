@@ -14,8 +14,8 @@ glkit::functors::ProjectionConfig_s RenderPipeline_i::ProjectionConfig =
 glkit::functors::CameraConfig_s RenderPipeline_i::CameraConfig =
     glkit::functors::CameraConfig_s {};
 
-glkit::functors::LightningColorConfig_s RenderPipeline_i::LightningColorConfig =
-    glkit::functors::LightningColorConfig_s {};
+glkit::functors::ColorConfig_s RenderPipeline_i::LightningColorConfig =
+    glkit::functors::ColorConfig_s {};
 glkit::functors::LightningPositionConfig_s RenderPipeline_i::LightningPositionConfig =
     glkit::functors::LightningPositionConfig_s {};
 glkit::functors::LightningPositionConfig_s RenderPipeline_i::CameraPositionConfig =
@@ -53,10 +53,10 @@ void RenderPipeline_i::setup()
     Uniforms->add("model", glkit::functors::ModelTransformation_f);
     Uniforms->add("view", glkit::functors::Camera_f);
     Uniforms->add("projection", glkit::functors::PerspectiveProjection_f);
-    Uniforms->add("light_color", glkit::functors::BasicLightningColor_f);
+    Uniforms->add("light_color", glkit::functors::Color_f);
     Uniforms->add("light_position", glkit::functors::BasicLightningPosition_f);
     Uniforms->add("cam_position", glkit::functors::BasicLightningPosition_f);
-    Uniforms->add("object_color", glkit::functors::BasicLightningColor_f);
+    Uniforms->add("object_color", glkit::functors::Color_f);
 
 }
 

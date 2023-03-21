@@ -1,81 +1,23 @@
 #pragma once
 
-#include <glkit/window/background.hpp>
-#include <string>
-#include <map>
+#include <glkit/core/buffers/vertexarray.hpp>
+#include <glkit/core/shaders/shaderprogram.hpp>
+#include <glkit/core/uniforms/uniformiface.hpp>
+#include <glkit/core/functors/ortho.hpp>
+#include <glkit/core/functors/color.hpp>
 
-#include <png/pngimage.hpp>
-#include <opencv2/opencv.hpp>
-
-namespace trailblazer::pipelines
+namespace trailblazer::hud
 {
 
 class TextPipeline_c
 {
     std::unique_ptr<glkit::core::shaders::ShaderProgram_c> ShaderProgram;
-    struct Character_s
-    {
-        int Width;
-        int Height;
-        int XOffset;
-        int YOffset;
-        int XAdvance;
+    std::unique_ptr<core::buffers::VertexArrayObject_c<float>> VertexArrayObject;
+    std::unique_ptr<glkit::core::uniforms::ShaderUniformInterface_c> Uniforms;
 
-        unsigned int TextureId;
-    };
-
-    std::map<char, Character_s> Characters;
     unsigned int VAO, VBO;
 
-    void loadFont(std::string fileName)
-    {
-        png::PngImage_c im(fileName + ".png");
-
-        FILE *f;
-        std::string fntFile = fileName + ".fnt";
-        f = fopen(fntFile.c_str(), "r");
-
-        int n;
-        fscanf(f, "chars count=%d\n", &n);
-        for (int i = 0; i < n; i++)
-        {
-            // ID, x, y, Width, Height, x_offset, y_offset, w_full
-            int x;
-            int y;
-            int Id;
-            Character_s c;
-            fscanf(f, "char id=%d x=%d y=%d width=%d height=%d xoffset=%d yoffset=%d xadvance=%d\n",
-                &Id, &x, &y, &(c.Width), &(c.Height), &(c.XOffset), &(c.YOffset), &(c.XAdvance));
-
-            auto cropped = im.crop(x, y, c.Width, c.Height);
-
-            // generate texture
-            glGenTextures(1, &(c.TextureId));
-            glBindTexture(GL_TEXTURE_2D, c.TextureId);
-            glTexImage2D(
-                GL_TEXTURE_2D,
-                0,
-                (cropped->hasAlpha() ? GL_RGBA : GL_RGB),
-                c.Width,
-                c.Height,
-                0,
-                (cropped->hasAlpha() ? GL_RGBA : GL_RGB),
-                GL_UNSIGNED_BYTE,
-                cropped->data()
-            );
-
-            // set texture options
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glBindTexture(GL_TEXTURE_2D, 0);
-
-            Characters[Id] = c;
-        }
-    }
-
-    
+      
     void RenderText(std::string text, float x, float y, glm::vec3 color)
     {
         // activate corresponding render state	
@@ -98,12 +40,12 @@ class TextPipeline_c
             // update VBO for each character
             float vertices[6][4] = {
                 { xpos,     ypos + h,   0.0f, 0.0f },            
-                { xpos,     ypos,       1.0f, 1.0f },
-                { xpos + w, ypos,       1.0f, 0.0f },
+                { xpos,     ypos,       0.0f, 1.0f },
+                { xpos + w, ypos,       1.0f, 1.0f },
 
                 { xpos,     ypos + h,   0.0f, 0.0f },
-                { xpos + w, ypos,       0.0f, 1.0f },
-                { xpos + w, ypos + h,   1.0f, 1.0f }           
+                { xpos + w, ypos,       1.0f, 1.0f },
+                { xpos + w, ypos + h,   1.0f, 0.0f }           
             };
 
             // render glyph texture over quad
@@ -125,7 +67,7 @@ class TextPipeline_c
 
 
 public:
-    void run()
+    void drawText(std::string text)
     {
         if (!ShaderProgram)
         {
@@ -138,7 +80,7 @@ public:
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 
         ShaderProgram->use();
-        RenderText("123456789 Test test", 100, 100, glm::vec3(1, 0, 1));
+        RenderText(text, 100, 100, glm::vec3(1, 0, 1));
 
         glEnable(GL_DEPTH_TEST); 
         glDisable(GL_DEPTH_TEST);
@@ -146,13 +88,30 @@ public:
         glDisable(GL_BLEND);
     }
 
-    void setup()
+    void setupShader()
     {
         glkit::core::shaders::ShaderSourceList_s SSL;
         SSL.VertexShaderPath = "./assets/shaders/v_text.glsl";
         SSL.FragmentShaderPath = "./assets/shaders/f_text.glsl";
-
         ShaderProgram = std::make_unique<glkit::core::shaders::ShaderProgram_c>(SSL);
+        ShaderProgram->use();
+       
+        Uniforms = std::make_unique<glkit::core::uniforms::ShaderUniformInterface_c>(ShaderProgram->getId());
+
+        Uniforms->add("projection", glkit::functors::OrthogonalProjection_f);
+        Uniforms->add("textColor", glkit::functors::Color_f);
+    }
+
+    void setupBuffer
+    {
+
+    }
+
+    void setup()
+    {
+
+
+        
 
         ShaderProgram->use();
         glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(1024), 0.0f, static_cast<float>(768));
@@ -173,8 +132,8 @@ public:
         glBindVertexArray(0);
     }
 
-    TextPipeline_c()
+    TextDrawer_c()
     {}
 };
 
-} // namespace trailblazer::pipelines
+} // namespace trailblazer::hud

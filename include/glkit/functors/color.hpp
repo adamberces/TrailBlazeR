@@ -10,15 +10,15 @@ namespace glkit::functors
 /////////////////////////////////////////////////////////////////////////////////////////
 // Uniform functor for scene light source color
 
-UNIFORM_ARGS(LightningColorConfig_s)
+UNIFORM_ARGS(ColorConfig_s)
 {
     rgb_t Color;
 };
 
-static auto BasicLightningColor_f =
+static auto Color_f =
     [](core::uniforms::uniform_args_ptr_t ptr) -> core::uniforms::uniform_types_t
 {
-    LightningColorConfig_s* cfg = dynamic_cast<LightningColorConfig_s*>(ptr);
+    ColorConfig_s* cfg = dynamic_cast<ColorConfig_s*>(ptr);
 
     glm::vec3 color(cfg->Color.R, cfg->Color.G, cfg->Color.B);
         

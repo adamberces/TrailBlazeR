@@ -56,6 +56,25 @@ public:
                      static_cast<unsigned int>(Usage));
     }
 
+    // Binds and generates a buffer to be used with glBufferSubData
+    inline void bindEmptyBuffer(std::size_t size)
+    {
+        // Sanity check: test if we have a vertex array object bound
+        int vao_id = 0;
+        glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vao_id);
+        if (vao_id == 0)
+        {
+            throw std::runtime_error("ArrayBuffer_c error: please bind a Vertex Array Object"
+                "before binding an Array Buffer!");
+        }
+
+        // Bind buffer to the current VAO and copy data
+        glBindBuffer(static_cast<unsigned int>(Type), Id);
+        glBufferData(static_cast<unsigned int>(Type),
+                     size, NULL,
+                     static_cast<unsigned int>(Usage));
+    }
+
     inline void unbind() const
     {
         glBindBuffer(static_cast<unsigned int>(Type), 0); 

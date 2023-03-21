@@ -7,8 +7,8 @@
 
 #include <glkit/functors/camera.hpp>
 #include <glkit/functors/model.hpp>
-#include <glkit/functors/projection.hpp>
-#include <glkit/functors/basiclightning_color.hpp>
+#include <glkit/functors/perspective.hpp>
+#include <glkit/functors/color.hpp>
 #include <glkit/functors/basiclightning_position.hpp>
 
 #include <glkit/mesh/glkcube.hpp>
@@ -24,12 +24,12 @@ public:
     static glkit::functors::ProjectionConfig_s ProjectionConfig;
     static glkit::functors::CameraConfig_s CameraConfig;
     
-    static glkit::functors::LightningColorConfig_s LightningColorConfig;
+    static glkit::functors::ColorConfig_s LightningColorConfig;
     static glkit::functors::LightningPositionConfig_s LightningPositionConfig;
     static glkit::functors::LightningPositionConfig_s CameraPositionConfig;
     
     glkit::functors::ModelConfig_s ModelConfig;
-    glkit::functors::LightningColorConfig_s ModelColorConfig;
+    glkit::functors::ColorConfig_s ModelColorConfig;
 
 protected:
     glkit::core::shaders::ShaderSourceList_s SSL;
