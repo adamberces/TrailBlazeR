@@ -2,8 +2,12 @@
 
 namespace trailblazer
 {
+
 struct Constants_s
 {
+    static constexpr int WINDOW_WIDTH = 1024;
+    static constexpr int WINDOW_HEIGHT = 768;
+
     static constexpr int INITIAL_LIVES = 3;
     static constexpr float WAIT_TIME = 3.F; //sec
 
@@ -44,6 +48,5 @@ struct Constants_s
     // Force applied to the ball when moving left/right
     static constexpr float CONTROL_FORCE_X = 10.F;
 };
-
 
 } // namespace trailblazer
