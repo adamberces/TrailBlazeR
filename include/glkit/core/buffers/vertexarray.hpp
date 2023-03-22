@@ -38,13 +38,69 @@ struct buffer_data_type_traits<unsigned int>
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Class representing a GL Vetrex Array Object
+// Class representing a GL Vertex Array Object
 // Designed as per the RAII principles, glDeleteVertexArrays is automatically called
 // to free resources when the object lifetime is over.
 
 template<typename BufferDataType>
-class VertexArrayObject_c : public GLObject_i
+class DynamicVertexArrayObject_c : public StaticVertexArrayObject_c
 {
+    void allocateBuffer(std::size_t data_count, ArrayBufferType_e type)
+    {
+        bind();
+
+        if (data_count == 0)
+        {
+            throw std::runtime_error("DynamicVertexArrayObject_c::allocateVertexBuffer: "
+                "data_count can't be zero!");
+        }
+
+        VertexBuffers.emplace_back
+            (new ArrayBuffer_c<BufferDataType>
+             (type, ArrayBufferUsage_e::DynamicDraw));
+        VertexBuffers.back()->bindEmptyBuffer(data_count);
+        
+        unbind();
+    }
+
+public:
+    void allocateVertexBuffer(std::size_t data_count)
+    {
+       allocateBuffer(ArrayBufferType_e::ArrayBuffer);
+    }
+    
+    void allocateElementArrayBuffer(std::size_t data_count)
+    {
+        allocateBuffer(ArrayBufferType_e::ElementArrayBuffer);
+    }
+
+    virtual inline void copyVertexData 
+        (const std::vector<BufferDataType>& vertexData,
+         const std::vector<unsigned int>& elementData) override
+    {
+        bind();
+
+        if (vertexData.empty())
+        {
+            throw std::runtime_error("StaticVertexArrayObject_c::copyVertexData: "
+                "vertexData can't be empty!");
+        }
+
+        VertexBuffers.back()->bindAndCopySubData(vertexData);
+
+        if (!(ElementBuffers.empty()))
+        {
+            ElementBuffers.back()->bindAndCopySubData(elementData);
+        }
+        
+        unbind();
+    }
+};
+
+template<typename BufferDataType>
+class StaticVertexArrayObject_c : public GLObject_i
+{
+protected:
     template<typename T>
     using ArrayBufferPtr_t = std::unique_ptr<ArrayBuffer_c<T>>;
 
@@ -57,7 +113,7 @@ class VertexArrayObject_c : public GLObject_i
 public:
     // Copies a pair of vertex and element position data to the
     // GPU and assigns them to the current Vertex Array Object
-    inline void copyVertexData
+    virtual inline void copyVertexData
         (const std::vector<BufferDataType>& vertexData,
          const std::vector<unsigned int>& elementData)
     {
@@ -65,7 +121,7 @@ public:
 
         if (vertexData.empty())
         {
-            throw std::runtime_error("VertexArrayObject_c::copyVertexData: "
+            throw std::runtime_error("StaticVertexArrayObject_c::copyVertexData: "
                 "vertexData can't be empty!");
         }
         VertexBuffers.emplace_back
@@ -129,12 +185,12 @@ public:
         glBindVertexArray(0);
     }
 
-    inline VertexArrayObject_c()
+    inline StaticVertexArrayObject_c()
     {
         glGenVertexArrays(1, &Id);
     }
 
-    inline ~VertexArrayObject_c()
+    inline ~StaticVertexArrayObject_c()
     {
         glDeleteVertexArrays(1, &Id);
     }

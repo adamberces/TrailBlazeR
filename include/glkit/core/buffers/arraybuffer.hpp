@@ -27,6 +27,21 @@ enum class ArrayBufferUsage_e
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
+// Helper function
+// Sanity check: test if we have a vertex array object bound
+void checkVertexArrayBinding()
+{
+    int vao_id = 0;
+    glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vao_id);
+    if (vao_id == 0)
+    {
+        throw std::runtime_error("ArrayBuffer_c error: please bind a Vertex Array Object"
+            "before binding an Array Buffer!");
+    }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
 // Class representing a GL Array Buffer
 // Designed as per the RAII principles, glDeleteBuffers is automatically called to free
 // resources when the object lifetime is over.
@@ -36,18 +51,11 @@ class ArrayBuffer_c : public GLObject_i
 {
     ArrayBufferType_e Type;
     ArrayBufferUsage_e Usage;
-
+    
 public:
     inline void bindAndCopy(std::vector<BufferDataType> data)
     {
-        // Sanity check: test if we have a vertex array object bound
-        int vao_id = 0;
-        glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vao_id);
-        if (vao_id == 0)
-        {
-            throw std::runtime_error("ArrayBuffer_c error: please bind a Vertex Array Object"
-                "before binding an Array Buffer!");
-        }
+        checkVertexArrayBinding();
 
         // Bind buffer to the current VAO and copy data
         glBindBuffer(static_cast<unsigned int>(Type), Id);
@@ -57,22 +65,23 @@ public:
     }
 
     // Binds and generates a buffer to be used with glBufferSubData
-    inline void bindEmptyBuffer(std::size_t size)
+    inline void bindEmptyBuffer(std::size_t data_count)
     {
-        // Sanity check: test if we have a vertex array object bound
-        int vao_id = 0;
-        glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vao_id);
-        if (vao_id == 0)
-        {
-            throw std::runtime_error("ArrayBuffer_c error: please bind a Vertex Array Object"
-                "before binding an Array Buffer!");
-        }
+        checkVertexArrayBinding();
 
         // Bind buffer to the current VAO and copy data
         glBindBuffer(static_cast<unsigned int>(Type), Id);
         glBufferData(static_cast<unsigned int>(Type),
-                     size, NULL,
+                     data_count * sizeof(BufferDataType), NULL,
                      static_cast<unsigned int>(Usage));
+    }
+
+    inline void bindAndCopySubData(std::vector<BufferDataType> data)
+    {
+        glBindBuffer(static_cast<unsigned int>(Type), Id);
+        glBufferSubData(static_cast<unsigned int>(Type), 0
+                     data.size() * sizeof(BufferDataType), data.data());
+        glBindBuffer(static_cast<unsigned int>(Type), 0);
     }
 
     inline void unbind() const
