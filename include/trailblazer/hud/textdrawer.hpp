@@ -1,34 +1,33 @@
 #pragma once
 
-#include <glkit/core/buffers/vertexarray.hpp>
+#include <glkit/core/buffers/dynamicvertexarray.hpp>
 #include <glkit/core/shaders/shaderprogram.hpp>
 #include <glkit/core/uniforms/uniformiface.hpp>
-#include <glkit/core/functors/ortho.hpp>
-#include <glkit/core/functors/color.hpp>
+#include <glkit/functors/ortho.hpp>
+#include <glkit/functors/color.hpp>
+
+#include <trailblazer/game/constants.hpp>
+
 
 namespace trailblazer::hud
 {
 
 class TextPipeline_c
 {
+    std::unique_ptr<core::buffers::DynamicVertexArrayObject_c<float>> VertexArrayObject;
+
     std::unique_ptr<glkit::core::shaders::ShaderProgram_c> ShaderProgram;
-    std::unique_ptr<core::buffers::VertexArrayObject_c<float>> VertexArrayObject;
     std::unique_ptr<glkit::core::uniforms::ShaderUniformInterface_c> Uniforms;
+    glkit::functors::OrthoConfig_s ProjectionConfig;
 
-    unsigned int VAO, VBO;
-
-      
     void RenderText(std::string text, float x, float y, glm::vec3 color)
     {
-        // activate corresponding render state	
-        ShaderProgram->use();
-        glUniform3f(glGetUniformLocation(ShaderProgram->getId(), "textColor"), color.x, color.y, color.z);
         glActiveTexture(GL_TEXTURE0);
         glBindVertexArray(VAO);
 
         // iterate through all characters
         std::string::const_iterator c;
-        for (c = text.begin(); c != text.end(); c++) 
+        for(char c : text)
         {
             Character_s ch = Characters[*c];
 
@@ -38,7 +37,8 @@ class TextPipeline_c
             float h = ch.Height;
 
             // update VBO for each character
-            float vertices[6][4] = {
+            std::vector<float> =
+            {
                 { xpos,     ypos + h,   0.0f, 0.0f },            
                 { xpos,     ypos,       0.0f, 1.0f },
                 { xpos + w, ypos,       1.0f, 1.0f },
@@ -50,26 +50,22 @@ class TextPipeline_c
 
             // render glyph texture over quad
             glBindTexture(GL_TEXTURE_2D, ch.TextureId);
-
-            // update content of VBO memory
-            glBindBuffer(GL_ARRAY_BUFFER, VBO);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices); // be sure to use glBufferSubData and not glBufferData
-
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-            // render quad
+            VertexArrayObject->copyVertexData(vertices);
             glDrawArrays(GL_TRIANGLES, 0, 6);
+
             // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-            x += ch.XAdvance; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th pixels by 64 to get amount of pixels))
+            x += ch.XAdvance;
         }
+
         glBindVertexArray(0);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
 
 public:
-    void drawText(std::string text)
+    void drawText(std::string text, int x, int y, glkit::functors::rgb_t color)
     {
-        if (!ShaderProgram)
+        if (!ShaderProgram || !VertexArrayObject)
         {
             throw std::runtime_error("BackgroundPipeline_c::run: call setup first!");
         }
@@ -79,7 +75,12 @@ public:
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);  
 
+        glkit::functors::Color_f colorconfig { color };
+
         ShaderProgram->use();
+        Uniforms->update("projection", &ProjectionConfig);
+        Uniforms->update("textColor", &colorconfig);
+
         RenderText(text, 100, 100, glm::vec3(1, 0, 1));
 
         glEnable(GL_DEPTH_TEST); 
@@ -97,39 +98,27 @@ public:
         ShaderProgram->use();
        
         Uniforms = std::make_unique<glkit::core::uniforms::ShaderUniformInterface_c>(ShaderProgram->getId());
-
         Uniforms->add("projection", glkit::functors::OrthogonalProjection_f);
         Uniforms->add("textColor", glkit::functors::Color_f);
+
+        ProjectionConfig.Xmax = Constants_s::WINDOW_WIDTH;
+        ProjectionConfig.Ymax = Constants_s::WINDOW_HEIGHT;
     }
 
-    void setupBuffer
+    void setupBuffer();
     {
+        VertexArrayObject = std::make_unique<core::buffers::DynamicVertexArrayObject_c<float>>();
 
+        // 6 vertices for the two triangles of a 2D quad, 2 screen and 2 texture coordinates for each 
+        VertexArrayObject->allocateVertexBuffer(6 * 2 * 2)
+        VertexArrayObject->setVertexAttribute(0, 4);     
     }
 
     void setup()
-    {
-
-
-        
-
-        ShaderProgram->use();
-        glm::mat4 projection = glm::ortho(0.0f, static_cast<float>(1024), 0.0f, static_cast<float>(768));
-        glUniformMatrix4fv(glGetUniformLocation(ShaderProgram->getId(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
+    {   
+        setupBuffer();
+        setupShader();
         loadFont("./assets/fonts/font");
-
-        // configure VAO/VBO for texture quads
-        // -----------------------------------
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
     }
 
     TextDrawer_c()
