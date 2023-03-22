@@ -20,7 +20,7 @@ void GLKMesh_i::initialize(const vertex_vector_t& vertices,
     const element_vector_t& indices) 
 {
     NumberOfElements = indices.size();
-    VertexArrayObject = std::make_unique<core::buffers::VertexArrayObject_c<float>>();
+    VertexArrayObject = std::make_unique<core::buffers::StaticVertexArrayObject_c<float>>();
     VertexArrayObject->copyVertexData(vertices, indices);
     VertexArrayObject->setVertexAttribute(0, 4);     
 }

@@ -16,7 +16,7 @@ class GLKMesh_i
 {
 protected:
     unsigned int NumberOfElements;
-    std::unique_ptr<core::buffers::VertexArrayObject_c<float>> VertexArrayObject;
+    std::unique_ptr<core::buffers::StaticVertexArrayObject_c<float>> VertexArrayObject;
 
 public:
     virtual void draw() const;
