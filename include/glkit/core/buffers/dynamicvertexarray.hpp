@@ -1,5 +1,3 @@
-#pragma once
-
 #include <glkit/core/buffers/vertexarray.hpp>
 
 
@@ -16,7 +14,7 @@ class DynamicVertexArrayObject_c : public StaticVertexArrayObject_c<BufferDataTy
 {
     void allocateBuffer(std::size_t data_count, ArrayBufferType_e type)
     {
-        bind();
+        this->bind();
 
         if (data_count == 0)
         {
@@ -24,30 +22,30 @@ class DynamicVertexArrayObject_c : public StaticVertexArrayObject_c<BufferDataTy
                 "data_count can't be zero!");
         }
 
-        VertexBuffers.emplace_back
+        this->VertexBuffers.emplace_back
             (new ArrayBuffer_c<BufferDataType>
              (type, ArrayBufferUsage_e::DynamicDraw));
-        VertexBuffers.back()->bindEmptyBuffer(data_count);
+        this->VertexBuffers.back()->bindEmptyBuffer(data_count);
         
-        unbind();
+        this->unbind();
     }
 
 public:
     void allocateVertexBuffer(std::size_t data_count)
     {
-       allocateBuffer(ArrayBufferType_e::ArrayBuffer);
+        allocateBuffer(data_count, ArrayBufferType_e::ArrayBuffer);
     }
     
     void allocateElementArrayBuffer(std::size_t data_count)
     {
-        allocateBuffer(ArrayBufferType_e::ElementArrayBuffer);
+        allocateBuffer(data_count, ArrayBufferType_e::ElementArrayBuffer);
     }
 
     virtual inline void copyVertexData 
         (const std::vector<BufferDataType>& vertexData,
          const std::vector<unsigned int>& elementData) override
     {
-        bind();
+        this->bind();
 
         if (vertexData.empty())
         {
@@ -55,14 +53,14 @@ public:
                 "vertexData can't be empty!");
         }
 
-        VertexBuffers.back()->bindAndCopySubData(vertexData);
+        this->VertexBuffers.back()->bindAndCopySubData(vertexData);
 
-        if (!(ElementBuffers.empty()))
+        if (!(this->ElementBuffers.empty()))
         {
-            ElementBuffers.back()->bindAndCopySubData(elementData);
+            this->ElementBuffers.back()->bindAndCopySubData(elementData);
         }
         
-        unbind();
+       this-> unbind();
     }
 };
 

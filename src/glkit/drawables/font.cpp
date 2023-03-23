@@ -1,5 +1,3 @@
-#pragma once
-
 #include <png/pngimage.hpp>
 
 #include <glkit/core/ogl_headers.hpp>

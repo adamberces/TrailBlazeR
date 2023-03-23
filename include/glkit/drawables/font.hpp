@@ -1,7 +1,7 @@
 #pragma once
 
-#include <map>
 #include <string>
+#include <unordered_map>
 
 
 namespace glkit::drawables
@@ -30,7 +30,7 @@ struct Character_s
 
 class Font_c 
 {
-    std::map<char, Character_s> Characters;
+    std::unordered_map<char, Character_s> Characters;
 
     void loadFont(std::string fileName);
 

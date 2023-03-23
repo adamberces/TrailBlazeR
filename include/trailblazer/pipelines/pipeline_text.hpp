@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glkit/drawables/text.hpp>
+#include <glkit/drawables/glktext.hpp>
 
 #include <glkit/core/shaders/shaderprogram.hpp>
 #include <glkit/core/uniforms/uniformiface.hpp>
@@ -33,7 +33,8 @@ public:
             throw std::runtime_error("BackgroundPipeline_c::run: call setup first!");
         }
         
-        glkit::functors::Color_f colorconfig { color };
+        glkit::functors::ColorConfig_s colorconfig;
+        colorconfig.Color = color;
 
         ShaderProgram->use();
         Uniforms->update("projection", &ProjectionConfig);

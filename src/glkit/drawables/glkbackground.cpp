@@ -1,5 +1,5 @@
 #include <stdexcept>
-#include <glkit/drawables/background.hpp>
+#include <glkit/drawables/glkbackground.hpp>
 #include <png/pngimage.hpp>
 
 

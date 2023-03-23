@@ -1,6 +1,4 @@
-#pragma once
-
-#include <glkit/drawables/text.hpp>
+#include <glkit/drawables/glktext.hpp>
 #include <glkit/core/buffers/dynamicvertexarray.hpp>
 
 
