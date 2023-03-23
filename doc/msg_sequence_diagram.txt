@@ -1,23 +1,26 @@
+#Created with https://sequencediagram.org/
+
 title Message sequence diagram
-note over BallControl:Poll control keys
+participant GameWindow
+participant BallControl
+participant BallDrawer
+participant Map
+participant GameScene
+
+participant GameControl
+
+note over GameWindow:Poll control keys
 GameWindow->BallControl:msgKeyEvent
 note over BallControl:Generate forces and calculate next ball position 
-BallControl->Ball:msgBallPositionAndDistance
-note over Ball:Update ball uniforms, then propagate position data
-BallControl->GameScene:msgBallPosition
-note over GameScene:Update global uniforms
-GameScene->Ball:msgRedrawTrigger
-GameScene->Map:msgRedrawTrigger
-
-
-BallControl->Map:msgBallPosition
+BallControl->BallDrawer:msgBallPositionAndDistance
+note over BallDrawer:Update ball uniforms, propagate position data
+BallDrawer->Map:msgBallPosition
 note over Map:Calculate actual tile type from ball position
-note over GameScene:Update camera from ball position and draw scene
-GameScene->Ball:msgRedrawTrigger
-GameScene->Map:msgRedrawTrigger
-
-
 Map->BallControl:msgActualTileType
 note over BallControl:Calculate ball state from actual tile type
-BallControl-->GameControl:msgBallLost
-note over GameControl:Handle ball lost event
+BallControl->GameControl:msgGameStateChange
+note over GameControl:Handle ball lost/level won event, restart or advance level
+BallDrawer->GameScene:msgBallPosition
+note over GameScene:Update global uniforms and trigger scene drawing
+GameScene->Map:msgRedrawTrigger
+GameScene->BallDrawer:msgRedrawTrigger
