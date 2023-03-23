@@ -29,7 +29,7 @@ enum class ArrayBufferUsage_e
 /////////////////////////////////////////////////////////////////////////////////////////
 // Helper function
 // Sanity check: test if we have a vertex array object bound
-void checkVertexArrayBinding()
+static inline void checkVertexArrayBinding()
 {
     int vao_id = 0;
     glGetIntegerv(GL_VERTEX_ARRAY_BINDING, &vao_id);
