@@ -22,7 +22,7 @@ static auto OrthogonalProjection_f =
 {
     OrthoConfig_s* cfg = dynamic_cast<OrthoConfig_s*>(ptr);
 
-    glm::mat4 projection = glm::ortho(cfg->Xmin, cfg->Xmax, cfg->Ymin, cfg->YMax);
+    glm::mat4 projection = glm::ortho(cfg->Xmin, cfg->Xmax, cfg->Ymin, cfg->Ymax);
         
     return { projection };
 };

@@ -12,7 +12,7 @@ namespace trailblazer
 // tick() shall be called in each cycle which updates ElapsedTime,
 // which is the delta time elapsed after the last call
 
-// Import these for more convient usage
+// Import these for more convenient usage
 using std::chrono::steady_clock;
 using std::chrono::duration;
 using std::chrono::time_point;

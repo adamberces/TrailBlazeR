@@ -14,7 +14,7 @@ class PostOffice_c;
 class MessageRecipient_i
 {
 protected:
-    // Convient alias, represents a message of any type
+    // convenient alias, represents a message of any type
     using msg_t = std::any;
 
     // Pointer to the Post Office (so the child classes can

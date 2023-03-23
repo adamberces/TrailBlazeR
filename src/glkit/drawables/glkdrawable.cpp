@@ -1,14 +1,14 @@
-#include <glkit/mesh/glkmesh.hpp>
+#include <glkit/drawables/glkdrawable.hpp>
 
 
-namespace glkit::mesh
+namespace glkit::drawables
 {
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// GLKMesh_i implementation
+// GLKDrawable_i implementation
 
-void GLKMesh_i::draw() const
+void GLKDrawable_i::draw() const
 {
     VertexArrayObject->bind();
     glDrawElements(GL_TRIANGLES, NumberOfElements,
@@ -16,7 +16,7 @@ void GLKMesh_i::draw() const
     VertexArrayObject->unbind();
 }
 
-void GLKMesh_i::initialize(const vertex_vector_t& vertices,
+void GLKDrawable_i::initialize(const vertex_vector_t& vertices,
     const element_vector_t& indices) 
 {
     NumberOfElements = indices.size();
@@ -25,4 +25,4 @@ void GLKMesh_i::initialize(const vertex_vector_t& vertices,
     VertexArrayObject->setVertexAttribute(0, 4);     
 }
 
-} // namespace glkit::mesh
+} // namespace glkit::drawables

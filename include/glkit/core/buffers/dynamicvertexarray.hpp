@@ -12,7 +12,7 @@ namespace glkit::core::buffers
 // to free resources when the object lifetime is over.
 
 template<typename BufferDataType>
-class DynamicVertexArrayObject_c : public StaticVertexArrayObject_c
+class DynamicVertexArrayObject_c : public StaticVertexArrayObject_c<BufferDataType>
 {
     void allocateBuffer(std::size_t data_count, ArrayBufferType_e type)
     {

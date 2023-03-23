@@ -1,17 +1,17 @@
 #pragma once
 
 #include <utility>
-#include <glkit/mesh/glkmesh.hpp>
+#include <glkit/drawables/glkdrawable.hpp>
 
 
-namespace glkit::mesh
+namespace glkit::drawables
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // Represents a cube mesh. The ratio of the sides can be specified in the constructor
-class GLKCube_c : public GLKMesh_i
+class GLKCube_c : public GLKDrawable_i
 {
-    std::pair<GLKMesh_i::vertex_vector_t, GLKMesh_i::element_vector_t>
+    std::pair<GLKDrawable_i::vertex_vector_t, GLKDrawable_i::element_vector_t>
     constructCubeVertexData
         (float width_ratio,
          float height_ratio,
@@ -23,4 +23,4 @@ public:
         float depth_ratio);
 };
 
-} // namespace glkit::mesh
+} // namespace glkit::drawables

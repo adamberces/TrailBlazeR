@@ -149,15 +149,19 @@ void BallController_c::addForces(float delta_time)
 // The only exception from this is when the level is won, when we will stop the ball gradually
 // by applying a huge friction force on the Y component as well.
 
+float sgn(float f)
+{
+    return ( f < 0.F ? -1.F : 1.F  );
+}
+
 void BallController_c::addFriction(float rigidbody::Vector3D_s::*component, float coefficient)
 {
     // Get the direction of the force
-    rigidbody::Vector3D_s v = Velocity.normalize();
-    float velocityComponent = v.*component;
+    float velocityDirection = sgn(Velocity.*component);
 
     // Calculate friction force
     constexpr float normalForce = Constants_s::BALL_MASS * Constants_s::GRAVITY;
-    float frictionMagnitude = velocityComponent * normalForce * -1 * coefficient;
+    float frictionMagnitude = velocityDirection * normalForce * -1 * coefficient;
 
     // Create vector object and apply the magnitude of the force to the desired component
     rigidbody::Vector3D_s frictionForce(0.F, 0.F, 0.F);
@@ -175,14 +179,7 @@ void BallController_c::addDrag()
     float dragMagnitude =
         -0.5F * Constants_s::SPHERE_DRAG_COEFFICIENT *
         Constants_s::AIR_DENSITY * crossectionArea *
-        (Velocity.Z * Velocity.Z);
-
-
-    // Reverse the direction of the force, it the ball is falling
-    if (Velocity.Z < 0.F)
-    {
-        dragMagnitude *= -1;
-    }
+        (Velocity.Z * Velocity.Z) * sgn(Velocity.Z);
 
     // Create vector object and apply the force
     rigidbody::Vector3D_s dragForce(0.F, 0.F, dragMagnitude);

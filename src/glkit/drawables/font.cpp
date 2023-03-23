@@ -1,9 +1,12 @@
 #pragma once
 
 #include <png/pngimage.hpp>
-#include <trailblazer/hud/font.hpp>
 
-namespace trailblazer::hud
+#include <glkit/core/ogl_headers.hpp>
+#include <glkit/drawables/font.hpp>
+
+
+namespace glkit::drawables
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -61,4 +64,4 @@ Font_c::Font_c(std::string fileName)
     loadFont(fileName);
 }
 
-} // namespace trailblazer::hud
+} // glkit::window

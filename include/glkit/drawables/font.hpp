@@ -3,7 +3,8 @@
 #include <map>
 #include <string>
 
-namespace trailblazer::hud
+
+namespace glkit::drawables
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -34,13 +35,12 @@ class Font_c
     void loadFont(std::string fileName);
 
 public:
-    inline decltype(Characters)& characters() const
+    inline decltype(Characters) const& characters() const
     {
         return Characters;
     }
 
-    Font_c(std::string fileName)
-
+    Font_c(std::string fileName);
 };
 
-} // namespace trailblazer::hud
+} // namespace glkit::drawables

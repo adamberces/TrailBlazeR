@@ -1,9 +1,9 @@
 #include <cmath>
 #include <iostream>
-#include <glkit/mesh/glksphere.hpp>
+#include <glkit/drawables/glksphere.hpp>
 
 
-namespace glkit::mesh
+namespace glkit::drawables
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -11,7 +11,7 @@ namespace glkit::mesh
 
 static constexpr float Pi = 3.141592653589;
 
-std::pair<GLKMesh_i::vertex_vector_t, GLKMesh_i::element_vector_t>
+std::pair<GLKDrawable_i::vertex_vector_t, GLKDrawable_i::element_vector_t>
 GLKSphere_c::constructSphereVertexData(unsigned int u_max, unsigned int v_max)
 {
     vertex_vector_t v;
@@ -78,4 +78,4 @@ GLKSphere_c::GLKSphere_c(unsigned int u, unsigned int v)
     initialize(data.first, data.second);
 }
 
-} // namespace glkit::mesh
+} // namespace glkit::drawables

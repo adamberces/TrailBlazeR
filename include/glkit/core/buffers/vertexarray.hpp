@@ -12,7 +12,7 @@ namespace glkit::core::buffers
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Helper metafunctions for convient use of glVertexAttribPointer's type parameter
+// Helper metafunctions for convenient use of glVertexAttribPointer's type parameter
 
 template<typename T>
 struct buffer_data_type_traits
@@ -41,61 +41,6 @@ struct buffer_data_type_traits<unsigned int>
 // Class representing a GL Vertex Array Object
 // Designed as per the RAII principles, glDeleteVertexArrays is automatically called
 // to free resources when the object lifetime is over.
-
-template<typename BufferDataType>
-class DynamicVertexArrayObject_c : public StaticVertexArrayObject_c
-{
-    void allocateBuffer(std::size_t data_count, ArrayBufferType_e type)
-    {
-        bind();
-
-        if (data_count == 0)
-        {
-            throw std::runtime_error("DynamicVertexArrayObject_c::allocateVertexBuffer: "
-                "data_count can't be zero!");
-        }
-
-        VertexBuffers.emplace_back
-            (new ArrayBuffer_c<BufferDataType>
-             (type, ArrayBufferUsage_e::DynamicDraw));
-        VertexBuffers.back()->bindEmptyBuffer(data_count);
-        
-        unbind();
-    }
-
-public:
-    void allocateVertexBuffer(std::size_t data_count)
-    {
-       allocateBuffer(ArrayBufferType_e::ArrayBuffer);
-    }
-    
-    void allocateElementArrayBuffer(std::size_t data_count)
-    {
-        allocateBuffer(ArrayBufferType_e::ElementArrayBuffer);
-    }
-
-    virtual inline void copyVertexData 
-        (const std::vector<BufferDataType>& vertexData,
-         const std::vector<unsigned int>& elementData) override
-    {
-        bind();
-
-        if (vertexData.empty())
-        {
-            throw std::runtime_error("StaticVertexArrayObject_c::copyVertexData: "
-                "vertexData can't be empty!");
-        }
-
-        VertexBuffers.back()->bindAndCopySubData(vertexData);
-
-        if (!(ElementBuffers.empty()))
-        {
-            ElementBuffers.back()->bindAndCopySubData(elementData);
-        }
-        
-        unbind();
-    }
-};
 
 template<typename BufferDataType>
 class StaticVertexArrayObject_c : public GLObject_i
@@ -195,5 +140,12 @@ public:
         glDeleteVertexArrays(1, &Id);
     }
 };
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// Explicitly instantiate StaticVertexArrayObject_c with float type
+// to be available for DynamicVertexArrayObject_c<float> and also to spare
+// some compilation time as it is heavily used in most GLKit code
+
+template class StaticVertexArrayObject_c<float>;
 
 } // namespace glkit::core::buffers

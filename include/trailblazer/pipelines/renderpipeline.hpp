@@ -11,8 +11,8 @@
 #include <glkit/functors/color.hpp>
 #include <glkit/functors/basiclightning_position.hpp>
 
-#include <glkit/mesh/glkcube.hpp>
-#include <glkit/mesh/glksphere.hpp>
+#include <glkit/drawables/glkcube.hpp>
+#include <glkit/drawables/glksphere.hpp>
 
 
 namespace trailblazer::pipelines
@@ -34,7 +34,7 @@ public:
 protected:
     glkit::core::shaders::ShaderSourceList_s SSL;
     
-    std::unique_ptr<glkit::mesh::GLKMesh_i> Mesh;
+    std::unique_ptr<glkit::drawables::GLKDrawable_i> Mesh;
     std::unique_ptr<glkit::core::shaders::ShaderProgram_c> ShaderProgram;
     std::unique_ptr<glkit::core::uniforms::ShaderUniformInterface_c> Uniforms;
     

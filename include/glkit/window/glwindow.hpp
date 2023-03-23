@@ -9,7 +9,7 @@ namespace glkit::window
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // Interface class represents and displays a GLFW window.
-// Provides convient functions for testing keypress events.
+// Provides convenient functions for testing keypress events.
 // The child classes has to override handleKeypressEvents where the
 // desired keypress events can be tested and handled
 class GLWindow_i

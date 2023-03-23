@@ -1,13 +1,13 @@
-#include <glkit/mesh/glkcube.hpp>
+#include <glkit/drawables/glkcube.hpp>
 
 
-namespace glkit::mesh
+namespace glkit::drawables
 {
     
 /////////////////////////////////////////////////////////////////////////////////////////
 // GLKCube_c implementation
 
-std::pair<GLKMesh_i::vertex_vector_t, GLKMesh_i::element_vector_t>
+std::pair<GLKDrawable_i::vertex_vector_t, GLKDrawable_i::element_vector_t>
 GLKCube_c::constructCubeVertexData
     (float width_ratio,
      float height_ratio,
@@ -76,4 +76,4 @@ GLKCube_c::GLKCube_c(float width_ratio,
     initialize(data.first, data.second);
 }
 
-} // namespace glkit::mesh
+} // namespace glkit::drawables

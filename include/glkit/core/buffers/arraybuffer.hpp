@@ -79,7 +79,7 @@ public:
     inline void bindAndCopySubData(std::vector<BufferDataType> data)
     {
         glBindBuffer(static_cast<unsigned int>(Type), Id);
-        glBufferSubData(static_cast<unsigned int>(Type), 0
+        glBufferSubData(static_cast<unsigned int>(Type), 0,
                      data.size() * sizeof(BufferDataType), data.data());
         glBindBuffer(static_cast<unsigned int>(Type), 0);
     }

@@ -1,19 +1,20 @@
 #include <stdexcept>
-#include <glkit/window/background.hpp>
+#include <glkit/drawables/background.hpp>
 #include <png/pngimage.hpp>
 
-namespace glkit::window
+
+namespace glkit::drawables
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// GLKBackgound_c implementation
+// GLKBackground_c implementation
 
-void GLKBackgound_c::activateTexture() const
+void GLKBackground_c::activateTexture() const
 {
     glBindTexture(GL_TEXTURE_2D, TextureID);
 }
 
-void GLKBackgound_c::draw() const
+void GLKBackground_c::draw() const
 {
     glDisable(GL_DEPTH_TEST);
     VertexArrayObject->bind();
@@ -23,8 +24,8 @@ void GLKBackgound_c::draw() const
     glEnable(GL_DEPTH_TEST); 
 }
 
-std::pair<mesh::GLKMesh_i::vertex_vector_t, mesh::GLKMesh_i::element_vector_t>
-GLKBackgound_c::constructVertexData()
+std::pair<drawables::GLKDrawable_i::vertex_vector_t, drawables::GLKDrawable_i::element_vector_t>
+GLKBackground_c::constructVertexData()
 {
     vertex_vector_t v =
     {
@@ -44,7 +45,7 @@ GLKBackgound_c::constructVertexData()
     return std::make_pair(v, e);
 }
 
-void GLKBackgound_c::initialize(const vertex_vector_t& vertices,
+void GLKBackground_c::initialize(const vertex_vector_t& vertices,
     const element_vector_t& indices) 
 {
     NumberOfElements = indices.size();
@@ -69,11 +70,11 @@ void GLKBackgound_c::initialize(const vertex_vector_t& vertices,
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-GLKBackgound_c::GLKBackgound_c(std::string fileName) :
+GLKBackground_c::GLKBackground_c(std::string fileName) :
     FileName(fileName)
 {
     auto data = constructVertexData();
     initialize(data.first, data.second);
 }
 
-} // namespace glkit::window
+} // namespace glkit::drawables

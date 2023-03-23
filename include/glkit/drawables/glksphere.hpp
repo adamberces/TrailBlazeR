@@ -1,22 +1,22 @@
 #pragma once
 
 #include <utility>
-#include <glkit/mesh/glkmesh.hpp>
+#include <glkit/drawables/glkdrawable.hpp>
 
 
-namespace glkit::mesh
+namespace glkit::drawables
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Represents a sphere mesh. The number of stacks/segments (U/V) are specified in the constructor
 
-class GLKSphere_c : public GLKMesh_i
+class GLKSphere_c : public GLKDrawable_i
 {
-    std::pair<GLKMesh_i::vertex_vector_t, GLKMesh_i::element_vector_t>
+    std::pair<GLKDrawable_i::vertex_vector_t, GLKDrawable_i::element_vector_t>
     constructSphereVertexData(unsigned int u, unsigned int v);
 
 public:
     GLKSphere_c(unsigned int u, unsigned int v);
 };
 
-} // namespace glkit::mesh
+} // namespace glkit::drawables

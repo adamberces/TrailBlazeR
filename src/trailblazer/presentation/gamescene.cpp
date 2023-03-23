@@ -47,7 +47,7 @@ void GameScene_c::drawScene()
 {
     Background->run();
     PO->broadcastMessage<msgRedrawTrigger>({});
-    TestText->run();
+    TestText->run("fps: 10", 100, 100, { 1.F, 0.F, 0.F });
 }
 
 void GameScene_c::setup()
@@ -65,7 +65,7 @@ void GameScene_c::setup()
     RenderPipeline_i::LightningColorConfig.Color.B = 0.57F;
 
     Background = std::make_unique<pipelines::BackgroundPipeline_c>("./assets/bkg.png");
-    TestText = std::make_unique<pipelines::TextPipeline_c>();
+    TestText = std::make_unique<pipelines::TextPipeline_c>("./assets/fonts/font");
     Background->setup();
     TestText->setup();
 
