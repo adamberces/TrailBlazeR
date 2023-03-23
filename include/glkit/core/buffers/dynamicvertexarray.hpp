@@ -60,7 +60,7 @@ public:
             this->ElementBuffers.back()->bindAndCopySubData(elementData);
         }
         
-       this-> unbind();
+       this->unbind();
     }
 };
 

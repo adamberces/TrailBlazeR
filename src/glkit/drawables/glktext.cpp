@@ -30,7 +30,12 @@ void GLKText_c::drawCharacter(const Character_s& ch, float x, float y) const
     // render glyph texture over quad
     glBindTexture(GL_TEXTURE_2D, ch.TextureId);
     VertexArrayObject->copyVertexData(vertices, {});
+
+    // copyVertexData unbounds the buffer after each call
+    // to be on the safe side so we need this here...
+    VertexArrayObject->bind();
     glDrawArrays(GL_TRIANGLES, 0, 6);
+    VertexArrayObject->unbind();
 }
 
 void GLKText_c::drawText(std::string text, int x, int y) const
@@ -43,9 +48,10 @@ void GLKText_c::drawText(std::string text, int x, int y) const
     glActiveTexture(GL_TEXTURE0);
     VertexArrayObject->bind();
 
-    for(char c : text)
+    for (char c : text)
     {
-        const Character_s& ch = Font.characters().at(static_cast<std::size_t>(c));
+        const Character_s& ch =
+            Font.characters().at(static_cast<std::size_t>(c));
         drawCharacter(ch, x, y);
 
         // Shift x coordinate to the starting point of the next character
