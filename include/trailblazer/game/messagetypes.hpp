@@ -15,14 +15,6 @@ enum class msgGameStateChange
     LEVEL_WON
 };
 
-enum class msgBallEvent
-{
-    ROLLING,
-    JUMPING,
-    FALLING,
-    FALLING_OFF
-};
-
 enum class msgKeyEvent
 {
     NONE,
