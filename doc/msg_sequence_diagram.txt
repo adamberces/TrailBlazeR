@@ -1,5 +1,4 @@
 #Created with https://sequencediagram.org/
-
 title Message sequence diagram
 participant GameWindow
 participant BallControl
@@ -9,9 +8,16 @@ participant GameScene
 
 participant GameControl
 
+participant HUD
+participant Background
+participant SoundControl
+
 note over GameWindow:Poll control keys
 GameWindow->BallControl:msgKeyEvent
 note over BallControl:Generate forces and calculate next ball position 
+BallControl->SoundControl:msgTriggerJumpSound
+BallControl->SoundControl:msgTriggerBounceSound
+
 BallControl->BallDrawer:msgBallPositionAndDistance
 note over BallDrawer:Update ball uniforms, propagate position data
 BallDrawer->Map:msgBallPosition
@@ -20,7 +26,13 @@ Map->BallControl:msgActualTileType
 note over BallControl:Calculate ball state from actual tile type
 BallControl->GameControl:msgGameStateChange
 note over GameControl:Handle ball lost/level won event, restart or advance level
+BallControl->SoundControl:msgTriggerFallSound
+Map->HUD:msgMapInfo
+GameControl->HUD:msgRemainingLives
+note over HUD:Update text to display on top of the screen
 BallDrawer->GameScene:msgBallPosition
 note over GameScene:Update global uniforms and trigger scene drawing
+GameScene->Background:msgRedrawTrigger
 GameScene->Map:msgRedrawTrigger
 GameScene->BallDrawer:msgRedrawTrigger
+GameScene->HUD:msgRedrawTrigger
