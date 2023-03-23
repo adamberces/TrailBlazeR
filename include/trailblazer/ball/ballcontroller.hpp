@@ -67,7 +67,7 @@ class BallController_c :
     // Ball physics, calculate the new position from the actual state
     void addForces(float delta_time);
     void addFriction
-        (float rigidbody::Vector3D_s::*component,
+        (float rigidbody::Vector3D_s::* component,
          float coefficient);
     void addDrag();
 

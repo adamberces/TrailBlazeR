@@ -154,7 +154,7 @@ float sgn(float f)
     return ( f < 0.F ? -1.F : 1.F  );
 }
 
-void BallController_c::addFriction(float rigidbody::Vector3D_s::*component, float coefficient)
+void BallController_c::addFriction(float rigidbody::Vector3D_s::* component, float coefficient)
 {
     // Get the direction of the force
     float velocityDirection = sgn(Velocity.*component);
