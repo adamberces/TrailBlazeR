@@ -39,7 +39,7 @@ enum class BallState_e
 // Receives the msgKeyEvent_e message from Game Window
 // Receives the msgActualTileType_s message from Map
 
-class BallController_c :
+class BallControl_c :
     public messaging::MessageRecipient_i,
     public rigidbody::RigidBody_c
 {   
@@ -79,7 +79,7 @@ class BallController_c :
 
 public:
     void sendMessage(msg_t m) override;
-    BallController_c(messaging::PostOffice_c* po);
+    BallControl_c(messaging::PostOffice_c* po);
 };
 
 } // namespace trailblazer::ball

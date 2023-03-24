@@ -1,13 +1,13 @@
-#include <trailblazer/ball/ballcontroller.hpp>
+#include <trailblazer/ball/ballcontrol.hpp>
 
 
 namespace trailblazer::ball
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Implementation for BallController_c
+// Implementation for BallControl_c
 
-void BallController_c::updateBall()
+void BallControl_c::updateBall()
 {
     double dt = GameClock_c::get().elapsedTime();
     
@@ -23,7 +23,7 @@ void BallController_c::updateBall()
 // Handle the actual tile type on/above which the ball is
 // and do a state transition of BallState if needed
 
-void BallController_c::handleActualTile()
+void BallControl_c::handleActualTile()
 {
     switch (LastTileType)
     {
@@ -87,7 +87,7 @@ void BallController_c::handleActualTile()
 // Ball physics implementation, calculate the new position of the ball
 // according to the actual state
 
-void BallController_c::addForces(float delta_time)
+void BallControl_c::addForces(float delta_time)
 {
     // Handle jumping, add velocity to the Z speed component
     // for a short period of time
@@ -154,7 +154,7 @@ float sgn(float f)
     return ( f < 0.F ? -1.F : 1.F  );
 }
 
-void BallController_c::addFriction(float rigidbody::Vector3D_s::* component, float coefficient)
+void BallControl_c::addFriction(float rigidbody::Vector3D_s::* component, float coefficient)
 {
     // Get the direction of the force
     float velocityDirection = sgn(Velocity.*component);
@@ -169,7 +169,7 @@ void BallController_c::addFriction(float rigidbody::Vector3D_s::* component, flo
     addForce(frictionForce);
 }
 
-void BallController_c::addDrag()
+void BallControl_c::addDrag()
 {
     // Calculate the crossection area of the sphere in compile time
     constexpr float crossectionArea =
@@ -191,7 +191,7 @@ void BallController_c::addDrag()
 // Apply world constraints and do collision detection on the ball 
 // Updates ball position and velocity for specific conditions
 
-void BallController_c::applyMapLimits()
+void BallControl_c::applyMapLimits()
 {
     // Stop movement in the X direction on the edges of the map
     // and also zero the corresponding speed component
@@ -234,7 +234,7 @@ void BallController_c::applyMapLimits()
 /////////////////////////////////////////////////////////////////////////////////////////
 // Handle keyboard input
 
-void BallController_c::handleKeyboardInput(msgKeyEvent_e e)
+void BallControl_c::handleKeyboardInput(msgKeyEvent_e e)
 {
     // Allow keyboard input only when the ball
     // is on ground and no other special conditions
@@ -261,17 +261,17 @@ void BallController_c::handleKeyboardInput(msgKeyEvent_e e)
     updateBall();
 }
     
-void BallController_c::moveLeft()
+void BallControl_c::moveLeft()
 {
     addForce(rigidbody::Vector3D_s(-(Constants_s::CONTROL_FORCE_X), 0.F, 0.F));
 }
 
-void BallController_c::moveRight()
+void BallControl_c::moveRight()
 {
     addForce(rigidbody::Vector3D_s(Constants_s::CONTROL_FORCE_X, 0.F, 0.F));
 }
 
-void BallController_c::jump()
+void BallControl_c::jump()
 {
     // Allow jumping only when the ball is on ground
     // If yes, do a state transition which will be handled in addForces
@@ -286,7 +286,7 @@ void BallController_c::jump()
 /////////////////////////////////////////////////////////////////////////////////////////
 // Messaging and constructor
 
-void BallController_c::sendMessage(msg_t m)
+void BallControl_c::sendMessage(msg_t m)
 {
     if (isMessageType<msgKeyEvent_e>(m))
     {
@@ -300,7 +300,7 @@ void BallController_c::sendMessage(msg_t m)
     }
 }
 
-void BallController_c::broadcastPosition(float delta_time)
+void BallControl_c::broadcastPosition(float delta_time)
 {
     // Calculate the horizontal speed of the
     // ball by zeroing the Z component
@@ -316,7 +316,7 @@ void BallController_c::broadcastPosition(float delta_time)
     PO->broadcastMessage<msgBallPositionAndDistance_s>(msg);
 }
 
-BallController_c::BallController_c(messaging::PostOffice_c* po) :
+BallControl_c::BallControl_c(messaging::PostOffice_c* po) :
     MessageRecipient_i(po),
     BallState(BallState_e::IN_AIR),
     LastTileType(map::TileType_e::NORMAL),

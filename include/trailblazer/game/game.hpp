@@ -4,7 +4,7 @@
 #include <trailblazer/game/gamecontrol.hpp>
 
 #include <trailblazer/ball/balldrawer.hpp>
-#include <trailblazer/ball/ballcontroller.hpp>
+#include <trailblazer/ball/ballcontrol.hpp>
 #include <trailblazer/map/mapmanager.hpp>
 #include <trailblazer/presentation/gamewindow.hpp>
 #include <trailblazer/presentation/gamescene.hpp>
@@ -32,7 +32,7 @@ public:
             // Set up a new ball and a scene from the ball and the actual map
             // for the new level's scene
             ball::BallDrawer_c Ball(&PostOffice);
-            ball::BallController_c BallControl(&PostOffice);
+            ball::BallControl_c BallControl(&PostOffice);
             map::Map_c Map(&PostOffice, mapFileName);
             presentation::GameScene_c GameScene(&PostOffice);
             GameControl_c GameControl(&PostOffice);
