@@ -29,19 +29,19 @@ class Map_c : public messaging::MessageRecipient_i
 public:
     void sendMessage(msg_t m) override
     {
-        if (isMessageType<msgRedrawTrigger>(m))
+        if (isMessageType<msgRedrawTrigger_s>(m))
         {
             draw();
         }
-        else if (isMessageType<msgBallPosition>(m))
+        else if (isMessageType<msgBallPosition_s>(m))
         {
             // Calculate the tile's index on which the ball
             // can be actually found and return it's tile type
             // for collision detection in the game control
-            msgBallPosition p = msg_cast<msgBallPosition>(m);
+            msgBallPosition_s p = msg_cast<msgBallPosition_s>(m);
             int x = static_cast<int>(::floor(p.Position.X + 0.5F));
             int y = static_cast<int>(::floor(p.Position.Y + 0.5F));
-            msgActualTileType tiletype({ getTile(x, y) });
+            msgActualTileType_s tiletype({ getTile(x, y) });
             PO->broadcastMessage(tiletype);
         }
     }
@@ -108,8 +108,8 @@ public:
         MapFile(mapFile)
     {
         Pipeline.setup();
-        PO->subscribeRecipient<msgRedrawTrigger>(this);
-        PO->subscribeRecipient<msgBallPosition>(this);
+        PO->subscribeRecipient<msgRedrawTrigger_s>(this);
+        PO->subscribeRecipient<msgBallPosition_s>(this);
     }
 };
 

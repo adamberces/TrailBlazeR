@@ -54,16 +54,16 @@ public:
 
     void sendMessage(msg_t m) override
     {
-        if (isMessageType<msgGameStateChange>(m))
+        if (isMessageType<msgGameStateChange_e>(m))
         {
-            msgGameStateChange s = msg_cast<msgGameStateChange>(m);
+            msgGameStateChange_e s = msg_cast<msgGameStateChange_e>(m);
             
             switch(s)
             {
-                case msgGameStateChange::BALL_LOST:
+                case msgGameStateChange_e::BALL_LOST:
                     GameState = GameState_e::BALL_LOST;
                     break;
-                case msgGameStateChange::LEVEL_WON:
+                case msgGameStateChange_e::LEVEL_WON:
                     GameState = GameState_e::LEVEL_WON;
                     break;
             }
@@ -77,7 +77,7 @@ public:
         WaitTimer(0.F)
     {   
         // Manage subscriptions
-        PO->subscribeRecipient<msgGameStateChange>(this);
+        PO->subscribeRecipient<msgGameStateChange_e>(this);
     }
 
 };

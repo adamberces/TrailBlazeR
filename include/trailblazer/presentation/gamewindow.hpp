@@ -15,7 +15,7 @@ namespace trailblazer::presentation
 // Represents the main game window.
 //
 // Inherits from MessageRecipient_i:
-// Provides the msgKeyEvent message
+// Provides the msgKeyEvent_e message
 // It is the initial provider of messages, does not subscribed to anything
 
 class GameWindow_c :

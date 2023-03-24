@@ -35,9 +35,9 @@ enum class BallState_e
 // and realizes the core game physics
 //
 // Inherits from MessageRecipient_i:
-// Provides the msgBallPositionAndDistance message for Ball Drawer
-// Receives the msgKeyEvent message from Game Window
-// Receives the msgActualTileType message from Map
+// Provides the msgBallPositionAndDistance_s message for Ball Drawer
+// Receives the msgKeyEvent_e message from Game Window
+// Receives the msgActualTileType_s message from Map
 
 class BallController_c :
     public messaging::MessageRecipient_i,
@@ -53,7 +53,7 @@ class BallController_c :
     double JumpTimer;
 
     // Keyboard input functions
-    void handleKeyboardInput(msgKeyEvent e);
+    void handleKeyboardInput(msgKeyEvent_e e);
     void moveLeft();
     void moveRight();
     void jump();

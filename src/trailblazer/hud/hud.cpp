@@ -14,11 +14,11 @@ void HUD_c::draw()
 
 void HUD_c::sendMessage(msg_t m)
 {
-    if (isMessageType<msgRedrawTrigger>(m))
+    if (isMessageType<msgRedrawTrigger_s>(m))
     {
         draw();
     }
-    else if (isMessageType<msgBallPositionAndDistance>(m))
+    else if (isMessageType<msgBallPositionAndDistance_s>(m))
     {
         
     }
@@ -29,8 +29,8 @@ HUD_c::HUD_c(messaging::PostOffice_c* po) :
     Pipeline("./assets/fonts/font")
 {   
     // Manage subscriptions
-    PO->subscribeRecipient<msgRedrawTrigger>(this);
-    PO->subscribeRecipient<msgBallPositionAndDistance>(this);
+    PO->subscribeRecipient<msgRedrawTrigger_s>(this);
+    PO->subscribeRecipient<msgBallPositionAndDistance_s>(this);
 }
 
 } // namespace trailblazer::ball

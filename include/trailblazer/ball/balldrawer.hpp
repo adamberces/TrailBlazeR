@@ -16,9 +16,9 @@ namespace trailblazer::ball
 // Wraps a ball pipeline to draw the ball object
 //
 // Inherits from MessageRecipient_i:
-// Provides the msgBallPosition message for Map and Game scene
-// Receives the msgRedrawTrigger message from Game scene
-// Receives the msgBallPositionAndDistance message from Ball Controller
+// Provides the msgBallPosition_s message for Map and Game scene
+// Receives the msgRedrawTrigger_s message from Game scene
+// Receives the msgBallPositionAndDistance_s message from Ball Controller
 
 class BallDrawer_c : public messaging::MessageRecipient_i
 {

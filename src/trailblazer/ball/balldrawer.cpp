@@ -25,13 +25,13 @@ void BallDrawer_c::draw()
 
 void BallDrawer_c::sendMessage(msg_t m)
 {
-    if (isMessageType<msgRedrawTrigger>(m))
+    if (isMessageType<msgRedrawTrigger_s>(m))
     {
         draw();
     }
-    else if (isMessageType<msgBallPositionAndDistance>(m))
+    else if (isMessageType<msgBallPositionAndDistance_s>(m))
     {
-        msgBallPositionAndDistance p = msg_cast<msgBallPositionAndDistance>(m);
+        msgBallPositionAndDistance_s p = msg_cast<msgBallPositionAndDistance_s>(m);
         
         Pipeline.ModelConfig.Position = p.Position;
 
@@ -44,7 +44,7 @@ void BallDrawer_c::sendMessage(msg_t m)
         // taken by the ball since the last frame
         Pipeline.ModelConfig.Rotation.Angle -= p.Distance * DegreePerMeter;
 
-        PO->broadcastMessage<msgBallPosition>({p.Position});
+        PO->broadcastMessage<msgBallPosition_s>({p.Position});
     }
 }
 
@@ -53,8 +53,8 @@ BallDrawer_c::BallDrawer_c(messaging::PostOffice_c* po) :
     Pipeline()
 {   
     // Manage subscriptions
-    PO->subscribeRecipient<msgRedrawTrigger>(this);
-    PO->subscribeRecipient<msgBallPositionAndDistance>(this);
+    PO->subscribeRecipient<msgRedrawTrigger_s>(this);
+    PO->subscribeRecipient<msgBallPositionAndDistance_s>(this);
     setup();
 }
 

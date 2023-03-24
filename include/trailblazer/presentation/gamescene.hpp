@@ -15,8 +15,8 @@ namespace trailblazer::presentation
 // Represents the main game window.
 //
 // Inherits from MessageRecipient_i:
-// Provides the msgRedrawTrigger message, which causes the redraw of the scene's 3D elements
-// Receives the msgBallPosition message, from which it updates the global uniform variables
+// Provides the msgRedrawTrigger_s message, which causes the redraw of the scene's 3D elements
+// Receives the msgBallPosition_s message, from which it updates the global uniform variables
 
 
 // Import RenderPipeline_i to current namespace 
@@ -29,7 +29,7 @@ class GameScene_c : public messaging::MessageRecipient_i
 
     // The background drawer pipeline object is owned by the scene
     // the rest of the objects (ball, tiles) are independent
-    // and redrawn on the msgRedrawTrigger message
+    // and redrawn on the msgRedrawTrigger_s message
     std::unique_ptr<pipelines::BackgroundPipeline_c> Background;
 
     // Updates the shader uniforms used in the scene
@@ -41,7 +41,7 @@ class GameScene_c : public messaging::MessageRecipient_i
     // and they are called as "globals" here
     void updateGlobals(glkit::functors::point3d_t ballPos);
 
-    // Get the msgBallPosition message, then call updateGlobals
+    // Get the msgBallPosition_s message, then call updateGlobals
     void sendMessage(msg_t m) override;
 
 public:

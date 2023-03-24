@@ -33,10 +33,10 @@ void GameScene_c::updateGlobals(glkit::functors::point3d_t ballPos)
 
 void GameScene_c::sendMessage(msg_t m)
 {
-    if (isMessageType<msgBallPosition>(m))
+    if (isMessageType<msgBallPosition_s>(m))
     {
-        msgBallPosition p =
-            msg_cast<msgBallPosition>(m);
+        msgBallPosition_s p =
+            msg_cast<msgBallPosition_s>(m);
         updateGlobals(p.Position);
         drawScene();
     }
@@ -46,7 +46,7 @@ void GameScene_c::sendMessage(msg_t m)
 void GameScene_c::drawScene()
 {
     Background->run();
-    PO->broadcastMessage<msgRedrawTrigger>({});
+    PO->broadcastMessage<msgRedrawTrigger_s>({});
     TestText->run("fps: 10", 100, 100, { 1.F, 0.F, 0.F });
 }
 
@@ -76,7 +76,7 @@ GameScene_c::GameScene_c(messaging::PostOffice_c* po) :
 {
     setup();
 
-    PO->subscribeRecipient<msgBallPosition>(this);
+    PO->subscribeRecipient<msgBallPosition_s>(this);
 }
 
 

@@ -9,24 +9,24 @@ namespace trailblazer::presentation
 
 void GameWindow_c::handleKeypressEvents()
 {
-    msgKeyEvent e =  msgKeyEvent::NONE;
+    msgKeyEvent_e e =  msgKeyEvent_e::NONE;
 
     if (isPressed(GLFW_KEY_A) ||
         isPressed(GLFW_KEY_LEFT))
     {
-        e = msgKeyEvent::LEFT;
+        e = msgKeyEvent_e::LEFT;
     }
     else if (isPressed(GLFW_KEY_D) ||
                 isPressed(GLFW_KEY_RIGHT))
     {
-        e = msgKeyEvent::RIGHT;
+        e = msgKeyEvent_e::RIGHT;
     }
     else if (isPressed(GLFW_KEY_SPACE))
     {
-        e = msgKeyEvent::JUMP;
+        e = msgKeyEvent_e::JUMP;
     }
 
-    PO->broadcastMessage<msgKeyEvent>(e);
+    PO->broadcastMessage<msgKeyEvent_e>(e);
 }
 
 GameWindow_c::GameWindow_c(messaging::PostOffice_c* po) :

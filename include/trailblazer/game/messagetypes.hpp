@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include <glkit/functors/functor_types.hpp>
 #include <trailblazer/map/tile.hpp>
 
@@ -9,13 +11,13 @@
 namespace trailblazer
 {
 
-enum class msgGameStateChange
+enum class msgGameStateChange_e
 {
     BALL_LOST,
     LEVEL_WON
 };
 
-enum class msgKeyEvent
+enum class msgKeyEvent_e
 {
     NONE,
     LEFT,
@@ -23,26 +25,47 @@ enum class msgKeyEvent
     JUMP
 };
 
-struct msgActualTileType
+enum class msgSoundEvent_e
+{
+    JUMP,
+    BOUNCE,
+    LOST,
+    GAME_OVER,
+    GAME_WON
+};
+
+struct msgActualTileType_s
 {
     map::TileType_e Type;
 };
 
-struct msgBallPositionAndDistance
+struct msgBallPosition_s
+{
+    glkit::functors::point3d_t Position;
+};
+
+struct msgBallPositionAndDistance_s : msgBallPosition_s
 {
     float Distance;
-    glkit::functors::point3d_t Position;
 };
 
-struct msgBallPosition
+struct msgMapInfo_s
 {
-    glkit::functors::point3d_t Position;
+    std::string Title;
+    
+    int Length;
+    int ActualProgress;
+
+    float Gravity;
 };
 
-struct msgRedrawTrigger
+struct msgRemainingLives_s
+{
+    int ReminingLives;
+};
+
+struct msgRedrawTrigger_s
 {
 };
-
-
 
 } // namespace trailblazer::messaging

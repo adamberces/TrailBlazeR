@@ -33,7 +33,7 @@ void BallController_c::handleActualTile()
                 BallState = BallState_e::LOST;
 
                 // Inform game control if the ball is lost
-                PO->broadcastMessage<msgGameStateChange>(msgGameStateChange::BALL_LOST);
+                PO->broadcastMessage<msgGameStateChange_e>(msgGameStateChange_e::BALL_LOST);
             }
             break;
             
@@ -57,7 +57,7 @@ void BallController_c::handleActualTile()
                 BallState = BallState_e::LEVEL_WON;
 
                 // Inform game control if the level is won
-                PO->broadcastMessage<msgGameStateChange>(msgGameStateChange::LEVEL_WON);
+                PO->broadcastMessage<msgGameStateChange_e>(msgGameStateChange_e::LEVEL_WON);
             }
             break;
 
@@ -234,7 +234,7 @@ void BallController_c::applyMapLimits()
 /////////////////////////////////////////////////////////////////////////////////////////
 // Handle keyboard input
 
-void BallController_c::handleKeyboardInput(msgKeyEvent e)
+void BallController_c::handleKeyboardInput(msgKeyEvent_e e)
 {
     // Allow keyboard input only when the ball
     // is on ground and no other special conditions
@@ -243,16 +243,16 @@ void BallController_c::handleKeyboardInput(msgKeyEvent e)
     {
         switch(e)
         {
-        case msgKeyEvent::JUMP:
+        case msgKeyEvent_e::JUMP:
             jump();
             break;
-        case msgKeyEvent::LEFT:
+        case msgKeyEvent_e::LEFT:
             moveLeft();
             break;
-        case msgKeyEvent::RIGHT:
+        case msgKeyEvent_e::RIGHT:
             moveRight();
             break;
-        case msgKeyEvent::NONE:
+        case msgKeyEvent_e::NONE:
             break;
         }
     }
@@ -288,14 +288,14 @@ void BallController_c::jump()
 
 void BallController_c::sendMessage(msg_t m)
 {
-    if (isMessageType<msgKeyEvent>(m))
+    if (isMessageType<msgKeyEvent_e>(m))
     {
-        msgKeyEvent e = msg_cast<msgKeyEvent>(m);
+        msgKeyEvent_e e = msg_cast<msgKeyEvent_e>(m);
         handleKeyboardInput(e);
     }
-    else if (isMessageType<msgActualTileType>(m))
+    else if (isMessageType<msgActualTileType_s>(m))
     {
-        msgActualTileType tt = msg_cast<msgActualTileType>(m);
+        msgActualTileType_s tt = msg_cast<msgActualTileType_s>(m);
         LastTileType = tt.Type;
     }
 }
@@ -309,8 +309,11 @@ void BallController_c::broadcastPosition(float delta_time)
     float speed = v.magnitude();
     float dist = speed * delta_time;
     
-    msgBallPositionAndDistance msg({ dist, {Position.X, Position.Y, Position.Z}});
-    PO->broadcastMessage<msgBallPositionAndDistance>(msg);
+    msgBallPositionAndDistance_s msg;
+    msg.Distance = dist;
+    msg.Position = { Position.X, Position.Y, Position.Z };
+    msg.Position = { Position.X, Position.Y, Position.Z };
+    PO->broadcastMessage<msgBallPositionAndDistance_s>(msg);
 }
 
 BallController_c::BallController_c(messaging::PostOffice_c* po) :
@@ -324,8 +327,8 @@ BallController_c::BallController_c(messaging::PostOffice_c* po) :
                 Constants_s::BALL_MASS)
 {   
     // Manage subscriptions
-    PO->subscribeRecipient<msgKeyEvent>(this);
-    PO->subscribeRecipient<msgActualTileType>(this);
+    PO->subscribeRecipient<msgKeyEvent_e>(this);
+    PO->subscribeRecipient<msgActualTileType_s>(this);
 }
 
 } // namespace trailblazer::ball
