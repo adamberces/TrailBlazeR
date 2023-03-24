@@ -6,44 +6,61 @@
 #include <fstream>
 
 #include <trailblazer/map/tile.hpp>
-
+#include <trailblazer/game/constants.hpp>
+#include <glkit/functors/functor_types.hpp>
 
 namespace trailblazer::map
 {
 
+struct MapMetadata_s
+{
+    glkit::functors::rgb_t ColorTheme;
+    std::string MapTitle;
+    std::string BackgroundFileName;
+};
+
 class MapFile_c
 {
 public:
-    static constexpr size_t HEADER_SIZE = 4;
+    static constexpr size_t HEADER_SIZE = 6;
     static constexpr char EXTENSION[] = "TMF";
 
 private:
     // Creating an alias for prettier code
     using buffer_t = std::vector<char>;
 
-    // Number of tiles in a row
-    unsigned short Width;
-
     // The tile data, which is served for the main Map_c class
     std::vector<Tile_s> Tiles;
 
+    MapMetadata_s MapMetadata;
+
 public:
-    decltype(Width) width() const
-    {
-        return Width;
-    }
 
     const decltype(Tiles)& tiles() const
     {
         return Tiles;
     }
 
+    // Reads a NULL delimited string from the map header
+    std::string readString(const buffer_t& buf, std::size_t& start)
+    {
+        std::string out;
+
+        char c = buf.at(start);
+        while (c != '\0')
+        {
+            out += c;
+            c = buf.at(++start);
+        }
+
+        return out;
+    }
 
     // Reads and validates the TMF header, which is:
     // bytes 0-2: characters 'TMF'
     // byte 3: describes the width of a row
 
-    void readHeader(const buffer_t& buf)
+    void readHeader(const buffer_t& buf, std::size_t& bufPtr)
     {
         if (buf.size() < HEADER_SIZE + 1)
         {
@@ -59,13 +76,18 @@ public:
                 "no 'TMF' header found.");
         }
 
-        // Read Width data
-        Width = static_cast<unsigned short>(buf.at(3));
+        // Read metadata
+        MapMetadata.ColorTheme.R = static_cast<unsigned char>(buf.at(3));
+        MapMetadata.ColorTheme.G = static_cast<unsigned char>(buf.at(4));
+        MapMetadata.ColorTheme.B = static_cast<unsigned char>(buf.at(5));
+
+        MapMetadata.MapTitle  = readString(buf, bufPtr);
+        MapMetadata.BackgroundFileName = readString(buf, ++bufPtr);
     }
 
-    void readTileData(const buffer_t& buf)
+    void readTileData(const buffer_t& buf, std::size_t& bufPtr)
     {
-        for (size_t i = HEADER_SIZE; i < buf.size(); i++)
+        for (size_t i = bufPtr; i < buf.size(); i++)
         {
             TileType_e t = TileType_e::NORMAL;
             Color_e c = static_cast<Color_e>(buf.at(i));
@@ -88,11 +110,11 @@ public:
         }
 
         // Let's see if the last row is complete or not
-        if (Tiles.size() % Width != 0)
+        if (Tiles.size() % Constants_s::MAP_WIDTH != 0)
         {
             throw std::runtime_error("MapFile_c::readTileData: "
-                "The last row in incomplete, expecting " + std::to_string(Width) +
-                "tiles, got " + std::to_string(Tiles.size() % Width));
+                "The last row in incomplete, expecting " + std::to_string(Constants_s::MAP_WIDTH) +
+                "tiles, got " + std::to_string(Tiles.size() % Constants_s::MAP_WIDTH));
         }
     }
 
@@ -112,8 +134,9 @@ public:
         buffer_t buf = buffer_t(sz);
         ifs.read(buf.data(), sz);
 
-        readHeader(buf);
-        readTileData(buf);
+        std::size_t bufPtr = HEADER_SIZE;
+        readHeader(buf, bufPtr);
+        readTileData(buf, ++bufPtr);
     }
 
     explicit MapFile_c(const std::string& fileName)

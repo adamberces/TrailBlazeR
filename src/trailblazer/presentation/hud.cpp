@@ -9,7 +9,10 @@ namespace trailblazer::presentation
 
 void HUD_c::draw()
 {
-    Pipeline.run("teszt", 10, 10, {1, 1, 1});
+    Pipeline.run("TRAILBLAZER 2023 by Adam Berces", 10, 30, { 1, 1, 1 });
+
+    std::string msg = MapInfo.Title + "   Lives: " + std::to_string(Lives);
+    Pipeline.run(msg, 10, 750, {0, 1, 1});
 }
 
 void HUD_c::sendMessage(msg_t m)

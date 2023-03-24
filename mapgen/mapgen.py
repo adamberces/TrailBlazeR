@@ -10,7 +10,7 @@ def generate_line():
 
 def generate_map(num_lines):
     map = prefix
-   #map=""
+
     for i in range(num_lines):
         line = generate_line()
         
@@ -28,11 +28,20 @@ def generate_map(num_lines):
     map += end
     return map
     
-m = generate_map(100)  
+m = generate_map(50)  
 print(m)  
-f = open("../bin/assets/maps/2.tmf", "w")
+f = open("0.tmf", "w")
+
 f.write("TMF")
-f.write(chr(5))
+
+# Color theme
+f.write(chr(int("00",16)))
+f.write(chr(int("00",16)))
+f.write(chr(int("FE",16)))
+
+f.write("Earth\0")
+f.write("earth.png\0")
+
 for char in m:
     s = chr(int(char,16))
     f.write(s)

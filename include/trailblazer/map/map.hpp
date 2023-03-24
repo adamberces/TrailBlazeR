@@ -22,7 +22,7 @@ class Map_c : public messaging::MessageRecipient_i
     // where x = 0; y = 0 is the bottom left of the map
     TileType_e getTile(int x, int y)
     {
-        int index = MapFile.width() * y + x;
+        int index = Constants_s::MAP_WIDTH * y + x;
         return MapFile.tiles().at(index).Type;
     }
 
@@ -74,7 +74,7 @@ public:
         {
             Pipeline.ModelColorConfig.Color = ColorCodes[static_cast<size_t>(t.Color)];
 
-            if (colCnt > MapFile.width())
+            if (colCnt > Constants_s::MAP_WIDTH)
             {
                 // Shift to next row
                 Pipeline.ModelConfig.Position.X = 0.F;

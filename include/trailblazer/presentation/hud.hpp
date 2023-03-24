@@ -24,6 +24,12 @@ class HUD_c : public messaging::MessageRecipient_i
 {
     trailblazer::pipelines::TextPipeline_c Pipeline;
 
+    // Lives info received from Game Control
+    int Lives;
+
+    // Map info received from Map
+    msgMapInfo_s MapInfo;
+
 public:
     void draw();
     void setup();
