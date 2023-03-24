@@ -21,7 +21,7 @@ class GameControl_c : public messaging::MessageRecipient_i
 {   
     GameState_e GameState;
 
-    int Lives;
+    static int Lives;
 
     // Counter to measure the the short time before switching
     // or restarting scene after the ball is lost or the level is won
@@ -75,7 +75,6 @@ public:
     GameControl_c(messaging::PostOffice_c* po) :
         MessageRecipient_i(po),
         GameState(GameState_e::NORMAL),
-        Lives(Constants_s::INITIAL_LIVES),
         WaitTimer(0.F)
     {   
         // Manage subscriptions
