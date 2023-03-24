@@ -35,13 +35,18 @@ private:
     MapMetadata_s MapMetadata;
 
 public:
-
     const decltype(Tiles)& tiles() const
     {
         return Tiles;
     }
 
+    const MapMetadata_s& mapMetadata() const
+    {
+        return MapMetadata;
+    }
+
     // Reads a NULL delimited string from the map header
+
     std::string readString(const buffer_t& buf, std::size_t& start)
     {
         std::string out;
@@ -89,6 +94,11 @@ public:
     {
         for (size_t i = bufPtr; i < buf.size(); i++)
         {
+            if (Tiles.size() == 1200)
+            {
+                int x = 0;
+            }
+
             TileType_e t = TileType_e::NORMAL;
             Color_e c = static_cast<Color_e>(buf.at(i));
 
@@ -120,7 +130,7 @@ public:
 
     void loadMap(const std::string& fileName)
     {
-        std::ifstream ifs(fileName);
+        std::ifstream ifs(fileName, std::ifstream::ate | std::ifstream::binary);
 
         if (!ifs.good())
         {
@@ -131,8 +141,18 @@ public:
         ifs.seekg(0, std::ios::end);
         size_t sz = ifs.tellg();
         ifs.seekg(0, std::ios::beg);
+        //
+        // 
         buffer_t buf = buffer_t(sz);
-        ifs.read(buf.data(), sz);
+        //ifs.read(buf.data(), sz);
+        
+        char c;
+        std::size_t i = 0;
+        while (ifs.get(c))
+        {
+            buf.at(i)= c;
+            i++;
+        }
 
         std::size_t bufPtr = HEADER_SIZE;
         readHeader(buf, bufPtr);
