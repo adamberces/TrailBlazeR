@@ -38,16 +38,9 @@ void GameScene_c::sendMessage(msg_t m)
         msgBallPosition_s p =
             msg_cast<msgBallPosition_s>(m);
         updateGlobals(p.Position);
-        drawScene();
+
+        PO->broadcastMessage<msgRedrawTrigger_s>({});
     }
-}
-
-
-void GameScene_c::drawScene()
-{
-    Background->run();
-    PO->broadcastMessage<msgRedrawTrigger_s>({});
-    TestText->run("fps: 10", 100, 100, { 1.F, 0.F, 0.F });
 }
 
 void GameScene_c::setup()
@@ -63,12 +56,6 @@ void GameScene_c::setup()
     RenderPipeline_i::LightningColorConfig.Color.R = 0.51F;
     RenderPipeline_i::LightningColorConfig.Color.G = 0.45F;
     RenderPipeline_i::LightningColorConfig.Color.B = 0.57F;
-
-    Background = std::make_unique<pipelines::BackgroundPipeline_c>("./assets/bkg.png");
-    TestText = std::make_unique<pipelines::TextPipeline_c>("./assets/fonts/font");
-    Background->setup();
-    TestText->setup();
-
 }
 
 GameScene_c::GameScene_c(messaging::PostOffice_c* po) :

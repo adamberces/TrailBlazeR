@@ -61,7 +61,7 @@ struct msgMapInfo_s
 
 struct msgRemainingLives_s
 {
-    int ReminingLives;
+    int RemainingLives;
 };
 
 struct msgRedrawTrigger_s

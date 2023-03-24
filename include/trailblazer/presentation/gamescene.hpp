@@ -25,13 +25,6 @@ using pipelines::RenderPipeline_i;
 
 class GameScene_c : public messaging::MessageRecipient_i
 {
-    std::unique_ptr<pipelines::TextPipeline_c> TestText;
-
-    // The background drawer pipeline object is owned by the scene
-    // the rest of the objects (ball, tiles) are independent
-    // and redrawn on the msgRedrawTrigger_s message
-    std::unique_ptr<pipelines::BackgroundPipeline_c> Background;
-
     // Updates the shader uniforms used in the scene
     // (camera and lightning) to follow the movement of the ball.
     // Of course per definition, all uniforms are globals in the
@@ -45,9 +38,6 @@ class GameScene_c : public messaging::MessageRecipient_i
     void sendMessage(msg_t m) override;
 
 public:
-    // Redraw the scene and send redraw trigger to ball and map tiles
-    void drawScene();
-
     // Setup the uniforms of the render pipeline, which won't change
     // during the lifetime of the scene: projection matrix, lightning color
     void setup();

@@ -2,6 +2,11 @@
 
 #include <glkit/drawables/glkbackground.hpp>
 
+#include <glkit/core/shaders/shaderprogram.hpp>
+#include <glkit/core/uniforms/uniformiface.hpp>
+
+#include <trailblazer/game/constants.hpp>
+
 
 namespace trailblazer::pipelines
 {

@@ -6,8 +6,11 @@
 #include <trailblazer/ball/balldrawer.hpp>
 #include <trailblazer/ball/ballcontrol.hpp>
 #include <trailblazer/map/mapmanager.hpp>
+
 #include <trailblazer/presentation/gamewindow.hpp>
 #include <trailblazer/presentation/gamescene.hpp>
+#include <trailblazer/presentation/backgrounddrawer.hpp>
+#include <trailblazer/presentation/hud.hpp>
 
 #include <messaging/postoffice.hpp>
 
@@ -31,9 +34,11 @@ public:
 
             // Set up a new ball and a scene from the ball and the actual map
             // for the new level's scene
+            presentation::BackgroundDrawer_c Background(&PostOffice, "./assets/bkg.png");
             ball::BallDrawer_c Ball(&PostOffice);
             ball::BallControl_c BallControl(&PostOffice);
             map::Map_c Map(&PostOffice, mapFileName);
+            presentation::HUD_c HUD(&PostOffice);
             presentation::GameScene_c GameScene(&PostOffice);
             GameControl_c GameControl(&PostOffice);
 

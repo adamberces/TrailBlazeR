@@ -1,15 +1,15 @@
-#include <trailblazer/hud/hud.hpp>
+#include <trailblazer/presentation/hud.hpp>
 
 
-namespace trailblazer::hud
+namespace trailblazer::presentation
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// BallDrawer_c implementation
+// HUD_c implementation
 
 void HUD_c::draw()
 {
-    Pipeline.run();
+    Pipeline.run("teszt", 10, 10, {1, 1, 1});
 }
 
 void HUD_c::sendMessage(msg_t m)
@@ -18,7 +18,11 @@ void HUD_c::sendMessage(msg_t m)
     {
         draw();
     }
-    else if (isMessageType<msgBallPositionAndDistance_s>(m))
+    else if (isMessageType<msgRemainingLives_s>(m))
+    {
+        
+    }
+    else if (isMessageType<msgMapInfo_s>(m))
     {
         
     }
@@ -30,7 +34,8 @@ HUD_c::HUD_c(messaging::PostOffice_c* po) :
 {   
     // Manage subscriptions
     PO->subscribeRecipient<msgRedrawTrigger_s>(this);
-    PO->subscribeRecipient<msgBallPositionAndDistance_s>(this);
+    PO->subscribeRecipient<msgRemainingLives_s>(this);
+    PO->subscribeRecipient<msgMapInfo_s>(this);
 }
 
-} // namespace trailblazer::ball
+} // namespace trailblazer::presentation
