@@ -4,6 +4,7 @@
 
 #include <glkit/functors/functor_types.hpp>
 #include <trailblazer/map/tile.hpp>
+#include <trailblazer/map/mapfile.hpp>>
 
 #include <trailblazer/game/clock.hpp>
 #include <trailblazer/game/constants.hpp>
@@ -51,12 +52,7 @@ struct msgBallPositionAndDistance_s : msgBallPosition_s
 
 struct msgMapInfo_s
 {
-    std::string Title;
-    
-    int Length;
-    int ActualProgress;
-
-    float Gravity;
+    map::MapMetadata_s MapInfo;
 };
 
 struct msgRemainingLives_s

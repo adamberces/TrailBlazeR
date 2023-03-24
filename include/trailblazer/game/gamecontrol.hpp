@@ -30,6 +30,8 @@ class GameControl_c : public messaging::MessageRecipient_i
 public:
     GameState_e getGameState()
     {
+        PO->broadcastMessage<msgRemainingLives_s>({ Lives });
+
         if (GameState == GameState_e::BALL_LOST ||
             GameState == GameState_e::LEVEL_WON)
         {

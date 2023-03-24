@@ -42,7 +42,9 @@ f.write(chr(int("FE",16)))
 f.write("Earth\0")
 f.write("earth.png\0")
 
-for char in m:
-    s = chr(int(char,16))
-    f.write(s)
+f.write("\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1\5\1")
+
+#for char in m:
+#    s = chr(int(char,16))
+#    f.write(s)
 f.close()
