@@ -4,7 +4,7 @@
 
 #include <glkit/functors/functor_types.hpp>
 #include <trailblazer/map/tile.hpp>
-#include <trailblazer/map/mapfile.hpp>>
+#include <trailblazer/map/mapfile.hpp>
 
 #include <trailblazer/game/clock.hpp>
 #include <trailblazer/game/constants.hpp>

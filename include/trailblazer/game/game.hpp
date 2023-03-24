@@ -54,6 +54,12 @@ public:
                 GameClock_c::get().tick();
                 WindowState = GameWindow.updateWindow();
                 GameState = GameControl.getGameState();
+
+                if (WindowState ==
+                    presentation::GameWindow_c::WindowState_e::CLOSING)
+                {
+                    exit(0);
+                }
             }
 
             if (GameState == GameState_e::LEVEL_WON)

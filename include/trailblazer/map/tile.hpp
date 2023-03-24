@@ -54,6 +54,9 @@ enum class Color_e
     COLOR_COUNT
 };
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-variable"
+
 static glkit::functors::rgb_t ColorCodes[] = 
 {
     { 0.F, 0.F, 0.F },
@@ -74,6 +77,7 @@ static glkit::functors::rgb_t ColorCodes[] =
     { 1.F, 1.F, 1.F }
 };
 
+#pragma GCC diagnostic pop
 
 // Mapping some of the colors to have a special function
 // A map file contains only color information and the type

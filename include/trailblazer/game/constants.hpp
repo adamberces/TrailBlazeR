@@ -9,7 +9,7 @@ struct Constants_s
     static constexpr int WINDOW_HEIGHT = 768;
 
     static constexpr int INITIAL_LIVES = 3;
-    static constexpr float WAIT_TIME = 3.F; //sec
+    static constexpr float WAIT_TIME = 4.F; //sec
 
     // Number of map tiles per row
     static constexpr int MAP_WIDTH = 5;

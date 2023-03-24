@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include <fstream>
+#include <cstring>
 
 #include <trailblazer/map/tile.hpp>
 #include <trailblazer/game/constants.hpp>
@@ -94,11 +95,6 @@ public:
     {
         for (size_t i = bufPtr; i < buf.size(); i++)
         {
-            if (Tiles.size() == 1200)
-            {
-                int x = 0;
-            }
-
             TileType_e t = TileType_e::NORMAL;
             Color_e c = static_cast<Color_e>(buf.at(i));
 
@@ -120,7 +116,7 @@ public:
         }
 
         // Let's see if the last row is complete or not
-        if (Tiles.size() % Constants_s::MAP_WIDTH != 0)
+        if ((Tiles.size() % Constants_s::MAP_WIDTH) != 0)
         {
             throw std::runtime_error("MapFile_c::readTileData: "
                 "The last row in incomplete, expecting " + std::to_string(Constants_s::MAP_WIDTH) +
@@ -141,19 +137,9 @@ public:
         ifs.seekg(0, std::ios::end);
         size_t sz = ifs.tellg();
         ifs.seekg(0, std::ios::beg);
-        //
-        // 
         buffer_t buf = buffer_t(sz);
-        //ifs.read(buf.data(), sz);
-        
-        char c;
-        std::size_t i = 0;
-        while (ifs.get(c))
-        {
-            buf.at(i)= c;
-            i++;
-        }
-
+        ifs.read(buf.data(), sz);
+ 
         std::size_t bufPtr = HEADER_SIZE;
         readHeader(buf, bufPtr);
         readTileData(buf, ++bufPtr);

@@ -65,10 +65,10 @@ public:
         int lastRow = std::min(cameraPosY + 20, static_cast<int>(MapFile.tiles().size()));
 
         // Set up counter to know when to stop drawing
-        std::size_t rowCnt = 0;
+        int rowCnt = 0;
 
         // Set up counter to know when to start the next row
-        std::size_t colCnt = 1;
+        int colCnt = 1;
 
         for (const Tile_s& t : MapFile.tiles())
         {
