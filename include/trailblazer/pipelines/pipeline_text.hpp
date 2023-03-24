@@ -60,7 +60,9 @@ public:
 
     TextPipeline_c(std::string fontFileName) :
         TextDrawer(std::make_unique<glkit::drawables::GLKText_c>(fontFileName))
-    {}
+    {
+        setup();
+    }
 };
 
 } // namespace trailblazer::pipelines

@@ -44,7 +44,9 @@ public:
 
     BackgroundPipeline_c(std::string fileName) :
         Background(std::make_unique<glkit::drawables::GLKBackground_c>(fileName))
-    {}
+    {
+        setup();
+    }
 };
 
 } // namespace trailblazer::pipelines

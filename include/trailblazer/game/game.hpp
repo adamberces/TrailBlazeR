@@ -36,10 +36,11 @@ public:
             // for the new level's scene
             presentation::BackgroundDrawer_c Background(&PostOffice, "./assets/bkg.png");
             ball::BallDrawer_c Ball(&PostOffice);
-            ball::BallControl_c BallControl(&PostOffice);
             map::Map_c Map(&PostOffice, mapFileName);
             presentation::HUD_c HUD(&PostOffice);
             presentation::GameScene_c GameScene(&PostOffice);
+            
+            ball::BallControl_c BallControl(&PostOffice);
             GameControl_c GameControl(&PostOffice);
 
             presentation::GameWindow_c::WindowState_e WindowState =
