@@ -43,7 +43,7 @@ void GameScene_c::sendMessage(msg_t m)
     }
 }
 
-void GameScene_c::setup()
+void GameScene_c::setup(glkit::functors::rgb_t lightColor)
 {
     // Setup projection matrix
     RenderPipeline_i::ProjectionConfig.FOV = 45.F;
@@ -53,15 +53,13 @@ void GameScene_c::setup()
     RenderPipeline_i::ProjectionConfig.FarPlane = 100.F;
 
     // Setup lightning color
-    RenderPipeline_i::LightningColorConfig.Color.R = 0.51F;
-    RenderPipeline_i::LightningColorConfig.Color.G = 0.45F;
-    RenderPipeline_i::LightningColorConfig.Color.B = 0.57F;
+    RenderPipeline_i::LightningColorConfig.Color = lightColor;
 }
 
-GameScene_c::GameScene_c(messaging::PostOffice_c* po) :
+GameScene_c::GameScene_c(messaging::PostOffice_c* po, glkit::functors::rgb_t lightColor) :
     MessageRecipient_i(po)
 {
-    setup();
+    setup(lightColor);
 
     PO->subscribeRecipient<msgBallPosition_s>(this);
 }

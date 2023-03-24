@@ -27,6 +27,11 @@ class Map_c : public messaging::MessageRecipient_i
     }
 
 public:
+    const MapMetadata_s& mapMetaData() const
+    {
+        return MapFile.mapMetadata();
+    }
+
     void sendMessage(msg_t m) override
     {
         if (isMessageType<msgRedrawTrigger_s>(m))
@@ -43,6 +48,9 @@ public:
             int y = static_cast<int>(::floor(p.Position.Y + 0.5F));
             msgActualTileType_s tiletype({ getTile(x, y) });
             PO->broadcastMessage(tiletype);
+
+            // Calculate the progress and transfer the map metadata for HUD
+            PO->broadcastMessage<msgMapData_s>({ MapFile.mapMetadata(), y });
         }
     }
 

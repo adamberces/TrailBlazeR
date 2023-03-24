@@ -42,7 +42,7 @@ public:
     // during the lifetime of the scene: projection matrix, lightning color
     void setup();
 
-    GameScene_c(messaging::PostOffice_c* po);
+    GameScene_c(messaging::PostOffice_c* po, glkit::functors::rgb_t lightColor);
 };
 
 } // namespace trailblazer::presentation

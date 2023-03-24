@@ -18,6 +18,7 @@ struct MapMetadata_s
     glkit::functors::rgb_t ColorTheme;
     std::string MapTitle;
     std::string BackgroundFileName;
+    int TileCount = 0;
 };
 
 class MapFile_c
@@ -113,6 +114,11 @@ public:
             }
 
             Tiles.push_back({ t, c });
+
+            if (t != TileType_e::FINISH)
+            {
+                MapMetadata.TileCount++;
+            }
         }
 
         // Let's see if the last row is complete or not
@@ -122,6 +128,9 @@ public:
                 "The last row in incomplete, expecting " + std::to_string(Constants_s::MAP_WIDTH) +
                 "tiles, got " + std::to_string(Tiles.size() % Constants_s::MAP_WIDTH));
         }
+
+        // Set the correct number of tile rows
+        MapMetadata.TileCount /= Constants_s::MAP_WIDTH;
     }
 
     void loadMap(const std::string& fileName)

@@ -50,9 +50,10 @@ struct msgBallPositionAndDistance_s : msgBallPosition_s
     float Distance;
 };
 
-struct msgMapInfo_s
+struct msgMapData_s
 {
-    map::MapMetadata_s MapInfo;
+    map::MapMetadata_s Metadata;
+    int CurrentTile;
 };
 
 struct msgRemainingLives_s

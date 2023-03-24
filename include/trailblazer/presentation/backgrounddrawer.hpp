@@ -17,7 +17,7 @@ namespace trailblazer::presentation
 // Wraps a text pipeline to draw the Head Up Display
 //
 // Inherits from MessageRecipient_i:
-// Receives the msgMapInfo_s message from Map
+// Receives the msgMapData_s message from Map
 // Receives the msgRemainingLives_s message from Game Control
 // Receives the msgRedrawTrigger_s message from Game Scene
 
