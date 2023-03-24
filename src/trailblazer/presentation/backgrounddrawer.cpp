@@ -11,13 +11,17 @@ void BackgroundDrawer_c::sendMessage(msg_t m)
 {
     if (isMessageType<msgRedrawTrigger_s>(m))
     {
-        Pipeline.run();
+        PipelinePtr->run();
     }
 }
 
-BackgroundDrawer_c::BackgroundDrawer_c(messaging::PostOffice_c* po, std::string fileName) :
-    MessageRecipient_i(po),
-    Pipeline(fileName)
+void BackgroundDrawer_c::setup(std::string fileName)
+{
+    PipelinePtr = std::make_unique<trailblazer::pipelines::BackgroundPipeline_c>(fileName);
+}
+
+BackgroundDrawer_c::BackgroundDrawer_c(messaging::PostOffice_c* po) :
+    MessageRecipient_i(po)
 {   
     // Manage subscriptions
     PO->subscribeRecipient<msgRedrawTrigger_s>(this);

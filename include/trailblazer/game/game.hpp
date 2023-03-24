@@ -34,14 +34,16 @@ public:
 
             // Set up a new ball and a scene from the ball and the actual map
             // for the new level's scene
-            presentation::BackgroundDrawer_c Background(&PostOffice, "./assets/bkg.png");
+            presentation::BackgroundDrawer_c Background(&PostOffice);
             ball::BallDrawer_c Ball(&PostOffice);
             map::Map_c Map(&PostOffice, mapFileName);
             presentation::HUD_c HUD(&PostOffice);
             presentation::GameScene_c GameScene(&PostOffice);
-            
+
             ball::BallControl_c BallControl(&PostOffice);
             GameControl_c GameControl(&PostOffice);
+
+            Background.setup("./assets/bkg.png");
 
             presentation::GameWindow_c::WindowState_e WindowState =
                 presentation::GameWindow_c::WindowState_e::OK;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <trailblazer/game/constants.hpp>
 
 #include <messaging/postoffice.hpp>
@@ -22,12 +23,18 @@ namespace trailblazer::presentation
 
 class BackgroundDrawer_c : public messaging::MessageRecipient_i
 {
-    trailblazer::pipelines::BackgroundPipeline_c Pipeline;
+    std::unique_ptr<trailblazer::pipelines::BackgroundPipeline_c> PipelinePtr;
 
 public:
+    // We have to call a setup explicitly, where we need to specify the image
+    // because the order of subscriptions matters in Game_c. If we create and subscribe
+    // Background after we know the file name from the Map object, the background will
+    // be drawed over the map which will ultimately hide it.
+    void setup(std::string fileName);
+
     void sendMessage(msg_t m) override;
     
-    BackgroundDrawer_c(messaging::PostOffice_c* po, std::string fileName);
+    BackgroundDrawer_c(messaging::PostOffice_c* po);
 };
 
 } // namespace trailblazer::presentation
