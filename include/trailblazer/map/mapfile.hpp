@@ -83,11 +83,12 @@ public:
                 "no 'TMF' header found.");
         }
 
-        // Read metadata
-        MapMetadata.ColorTheme.R = static_cast<unsigned char>(buf.at(3));
-        MapMetadata.ColorTheme.G = static_cast<unsigned char>(buf.at(4));
-        MapMetadata.ColorTheme.B = static_cast<unsigned char>(buf.at(5));
+        // Read color theme and convert to OpenGL float format
+        MapMetadata.ColorTheme.R = static_cast<unsigned char>(buf.at(3)) / 255.F;
+        MapMetadata.ColorTheme.G = static_cast<unsigned char>(buf.at(4)) / 255.F;
+        MapMetadata.ColorTheme.B = static_cast<unsigned char>(buf.at(5)) / 255.F;
 
+        // Read map title and background data
         MapMetadata.MapTitle  = readString(buf, bufPtr);
         MapMetadata.BackgroundFileName = readString(buf, ++bufPtr);
     }
