@@ -318,13 +318,13 @@ void BallControl_c::broadcastPosition(float delta_time)
 
 BallControl_c::BallControl_c(messaging::PostOffice_c* po) :
     MessageRecipient_i(po),
-    BallState(BallState_e::IN_AIR),
-    LastTileType(map::TileType_e::NORMAL),
     RigidBody_c(rigidbody::Vector3D_s(Constants_s::START_POSITION_X,
                                         Constants_s::START_POSITION_Y,
                                         Constants_s::START_POSITION_Z),
                 rigidbody::Vector3D_s(0, Constants_s::START_VELOCITY, 0),
-                Constants_s::BALL_MASS)
+                Constants_s::BALL_MASS),
+    BallState(BallState_e::IN_AIR),
+    LastTileType(map::TileType_e::NORMAL)
 {   
     // Manage subscriptions
     PO->subscribeRecipient<msgKeyEvent_e>(this);

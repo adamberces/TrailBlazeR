@@ -40,7 +40,7 @@ class GameScene_c : public messaging::MessageRecipient_i
 public:
     // Setup the uniforms of the render pipeline, which won't change
     // during the lifetime of the scene: projection matrix, lightning color
-    void setup();
+    void setup(glkit::functors::rgb_t lightColor);
 
     GameScene_c(messaging::PostOffice_c* po, glkit::functors::rgb_t lightColor);
 };
