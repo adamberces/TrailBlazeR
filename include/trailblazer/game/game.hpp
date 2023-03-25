@@ -1,21 +1,15 @@
 #pragma once
 
-#include <trailblazer/game/clock.hpp>
-#include <trailblazer/game/gamecontrol.hpp>
-
-#include <trailblazer/ball/balldrawer.hpp>
-#include <trailblazer/ball/ballcontrol.hpp>
-#include <trailblazer/map/mapmanager.hpp>
-
-#include <trailblazer/presentation/gamewindow.hpp>
-#include <trailblazer/presentation/gamescene.hpp>
-#include <trailblazer/presentation/backgrounddrawer.hpp>
-#include <trailblazer/presentation/hud.hpp>
-
 #include <messaging/postoffice.hpp>
+#include <trailblazer/map/mapmanager.hpp>
+#include <trailblazer/presentation/gamewindow.hpp>
+
 
 namespace trailblazer
 {
+
+/////////////////////////////////////////////////////////////////////////////////////////
+// The main class which instantiates all components and realizes the main game loop
 
 class Game_c
 {   
@@ -24,66 +18,9 @@ class Game_c
     map::MapManager_c MapManager;
     
 public:
-    void gameLoop()
-    {   
-        size_t mapCount = MapManager.mapFiles().size();
-        size_t actualMap = 0;
-        for (; actualMap < mapCount;)
-        {
-            std::string mapFileName = MapManager.mapFiles().at(actualMap);
+    void gameLoop();
 
-            // Set up a new ball and a scene from the ball and the actual map
-            // for the new level's scene
-            ball::BallControl_c BallControl(&PostOffice);
-            GameControl_c GameControl(&PostOffice);
-
-            // First instantiate the drawables.
-            // The order is important here, as msgRedrawTrigger calls
-            // the draw functions in the order of their subscription 
-            // to that message, which happens in the constructor
-            presentation::BackgroundDrawer_c Background(&PostOffice);
-            ball::BallDrawer_c Ball(&PostOffice);
-            map::Map_c Map(&PostOffice, mapFileName);
-            presentation::HUD_c HUD(&PostOffice);
-
-            // Setup game scene from the metadata acquired from the current map
-            auto mapData = Map.mapMetaData();
-            presentation::GameScene_c GameScene(&PostOffice, mapData.ColorTheme);
-            Background.setup("./assets/backgrounds/" + mapData.BackgroundFileName);
-
-            presentation::GameWindow_c::WindowState_e WindowState =
-                presentation::GameWindow_c::WindowState_e::OK;
-            
-            GameState_e GameState = GameState_e::NORMAL;
-            while (GameState ==  GameState_e::NORMAL)
-            {   
-                GameClock_c::get().tick();
-                WindowState = GameWindow.updateWindow();
-                GameState = GameControl.getGameState();
-
-                if (WindowState ==
-                    presentation::GameWindow_c::WindowState_e::CLOSING)
-                {
-                    exit(0);
-                }
-            }
-
-            if (GameState == GameState_e::LEVEL_WON)
-            {
-                actualMap++;
-            }
-
-            PostOffice.unsubscribeAll();
-        }
-    }
-
-    Game_c() :
-        PostOffice(),
-        GameWindow(&PostOffice),
-        MapManager("./assets/maps")
-    {
-        
-    }
+    Game_c();
 };
 
 } // namespace trailblazer

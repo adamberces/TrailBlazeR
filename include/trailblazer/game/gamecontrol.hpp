@@ -8,14 +8,27 @@
 namespace trailblazer
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Represents the actual state of the game, which is returned to the
+// main Game class by GameControl in every cycle, 
+
 enum class GameState_e
 {
     NORMAL,
     BALL_LOST,
     LEVEL_WON,
-    GAME_OVER
+    GAME_OVER,
+    GAME_WON
 };
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// Controls the main flow of a stage. Counts the remaining lives and
+// maintains a timer to wait a few seconds when the ball is lost or it
+// has reached the finish line before shifting/restarting the stage.
+//
+// Inherits from MessageRecipient_i:
+// Provides the msgRemainingLives_s message for HUD
+// Receives the msgGameStateChange_e message from Ball Control
 
 class GameControl_c : public messaging::MessageRecipient_i
 {   
@@ -28,59 +41,11 @@ class GameControl_c : public messaging::MessageRecipient_i
     float WaitTimer;
 
 public:
-    GameState_e getGameState()
-    {
-        PO->broadcastMessage<msgRemainingLives_s>({ Lives });
+    GameState_e getGameState();
 
-        if (GameState == GameState_e::BALL_LOST ||
-            GameState == GameState_e::LEVEL_WON)
-        {
-            WaitTimer += GameClock_c::get().elapsedTime();
-            if (WaitTimer >= Constants_s::WAIT_TIME)
-            {
-                WaitTimer = 0;
-                if (GameState == GameState_e::BALL_LOST)
-                {
-                    Lives--;
-                    if (Lives == 0)
-                    {
-                        GameState = GameState_e::GAME_OVER;
-                    }
-                }
-                return GameState;
-            }
-        }
+    void sendMessage(msg_t m) override;
 
-        return GameState_e::NORMAL;
-    }
-
-    void sendMessage(msg_t m) override
-    {
-        if (isMessageType<msgGameStateChange_e>(m))
-        {
-            msgGameStateChange_e s = msg_cast<msgGameStateChange_e>(m);
-            
-            switch(s)
-            {
-                case msgGameStateChange_e::BALL_LOST:
-                    GameState = GameState_e::BALL_LOST;
-                    break;
-                case msgGameStateChange_e::LEVEL_WON:
-                    GameState = GameState_e::LEVEL_WON;
-                    break;
-            }
-        }
-    }
-
-    GameControl_c(messaging::PostOffice_c* po) :
-        MessageRecipient_i(po),
-        GameState(GameState_e::NORMAL),
-        WaitTimer(0.F)
-    {   
-        // Manage subscriptions
-        PO->subscribeRecipient<msgGameStateChange_e>(this);
-    }
-
+    GameControl_c(messaging::PostOffice_c* po);
 };
 
 } // namespace trailblazer

@@ -8,7 +8,7 @@ namespace rigidbody
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Minimalistic rigid body mechanics engine
+// A minimalistic rigid body mechanics engine
 
 class RigidBody_c
 {

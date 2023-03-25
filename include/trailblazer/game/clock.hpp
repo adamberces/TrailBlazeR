@@ -1,8 +1,8 @@
 #pragma once
 
 #include <chrono>
-
 #include <stdio.h>
+
 
 namespace trailblazer
 {
@@ -22,31 +22,14 @@ class GameClock_c
     static float ElapsedTime;
     static time_point<steady_clock> LastTimePoint;
 
-    GameClock_c()
-    {
-        tick();
-    }
+    GameClock_c();
 
 public:
-    static GameClock_c& get() {
-        static GameClock_c gameClock;
-        return gameClock;
-    }
+    static GameClock_c& get();
 
-    static inline float elapsedTime()
-    {
-        return ElapsedTime;
-    }
+    static float elapsedTime();
 
-    static inline void tick()
-    {
-        auto now = std::chrono::steady_clock::now();
-        duration<float> delta =
-            std::chrono::duration_cast<duration<float>>(now - LastTimePoint);
-        LastTimePoint = now;
-
-        ElapsedTime = delta.count();
-    }
+    static void tick();
 };
 
 } // namespace trailblazer
