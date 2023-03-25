@@ -15,9 +15,7 @@ participant SoundControl
 note over GameWindow:Poll control keys
 GameWindow->BallControl:msgKeyEvent_e
 note over BallControl:Generate forces and calculate next ball position 
-BallControl->SoundControl:msgTriggerJumpSound
-BallControl->SoundControl:msgTriggerBounceSound
-
+BallControl->SoundControl:msgSoundEvent_e
 BallControl->BallDrawer:msgBallPositionAndDistance_s
 note over BallDrawer:Update ball uniforms, propagate position data
 BallDrawer->Map:msgBallPosition_s
@@ -26,9 +24,8 @@ Map->BallControl:msgActualTileType_s
 note over BallControl:Calculate ball state from actual tile type
 BallControl->GameControl:msgGameStateChange_e
 note over GameControl:Handle ball lost/level won event, restart or advance level
-BallControl->SoundControl:msgTriggerFallSound
-Map->HUD:msgMapInfo
-GameControl->HUD:msgRemainingLives
+Map->HUD:msgMapData_s
+GameControl->HUD:msgRemainingLives_s
 note over HUD:Update text to display on top of the screen
 BallDrawer->GameScene:msgBallPosition_s
 note over GameScene:Update global uniforms and trigger scene drawing
