@@ -20,7 +20,6 @@ GameClock_c::GameClock_c()
     tick();
 }
 
-
 GameClock_c& GameClock_c::get()
 {
     static GameClock_c gameClock;
