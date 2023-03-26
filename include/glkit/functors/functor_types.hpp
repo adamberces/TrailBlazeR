@@ -5,7 +5,7 @@ namespace glkit::functors
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Type definitions for data transfer towards uniforms and functors 
+/// Type definitions for data transfer towards uniforms and functors 
 
 struct point3d_t
 {
@@ -36,4 +36,4 @@ struct rgb_t
     float B = 1.F;
 };
 
-} // glkit::functors
+} /// glkit::functors

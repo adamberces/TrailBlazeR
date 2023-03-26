@@ -14,29 +14,32 @@ namespace trailblazer::map
 {
     
 /////////////////////////////////////////////////////////////////////////////////////////
-// Represents a game map (aka. stage), contains a mapfile and a drawing pipeline
-// which renders the tiles contained in the MapFile
+/// Represents a game map (aka. stage), contains a mapfile and a drawing pipeline
+/// which renders the tiles contained in the MapFile
 
 class Map_c : public messaging::MessageRecipient_i
 {
     MapFile_c MapFile;
     trailblazer::pipelines::TilePipeline_c Pipeline;
 
-    // Returns the tile type of a tile of the given position,
-    // where x = 0; y = 0 is the bottom left of the map
+    /// Returns the tile type of a tile of the given position,
+    /// where x = 0; y = 0 is the bottom left of the map
     TileType_e getTile(int x, int y);
 
 public:
-    const MapMetadata_s& mapMetaData() const;
+    const inline MapMetadata_s& mapMetaData() const
+    {
+        return MapFile.mapMetadata();
+    }
 
     void sendMessage(msg_t m) override;
 
-    // Redraw the map on the screen using the render pipeline
+    /// Redraw the map on the screen using the render pipeline
     void draw();
 
-    // Constructs the map from a map file name (TMF)
+    /// Constructs the map from a map file name (TMF)
     explicit Map_c(messaging::PostOffice_c* po, 
                    const std::string& mapFile);
 };
 
-} // trailblazer::map
+} /// trailblazer::map

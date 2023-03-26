@@ -8,7 +8,7 @@ namespace glkit::drawables
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-// Represents a sphere mesh. The number of stacks/segments (U/V) are specified in the constructor
+/// Represents a sphere mesh. The number of stacks/segments (U/V) are specified in the constructor
 
 class GLKSphere_c : public GLKDrawable_i
 {

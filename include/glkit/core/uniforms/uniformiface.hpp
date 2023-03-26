@@ -10,8 +10,8 @@ namespace glkit::core::uniforms
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// This class maintains a list of ShaderUniform_c's and provides a convenient interface
-// to assign the uniform values for a given Shader Program
+/// This class maintains a list of ShaderUniform_c's and provides a convenient interface
+/// to assign the uniform values for a given Shader Program
 
 class ShaderUniformInterface_c
 {

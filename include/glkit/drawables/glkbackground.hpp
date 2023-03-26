@@ -8,8 +8,8 @@ namespace glkit::drawables
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// A background object is basically a special case of a a fixed, 2D rectangle (aka. quad)
-// to be rendered behind the whole scene.
+/// A background object is basically a special case of a a fixed, 2D rectangle (aka. quad)
+/// to be rendered behind the whole scene.
 
 class GLKBackground_c : public drawables::GLKDrawable_i
 {      

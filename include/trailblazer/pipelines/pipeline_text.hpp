@@ -14,8 +14,8 @@ namespace trailblazer::pipelines
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// This class is not inherits from RenderPipeline_i, as it is not part of the 3D scene
-// but uses the same semantics and elements
+/// This class is not inherits from RenderPipeline_i, as it is not part of the 3D scene
+/// but uses the same semantics and elements
 
 class TextPipeline_c
 {
@@ -26,7 +26,7 @@ class TextPipeline_c
     glkit::functors::OrthoConfig_s ProjectionConfig;
 
 public:
-    void run(std::string text, int x, int y, glkit::functors::rgb_t color)
+    inline void run(std::string text, int x, int y, glkit::functors::rgb_t color)
     {
         if (!TextDrawer || !ShaderProgram)
         {
@@ -42,7 +42,7 @@ public:
         TextDrawer->drawText(text, x, y);
     }
 
-    void setup()
+    inline void setup()
     {
         glkit::core::shaders::ShaderSourceList_s SSL;
         SSL.VertexShaderPath = "./assets/shaders/v_text.glsl";
@@ -58,7 +58,7 @@ public:
         ProjectionConfig.Ymax = Constants_s::WINDOW_HEIGHT;
     }
 
-    TextPipeline_c(std::string fontFileName) :
+    explicit TextPipeline_c(std::string fontFileName) :
         TextDrawer(std::make_unique<glkit::drawables::GLKText_c>(fontFileName))
     {
         setup();

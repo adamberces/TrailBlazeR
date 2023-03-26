@@ -8,7 +8,7 @@ namespace glkit::core::shaders
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Type safe wrapper of OpenGL shader types
+/// Type safe wrapper of OpenGL shader types
 
 enum class ShaderType_e
 {
@@ -21,7 +21,7 @@ enum class ShaderType_e
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Represents a shader source file, responsible for reading GLSL files and store contents
+/// Represents a shader source file, responsible for reading GLSL files and store contents
  
 class ShaderFile_c
 {
@@ -37,9 +37,9 @@ public:
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Class representing a shader code, responsible for shader compilation 
-// Designed as per the RAII principles, glDeleteShader is automatically called to free
-// resources when the object lifetime is over.
+/// Class representing a shader code, responsible for shader compilation 
+/// Designed as per the RAII principles, glDeleteShader is automatically called to free
+/// resources when the object lifetime is over.
 
 class Shader_c : public GLObject_i
 {

@@ -11,7 +11,7 @@ namespace glkit::core::buffers
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Type safe wrappers of OpenGL array buffer types and usage
+/// Type safe wrappers of OpenGL array buffer types and usage
 
 enum class ArrayBufferType_e
 {
@@ -27,8 +27,8 @@ enum class ArrayBufferUsage_e
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Helper function
-// Sanity check: test if we have a vertex array object bound
+/// Helper function
+/// Sanity check: test if we have a vertex array object bound
 static inline void checkVertexArrayBinding()
 {
     int vao_id = 0;
@@ -42,9 +42,9 @@ static inline void checkVertexArrayBinding()
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Class representing a GL Array Buffer
-// Designed as per the RAII principles, glDeleteBuffers is automatically called to free
-// resources when the object lifetime is over.
+/// Class representing a GL Array Buffer
+/// Designed as per the RAII principles, glDeleteBuffers is automatically called to free
+/// resources when the object lifetime is over.
 
 template<typename BufferDataType>
 class ArrayBuffer_c : public GLObject_i
@@ -57,19 +57,19 @@ public:
     {
         checkVertexArrayBinding();
 
-        // Bind buffer to the current VAO and copy data
+        /// Bind buffer to the current VAO and copy data
         glBindBuffer(static_cast<unsigned int>(Type), Id);
         glBufferData(static_cast<unsigned int>(Type),
                      data.size() * sizeof(BufferDataType), data.data(),
                      static_cast<unsigned int>(Usage));
     }
 
-    // Binds and generates a buffer to be used with glBufferSubData
+    /// Binds and generates a buffer to be used with glBufferSubData
     inline void bindEmptyBuffer(std::size_t data_count)
     {
         checkVertexArrayBinding();
 
-        // Bind buffer to the current VAO and copy data
+        /// Bind buffer to the current VAO and copy data
         glBindBuffer(static_cast<unsigned int>(Type), Id);
         glBufferData(static_cast<unsigned int>(Type),
                      data_count * sizeof(BufferDataType), NULL,

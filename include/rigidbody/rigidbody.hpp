@@ -8,7 +8,7 @@ namespace rigidbody
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// A minimalistic rigid body mechanics engine
+/// A minimalistic rigid body mechanics engine
 
 class RigidBody_c
 {
@@ -29,21 +29,21 @@ public:
 
     void updatePosition(float delta_time)
     {
-        // Calculate total force acting on the rigid body
+        /// Calculate total force acting on the rigid body
         Vector3D_s total_force(0, 0, 0);
         for (Vector3D_s& force : Forces)
         {
             total_force = total_force + force;
         }
 
-        // Calculate acceleration from force and mass
+        /// Calculate acceleration from force and mass
         Acceleration = total_force / Mass;
 
-        // Update velocity and position using acceleration
+        /// Update velocity and position using acceleration
         Velocity = Velocity + Acceleration * delta_time;
         Position = Position + Velocity * delta_time;
 
-        // Clear forces for next frame
+        /// Clear forces for next frame
         Forces.clear();
     }
 

@@ -5,9 +5,9 @@ namespace glkit::core::buffers
 {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
-// Class representing a GL Vertex Array Object, to be used dynamically (copies calls glBufferSubData)
-// Designed as per the RAII principles, glDeleteVertexArrays is automatically called
-// to free resources when the object lifetime is over.
+/// Class representing a GL Vertex Array Object, to be used dynamically (copies calls glBufferSubData)
+/// Designed as per the RAII principles, glDeleteVertexArrays is automatically called
+/// to free resources when the object lifetime is over.
 
 template<typename BufferDataType>
 class DynamicVertexArrayObject_c : public StaticVertexArrayObject_c<BufferDataType>

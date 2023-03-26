@@ -7,7 +7,7 @@ namespace trailblazer::map
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Reads TMF files from a given folder and keeps a storage of maps
+/// Reads TMF files from a given folder and keeps a storage of maps
 
 class MapManager_c
 {
@@ -24,4 +24,4 @@ public:
     explicit MapManager_c(std::string path);
 };
 
-} // trailblazer::map
+} /// trailblazer::map

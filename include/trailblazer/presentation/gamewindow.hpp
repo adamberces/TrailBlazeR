@@ -12,11 +12,11 @@ namespace trailblazer::presentation
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Represents the main game window.
+/// Represents the main game window.
 //
-// Inherits from MessageRecipient_i:
-// Provides the msgKeyEvent_e message
-// It is the initial provider of messages, does not subscribed to anything
+/// Inherits from MessageRecipient_i:
+/// Provides the msgKeyEvent_e message
+/// It is the initial provider of messages, does not subscribed to anything
 
 class GameWindow_c :
     public glkit::window::GLWindow_i,
@@ -26,7 +26,7 @@ public:
     void handleKeypressEvents() override;
     void sendMessage(msg_t message) override {}
     
-    GameWindow_c(messaging::PostOffice_c* po);
+    explicit GameWindow_c(messaging::PostOffice_c* po);
 };
 
 } // namespace trailblazer::presentation

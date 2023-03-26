@@ -8,21 +8,21 @@ namespace glkit::functors
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-/// Uniform functor for scene light source color
+/// Uniform functor for scene light source position
 
-UNIFORM_ARGS(ColorConfig_s)
+UNIFORM_ARGS(LightningPositionConfig_s)
 {
-    rgb_t Color;
+    point3d_t Position;
 };
 
-static auto Color_f =
+static auto LightningPosition_f =
     [](core::uniforms::uniform_args_ptr_t ptr) -> core::uniforms::uniform_types_t
 {
-    ColorConfig_s* cfg = dynamic_cast<ColorConfig_s*>(ptr);
+    LightningPositionConfig_s* cfg = dynamic_cast<LightningPositionConfig_s*>(ptr);
 
-    glm::vec3 color(cfg->Color.R, cfg->Color.G, cfg->Color.B);
+    glm::vec3 pos(cfg->Position.X, cfg->Position.Y, cfg->Position.Z);
         
-    return { color };
+    return { pos };
 };
 
 } // namespace glkit::functors

@@ -13,21 +13,21 @@ namespace trailblazer::presentation
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Wraps a text pipeline to draw the Head Up Display
+/// Wraps a text pipeline to draw the Head Up Display
 //
-// Inherits from MessageRecipient_i:
-// Receives the msgMapData_s message from Map
-// Receives the msgRemainingLives_s message from Game Control
-// Receives the msgRedrawTrigger_s message from Game Scene
+/// Inherits from MessageRecipient_i:
+/// Receives the msgMapData_s message from Map
+/// Receives the msgRemainingLives_s message from Game Control
+/// Receives the msgRedrawTrigger_s message from Game Scene
 
 class HUD_c : public messaging::MessageRecipient_i
 {
     trailblazer::pipelines::TextPipeline_c Pipeline;
 
-    // Lives info received from Game Control
+    /// Lives info received from Game Control
     int Lives;
 
-    // Map data received from Map
+    /// Map data received from Map
     msgMapData_s MapData;
 
 public:
@@ -36,7 +36,7 @@ public:
 
     void sendMessage(msg_t m) override;
     
-    HUD_c(messaging::PostOffice_c*);
+    explicit HUD_c(messaging::PostOffice_c*);
 };
 
 } // namespace trailblazer::hudpresentation

@@ -14,11 +14,6 @@ TileType_e Map_c::getTile(int x, int y)
     return MapFile.tiles().at(index).Type;
 }
 
-const MapMetadata_s& Map_c::mapMetaData() const
-{
-    return MapFile.mapMetadata();
-}
-
 void Map_c::sendMessage(msg_t m)
 {
     if (isMessageType<msgRedrawTrigger_s>(m))

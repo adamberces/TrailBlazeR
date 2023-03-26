@@ -12,7 +12,7 @@ namespace glkit::core::buffers
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Helper metafunctions for convenient use of glVertexAttribPointer's type parameter
+/// Helper metafunctions for convenient use of glVertexAttribPointer's type parameter
 
 template<typename T>
 struct buffer_data_type_traits
@@ -38,9 +38,9 @@ struct buffer_data_type_traits<unsigned int>
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Class representing a GL Vertex Array Object
-// Designed as per the RAII principles, glDeleteVertexArrays is automatically called
-// to free resources when the object lifetime is over.
+/// Class representing a GL Vertex Array Object
+/// Designed as per the RAII principles, glDeleteVertexArrays is automatically called
+/// to free resources when the object lifetime is over.
 
 template<typename BufferDataType>
 class StaticVertexArrayObject_c : public GLObject_i
@@ -56,8 +56,8 @@ protected:
     ArrayBufferPtrContainer_t<unsigned int> ElementBuffers;
 
 public:
-    // Copies a pair of vertex and element position data to the
-    // GPU and assigns them to the current Vertex Array Object
+    /// Copies a pair of vertex and element position data to the
+    /// GPU and assigns them to the current Vertex Array Object
     virtual inline void copyVertexData
         (const std::vector<BufferDataType>& vertexData,
          const std::vector<unsigned int>& elementData)
@@ -87,8 +87,8 @@ public:
         unbind();
     }
 
-    // Stores vertex attributes in the Vertex Array Object
-    // for the given location
+    /// Stores vertex attributes in the Vertex Array Object
+    /// for the given location
     inline void setVertexAttribute
         (size_t location, size_t component_count,
          size_t stride, size_t offset)
@@ -103,7 +103,7 @@ public:
         unbind();
     }
 
-    // Overload for convience, when no additional offset is needed
+    /// Overload for convience, when no additional offset is needed
     inline void setVertexAttribute
         (size_t location, size_t component_count, size_t stride)
     {
@@ -111,8 +111,8 @@ public:
     }
 
 
-    // Overload for convience, when the struct is tightly packed
-    // and also no additional offset is needed
+    /// Overload for convience, when the struct is tightly packed
+    /// and also no additional offset is needed
     inline void setVertexAttribute(size_t location, size_t component_count)
     {
         setVertexAttribute
@@ -142,9 +142,9 @@ public:
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Explicitly instantiate StaticVertexArrayObject_c with float type
-// to be available for DynamicVertexArrayObject_c<float> and also to spare
-// some compilation time as it is heavily used in most GLKit code
+/// Explicitly instantiate StaticVertexArrayObject_c with float type
+/// to be available for DynamicVertexArrayObject_c<float> and also to spare
+/// some compilation time as it is heavily used in most GLKit code
 
 template class StaticVertexArrayObject_c<float>;
 

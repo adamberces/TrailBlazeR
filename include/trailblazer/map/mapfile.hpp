@@ -11,7 +11,7 @@ namespace trailblazer::map
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Contains all the data stored in the TMF file which is not the actual tile data
+/// Contains all the data stored in the TMF file which is not the actual tile data
 
 struct MapMetadata_s
 {
@@ -22,7 +22,7 @@ struct MapMetadata_s
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Reads and stores the data of a TMF mapfile
+/// Reads and stores the data of a TMF mapfile
 
 class MapFile_c
 {
@@ -31,34 +31,34 @@ public:
     static constexpr char EXTENSION[] = "TMF";
 
 private:
-    // Creating an alias for prettier code
+    /// Creating an alias for prettier code
     using buffer_t = std::vector<char>;
 
-    // The tile data, which is served for the main Map_c class
+    /// The tile data, which is served for the main Map_c class
     std::vector<Tile_s> Tiles;
 
-    // Stores the map's metadata (eg. title, background image)
+    /// Stores the map's metadata (eg. title, background image)
     MapMetadata_s MapMetadata;
 
-    // Reads a NULL delimited string from the map header
+    /// Reads a NULL delimited string from the map header
     std::string readString(const buffer_t& buf, std::size_t& start);
 
-    // Reads and validates the TMF header
+    /// Reads and validates the TMF header
     void readHeader(const buffer_t& buf, std::size_t& bufPtr);
 
-    // Reads the actual map data, where each byte stands for a title
+    /// Reads the actual map data, where each byte stands for a title
     void readTileData(const buffer_t& buf, std::size_t& bufPtr);
 
-    // The main map reading method
+    /// The main map reading method
     void loadMap(const std::string& fileName);
 
 public:
-    const decltype(Tiles)& tiles() const
+    const inline decltype(Tiles)& tiles() const
     {
         return Tiles;
     }
 
-    const MapMetadata_s& mapMetadata() const
+    const inline MapMetadata_s& mapMetadata() const
     {
         return MapMetadata;
     }
@@ -66,4 +66,4 @@ public:
     explicit MapFile_c(const std::string& fileName);
 };
 
-} // trailblazer::map
+} /// trailblazer::map

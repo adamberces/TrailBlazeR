@@ -149,7 +149,7 @@ void BallControl_c::addForces(float delta_time)
 // The only exception from this is when the level is won, when we will stop the ball gradually
 // by applying a huge friction force on the Y component as well.
 
-float sgn(float f)
+static float sgn(float f)
 {
     return ( f < 0.F ? -1.F : 1.F  );
 }

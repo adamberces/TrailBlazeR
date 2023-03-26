@@ -119,9 +119,12 @@ PngImage_c::PngImage_c(std::string fileName)
     }
 }
 
-PngImage_c::PngImage_c()
+PngImage_c::PngImage_c() :
+    Width(0),
+    Height(0),
+    HasAlpha(false),
+    Data(nullptr)
 {
-
 }
 
 PngImage_c::~PngImage_c()

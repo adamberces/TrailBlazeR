@@ -30,8 +30,6 @@ void RenderPipeline_i::run()
 
     ShaderProgram->use();
 
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
     Uniforms->update("model", &ModelConfig);
     Uniforms->update("view", &CameraConfig);
     Uniforms->update("projection", &ProjectionConfig);
@@ -54,10 +52,9 @@ void RenderPipeline_i::setup()
     Uniforms->add("view", glkit::functors::Camera_f);
     Uniforms->add("projection", glkit::functors::PerspectiveProjection_f);
     Uniforms->add("light_color", glkit::functors::Color_f);
-    Uniforms->add("light_position", glkit::functors::BasicLightningPosition_f);
-    Uniforms->add("cam_position", glkit::functors::BasicLightningPosition_f);
+    Uniforms->add("light_position", glkit::functors::LightningPosition_f);
+    Uniforms->add("cam_position", glkit::functors::LightningPosition_f);
     Uniforms->add("object_color", glkit::functors::Color_f);
-
 }
 
 } //namespace trailblazer::pipelines

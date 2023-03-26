@@ -7,7 +7,7 @@ namespace glkit::core
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Common ancestor for all objects wrapping OpenGL features, providing the unique ID
+/// Common ancestor for all objects wrapping OpenGL features, providing the unique ID
 
 class GLObject_i
 {

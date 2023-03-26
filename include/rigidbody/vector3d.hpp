@@ -4,7 +4,7 @@ namespace rigidbody
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// 3D vector type to be used with the RigidBody class
+/// 3D vector type to be used with the RigidBody class
 
 struct Vector3D_s
 {

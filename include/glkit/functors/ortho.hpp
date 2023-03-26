@@ -7,7 +7,7 @@ namespace glkit::functors
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Uniform functor for perspective projection matrix generation
+/// Uniform functor for perspective projection matrix generation
 
 UNIFORM_ARGS(OrthoConfig_s)
 {

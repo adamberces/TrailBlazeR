@@ -8,7 +8,7 @@ namespace glkit::functors
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Uniform functor for scene camera matrix calculation
+/// Uniform functor for scene camera matrix calculation
 
 UNIFORM_ARGS(CameraConfig_s)
 {

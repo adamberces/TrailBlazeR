@@ -13,12 +13,12 @@ namespace trailblazer::ball
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// Wraps a ball pipeline to draw the ball object
+/// Wraps a ball pipeline to draw the ball object
 //
-// Inherits from MessageRecipient_i:
-// Provides the msgBallPosition_s message for Map and Game scene
-// Receives the msgRedrawTrigger_s message from Game scene
-// Receives the msgBallPositionAndDistance_s message from Ball Controller
+/// Inherits from MessageRecipient_i:
+/// Provides the msgBallPosition_s message for Map and Game scene
+/// Receives the msgRedrawTrigger_s message from Game scene
+/// Receives the msgBallPositionAndDistance_s message from Ball Controller
 
 class BallDrawer_c : public messaging::MessageRecipient_i
 {
@@ -30,7 +30,7 @@ public:
 
     void sendMessage(msg_t m) override;
     
-    BallDrawer_c(messaging::PostOffice_c* po);
+    explicit BallDrawer_c(messaging::PostOffice_c* po);
 };
 
 } // namespace trailblazer::ball

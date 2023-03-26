@@ -9,7 +9,7 @@ namespace trailblazer
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-// The main class which instantiates all components and realizes the main game loop
+/// The main class which instantiates all components and realizes the main game loop
 
 class Game_c
 {   
