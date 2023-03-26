@@ -1,0 +1,3 @@
+include/glkit/core/glad/* linguist-vendored
+src/glkit/core/glad/* linguist-vendored
+include/glkit/core/KHR/* linguist-vendored
