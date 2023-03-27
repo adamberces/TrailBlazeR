@@ -50,7 +50,7 @@ class BallControl_c :
 
     /// Time counter used to limit the time for the 
     /// jump force is applied on the ball
-    double JumpTimer;
+    float JumpTimer;
 
     /// Keyboard input functions
     void handleKeyboardInput(msgKeyEvent_e e);

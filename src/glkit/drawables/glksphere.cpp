@@ -9,7 +9,7 @@ namespace glkit::drawables
 /////////////////////////////////////////////////////////////////////////////////////////
 // GLKSphere_c implementation
 
-static constexpr float Pi = 3.141592653589;
+static constexpr float Pi = 3.141592653589F;
 
 std::pair<GLKDrawable_i::vertex_vector_t, GLKDrawable_i::element_vector_t>
 GLKSphere_c::constructSphereVertexData(unsigned int u_max, unsigned int v_max)

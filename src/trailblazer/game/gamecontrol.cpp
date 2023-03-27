@@ -19,7 +19,7 @@ GameState_e GameControl_c::getGameState()
     if (GameState == GameState_e::BALL_LOST ||
         GameState == GameState_e::LEVEL_WON)
     {
-        WaitTimer += GameClock_c::get().elapsedTime();
+        WaitTimer += GameClock_c::TimePeriodSec;
         if (WaitTimer >= Constants_s::WAIT_TIME)
         {
             WaitTimer = 0;

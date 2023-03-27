@@ -9,13 +9,20 @@ namespace trailblazer::ball
 
 void BallControl_c::updateBall()
 {
-    double dt = GameClock_c::get().elapsedTime();
-    
+    float dt = GameClock_c::TimePeriodSec;
+
     handleActualTile();
     addForces(dt);
     updatePosition(dt);
-    applyMapLimits();
+
     
+    applyMapLimits();
+
+    printf("dt %f pos %f %f %f vel %f %f %f\n", dt,
+        Position.X, Position.Y, Position.Z,
+        Velocity.X, Velocity.Y, Velocity.Z);
+
+
     broadcastPosition(dt);
 }
 
@@ -169,6 +176,7 @@ void BallControl_c::addFriction(float rigidbody::Vector3D_s::* component, float 
     // Create vector object and apply the magnitude of the force to the desired component
     rigidbody::Vector3D_s frictionForce(0.F, 0.F, 0.F);
     frictionForce.*component = frictionMagnitude;
+    printf("Friction: %f %f %f\n", frictionForce.X, frictionForce.Y, frictionForce.Z);
     addForce(frictionForce);
 }
 
@@ -231,7 +239,7 @@ void BallControl_c::applyBounce()
 
     if (::abs(Velocity.Z) < 0.01)
     {
-        Velocity.Z == 0.F;
+        Velocity.Z = 0.F;
     }
     else if (isAllowedState && LastTileType != map::TileType_e::GAP)
     {
@@ -308,6 +316,7 @@ void BallControl_c::jump()
 
 void BallControl_c::sendMessage(msg_t m)
 {
+    printf("-------------------------------------\n");
     if (isMessageType<msgKeyEvent_e>(m))
     {
         msgKeyEvent_e e = msg_cast<msgKeyEvent_e>(m);
@@ -340,11 +349,12 @@ BallControl_c::BallControl_c(messaging::PostOffice_c* po) :
     MessageRecipient_i(po),
     RigidBody_c(rigidbody::Vector3D_s(Constants_s::START_POSITION_X,
                                         Constants_s::START_POSITION_Y,
-                                        Constants_s::START_POSITION_Z),
+                                        2.F),
                 rigidbody::Vector3D_s(0, Constants_s::START_VELOCITY, 0),
                 Constants_s::BALL_MASS),
-    BallState(BallState_e::ON_GROUND),
-    LastTileType(map::TileType_e::NORMAL)
+    BallState(BallState_e::IN_AIR),
+    LastTileType(map::TileType_e::NORMAL),
+    JumpTimer(0.F)
 {   
     // Manage subscriptions
     PO->subscribeRecipient<msgKeyEvent_e>(this);
