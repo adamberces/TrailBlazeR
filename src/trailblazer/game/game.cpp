@@ -3,6 +3,7 @@
 #include <trailblazer/ball/balldrawer.hpp>
 #include <trailblazer/ball/ballcontrol.hpp>
 #include <trailblazer/game/gamecontrol.hpp>
+#include <trailblazer/audio/soundcontrol.hpp>
 #include <trailblazer/presentation/gamescene.hpp>
 #include <trailblazer/presentation/backgrounddrawer.hpp>
 #include <trailblazer/presentation/hud.hpp>
@@ -26,6 +27,7 @@ void Game_c::gameLoop()
         // for the new level's scene
         ball::BallControl_c BallControl(&PostOffice);
         GameControl_c GameControl(&PostOffice);
+        audio::SoundControl_c SoundControl(&PostOffice);
 
         // First instantiate the drawables.
         // The order is important here, as msgRedrawTrigger calls
@@ -70,7 +72,7 @@ void Game_c::gameLoop()
 Game_c::Game_c() :
     PostOffice(),
     GameWindow(&PostOffice),
-    SoundControl(&PostOffice),
+    BackgroundMusic("./assets/audio/music.ogg"),
     MapManager("./assets/maps")
 { 
 }

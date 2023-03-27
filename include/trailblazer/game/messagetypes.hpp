@@ -30,6 +30,7 @@ enum class msgSoundEvent_e
 {
     JUMP,
     BOUNCE,
+    SPEEDUP,
     BALL_LOST,
     LEVEL_WON,
     GAME_OVER,

@@ -1,7 +1,19 @@
 #pragma once
 
+#include <string_view>
+
+
 namespace trailblazer
 {
+
+using namespace std::literals;
+
+struct Files_s
+{
+    static constexpr auto AUDIO_PATH = "./assets/audio/"sv;
+    static constexpr auto BACKGROUNDS_PATH = "./assets/backgrounds/"sv;
+    static constexpr auto FONT_PATH = "./assets/fonts/font"sv;
+};
 
 struct Constants_s
 {
