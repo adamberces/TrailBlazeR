@@ -35,6 +35,9 @@ bin/trailblazer
 # VS C0de
 .vscode
 
+# VC++
+*.pdb
+
 # CMake
 CMakeCache.txt
 cmake_install.cmake
