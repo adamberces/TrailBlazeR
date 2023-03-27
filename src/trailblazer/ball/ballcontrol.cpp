@@ -32,8 +32,9 @@ void BallControl_c::handleActualTile()
             {
                 BallState = BallState_e::LOST;
 
-                // Inform game control if the ball is lost
+                // Inform game control and sound control if the ball is lost
                 PO->broadcastMessage<msgGameStateChange_e>(msgGameStateChange_e::BALL_LOST);
+                PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::BALL_LOST);
             }
             break;
             
@@ -41,6 +42,7 @@ void BallControl_c::handleActualTile()
             if (BallState == BallState_e::ON_GROUND)
             {
                 Velocity.Y += Constants_s::SPEEDUP_ADDED_VELOCITY;
+                PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::SPEEDUP);
             }
             break;
 
@@ -58,6 +60,7 @@ void BallControl_c::handleActualTile()
 
                 // Inform game control if the level is won
                 PO->broadcastMessage<msgGameStateChange_e>(msgGameStateChange_e::LEVEL_WON);
+                PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::LEVEL_WON);
             }
             break;
 
@@ -211,28 +214,39 @@ void BallControl_c::applyMapLimits()
         Position.Z <= 0)
     {
         Position.Z = 0;
-
-        // Add bouncing to the ball when the ground is hit
-        // (except when the level is won when we want to stop
-        // the ball as soon as possible or the ball will fall
-        // down due to a gap)
-        if (BallState != BallState_e::LEVEL_WON &&
-            LastTileType != map::TileType_e::GAP)
-        {
-            Velocity.Z = -Velocity.Z;
-
-            // Also add some friction for the Z component
-            // to lose some energy everytime it hits the ground again
-            // and finally stop bouncing
-            addFriction(&rigidbody::Vector3D_s::Z,
-                Constants_s::FRICITON_COEFFICIENT_Z);
-
-            // Trigger Sound Control to play a sound if the ball touches the ground
-            PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::BOUNCE);
-        }
+        applyBounce();
     }
 }
 
+// Bounce back to the ball when the ground is hit, except when:
+// - the level is won when we want to stop the ball ASAP
+// - the ball will fall down due to a gap is under the ball
+// - The Z component of velocity is already too slow to bounce back
+
+void BallControl_c::applyBounce()
+{
+    bool isAllowedState =
+        (BallState == BallState_e::ON_GROUND ||
+         BallState == BallState_e::IN_AIR);
+
+    if (::abs(Velocity.Z) < 0.01)
+    {
+        Velocity.Z == 0.F;
+    }
+    else if (isAllowedState && LastTileType != map::TileType_e::GAP)
+    {
+        Velocity.Z = -Velocity.Z;
+
+        // Also add some friction for the Z component
+        // to lose some energy everytime it hits the ground again
+        // and finally stop bouncing
+        addFriction(&rigidbody::Vector3D_s::Z,
+            Constants_s::FRICITON_COEFFICIENT_Z);
+
+        // Trigger Sound Control to play a sound if the ball touches the ground
+        PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::BOUNCE);
+    }
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // Handle keyboard input
@@ -282,6 +296,9 @@ void BallControl_c::jump()
     {
         JumpTimer = 0;
         BallState = BallState_e::JUMPING;
+
+        // Play jumping sound
+        PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::JUMP);
     }
 }
 
@@ -326,7 +343,7 @@ BallControl_c::BallControl_c(messaging::PostOffice_c* po) :
                                         Constants_s::START_POSITION_Z),
                 rigidbody::Vector3D_s(0, Constants_s::START_VELOCITY, 0),
                 Constants_s::BALL_MASS),
-    BallState(BallState_e::IN_AIR),
+    BallState(BallState_e::ON_GROUND),
     LastTileType(map::TileType_e::NORMAL)
 {   
     // Manage subscriptions

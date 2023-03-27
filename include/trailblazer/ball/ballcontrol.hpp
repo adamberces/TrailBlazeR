@@ -74,6 +74,9 @@ class BallControl_c :
     /// Apply world constraints and do collision detection
     void applyMapLimits();
 
+    // Make the ball bounce back if it hits the ground and has enough Z velocity
+    void applyBounce();
+
     /// Send the resulting new ball position
     void broadcastPosition(float delta_time);
 
