@@ -1,7 +1,9 @@
 #pragma once
 
 #include <messaging/postoffice.hpp>
+
 #include <trailblazer/map/mapmanager.hpp>
+#include <trailblazer/audio/soundcontrol.hpp>
 #include <trailblazer/presentation/gamewindow.hpp>
 
 
@@ -15,6 +17,7 @@ class Game_c
 {   
     messaging::PostOffice_c PostOffice;
     presentation::GameWindow_c GameWindow;
+    audio::SoundControl_c SoundControl;
     map::MapManager_c MapManager;
     
 public:

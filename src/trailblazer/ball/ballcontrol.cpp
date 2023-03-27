@@ -226,6 +226,9 @@ void BallControl_c::applyMapLimits()
             // and finally stop bouncing
             addFriction(&rigidbody::Vector3D_s::Z,
                 Constants_s::FRICITON_COEFFICIENT_Z);
+
+            // Trigger Sound Control to play a sound if the ball touches the ground
+            PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::BOUNCE);
         }
     }
 }

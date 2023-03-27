@@ -70,6 +70,7 @@ void Game_c::gameLoop()
 Game_c::Game_c() :
     PostOffice(),
     GameWindow(&PostOffice),
+    SoundControl(&PostOffice),
     MapManager("./assets/maps")
 { 
 }
