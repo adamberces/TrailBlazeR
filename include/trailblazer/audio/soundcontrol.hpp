@@ -47,7 +47,7 @@ class SoundControl_c : public messaging::MessageRecipient_i
     void playSound(msgSoundEvent_e);
 
 public:
-    void sendMessage(msg_t);
+    void sendMessage(msg_t) override;
     explicit SoundControl_c(messaging::PostOffice_c*);
 };
 

@@ -32,9 +32,8 @@ public:
     /// be drawed over the map which will ultimately hide it.
     void setup(std::string fileName);
 
-    void sendMessage(msg_t m) override;
-    
-    explicit BackgroundDrawer_c(messaging::PostOffice_c* po);
+    void sendMessage(msg_t) override;
+    explicit BackgroundDrawer_c(messaging::PostOffice_c*);
 };
 
 } // namespace trailblazer::presentation

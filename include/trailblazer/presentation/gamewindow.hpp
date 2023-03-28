@@ -24,9 +24,9 @@ class GameWindow_c :
 {
 public:
     void handleKeypressEvents() override;
-    void sendMessage(msg_t message) override {}
-    
-    explicit GameWindow_c(messaging::PostOffice_c* po);
+
+    void sendMessage(msg_t) override {}
+    explicit GameWindow_c(messaging::PostOffice_c*);
 };
 
 } // namespace trailblazer::presentation

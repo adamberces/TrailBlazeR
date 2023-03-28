@@ -28,9 +28,8 @@ public:
     void draw();
     void setup();
 
-    void sendMessage(msg_t m) override;
-    
-    explicit BallDrawer_c(messaging::PostOffice_c* po);
+    void sendMessage(msg_t) override;
+    explicit BallDrawer_c(messaging::PostOffice_c*);
 };
 
 } // namespace trailblazer::ball

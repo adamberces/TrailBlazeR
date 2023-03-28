@@ -35,7 +35,6 @@ public:
     void setup();
 
     void sendMessage(msg_t m) override;
-    
     explicit HUD_c(messaging::PostOffice_c*);
 };
 

@@ -34,15 +34,15 @@ class GameScene_c : public messaging::MessageRecipient_i
     /// and they are called as "globals" here
     void updateGlobals(glkit::functors::point3d_t ballPos);
 
-    /// Get the msgBallPosition_s message, then call updateGlobals
-    void sendMessage(msg_t m) override;
-
 public:
     /// Setup the uniforms of the render pipeline, which won't change
     /// during the lifetime of the scene: projection matrix, lightning color
     void setup(glkit::functors::rgb_t lightColor);
 
-    GameScene_c(messaging::PostOffice_c* po, glkit::functors::rgb_t lightColor);
+    /// Get the msgBallPosition_s message, then call updateGlobals
+    void sendMessage(msg_t) override;
+
+    GameScene_c(messaging::PostOffice_c*, glkit::functors::rgb_t lightColor);
 };
 
 } // namespace trailblazer::presentation

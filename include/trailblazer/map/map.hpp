@@ -32,13 +32,13 @@ public:
         return MapFile.mapMetadata();
     }
 
-    void sendMessage(msg_t m) override;
-
     /// Redraw the map on the screen using the render pipeline
     void draw();
 
+    void sendMessage(msg_t) override;
+
     /// Constructs the map from a map file name (TMF)
-    explicit Map_c(messaging::PostOffice_c* po, 
+    explicit Map_c(messaging::PostOffice_c*, 
                    const std::string& mapFile);
 };
 
