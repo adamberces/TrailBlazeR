@@ -7,27 +7,15 @@
 namespace trailblazer::audio
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+// A minimalistic class which starts and loops the background music with SFML
 class Music_c
 {
     sf::Music Music;
 
 public:
-    Music_c(std::string fileName)
-    {   
-        if (!(Music.openFromFile(fileName)))
-        {
-            throw std::runtime_error("Music_c::Music_c: cannot open " + fileName);
-        }
-        
-        Music.setLoop(true);
-        Music.setVolume(10);
-        Music.play();
-    }  
-
-    ~Music_c()
-    {
-        Music.stop();
-    }  
+    explicit Music_c(std::string fileName);
+    ~Music_c();
 };
 
-}
+} // trailblazer::audio

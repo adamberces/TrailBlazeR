@@ -1,11 +1,6 @@
 #pragma once
 
 #include <string>
-#include <chrono>
-#include <iostream>
-#include <stdexcept>
-#include <unordered_map>
-
 #include <SFML/Audio.hpp>
 
 #include <messaging/postoffice.hpp>
@@ -14,70 +9,46 @@
 
 #include <trailblazer/game/constants.hpp>
 
+
 namespace trailblazer::audio
 {
 
+/////////////////////////////////////////////////////////////////////////////////////////
+/// Manages a map of sound effects and plays them when a specific event is triggered
+//
+/// Inherits from MessageRecipient_i:
+/// Receives the msgSoundEvent_e message from Ball Control
+/// Receives the msgSoundEvent_e message from Game Control  (when the game is over)
+/// Receives the msgSoundEvent_e message from the main Game class (when the game is won)
+
 class SoundControl_c : public messaging::MessageRecipient_i
 {
+    using priority_t = int;
+
+    /// SFML sound player object
     sf::Sound Sound;
-    std::unordered_map<msgSoundEvent_e, sf::SoundBuffer> SoundBuffers;
 
-    float Timeout = 0;
+    /// Stores the priority value of the last played sound
+    /// Which is compared to the priority of the current sound 
+    /// to be played and a new sound is only started if it's
+    /// priority is bigger.
+    priority_t LastSoundPriority;
 
-    sf::SoundBuffer loadSound(std::string fileName)
-    {
-        sf::SoundBuffer buffer;
-        std::string path = Files_s::AUDIO_PATH.data() + fileName;
+    std::unordered_map<msgSoundEvent_e, std::pair<sf::SoundBuffer, priority_t>> SoundBuffers;
 
-        if (!(buffer.loadFromFile(path)))
-        {
-            throw std::runtime_error("SoundControl_c::loadSound: cannot open " + fileName);
-        }
 
-        std::cout << "Sound found: " << fileName << std::endl;
+    /// Contructs a full path of the sound effect and loads it to a SoundBuffer
+    sf::SoundBuffer loadSound(std::string fileName);
 
-        return buffer;
-    }
+    /// Loads all sound effects used in the game and set their priorities
+    void loadSounds();
 
-    void loadSounds()
-    {
-        SoundBuffers[msgSoundEvent_e::JUMP] = loadSound("jump.ogg");
-        SoundBuffers[msgSoundEvent_e::BOUNCE] = loadSound("bounce.ogg");
-        SoundBuffers[msgSoundEvent_e::SPEEDUP] = loadSound("speedup.ogg");
-        SoundBuffers[msgSoundEvent_e::BALL_LOST] = loadSound("lost.ogg");
-        SoundBuffers[msgSoundEvent_e::LEVEL_WON] = loadSound("cleared.ogg");
-        SoundBuffers[msgSoundEvent_e::GAME_OVER] = loadSound("gameover.ogg");
-        SoundBuffers[msgSoundEvent_e::GAME_WON] = loadSound("win.ogg");
-    }
-
-    void playSound(msgSoundEvent_e event)
-    {
-        if (Sound.getStatus() != sf::Sound::Status::Playing)
-        {
-            Sound.setBuffer(SoundBuffers[event]);
-            Sound.play();
-        }
-    }
+    /// Play a sound effect
+    void playSound(msgSoundEvent_e);
 
 public:
-    void sendMessage(msg_t m)
-    {
-        if (isMessageType<msgSoundEvent_e>(m))
-        {
-            msgSoundEvent_e e = msg_cast<msgSoundEvent_e>(m);
-            playSound(e);
-        }
-    }
-
-    SoundControl_c(messaging::PostOffice_c* po) :
-        MessageRecipient_i(po)
-    {
-        loadSounds();
-
-        // Manage subscriptions
-        PO->subscribeRecipient<msgSoundEvent_e>(this);
-    }    
-
+    void sendMessage(msg_t);
+    explicit SoundControl_c(messaging::PostOffice_c*);
 };
 
-}
+} // trailblazer::audio
