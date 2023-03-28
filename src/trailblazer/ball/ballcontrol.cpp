@@ -54,7 +54,7 @@ void BallControl_c::handleActualTile()
             break;
 
         case map::TileType_e::FINISH:
-            if (BallState != BallState_e::LEVEL_WON ||
+            if (BallState != BallState_e::LEVEL_WON &&
                 BallState != BallState_e::LOST)
             {
                 BallState = BallState_e::LEVEL_WON;
