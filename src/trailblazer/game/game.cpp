@@ -18,10 +18,11 @@ namespace trailblazer
 void Game_c::gameLoop()
 {   
     size_t mapCount = MapManager.mapFiles().size();
-    size_t actualMap = 0;
-    for (; actualMap < mapCount;)
+    size_t mapIndex = 0;
+    for (; mapIndex < mapCount;)
     {
-        std::string mapFileName = MapManager.mapFiles().at(actualMap);
+        bool isLastMap = (mapIndex + 1 == mapCount);
+        std::string mapFileName = MapManager.mapFiles().at(mapIndex);
 
         // Set up a new ball and a scene from the ball and the actual map
         // for the new level's scene
@@ -46,12 +47,12 @@ void Game_c::gameLoop()
         presentation::GameWindow_c::WindowState_e WindowState =
             presentation::GameWindow_c::WindowState_e::OK;
         
-        GameState_e GameState = GameState_e::NORMAL;
-        while (GameState ==  GameState_e::NORMAL)
+        msgGameStateChange_e GameState = msgGameStateChange_e::NORMAL;
+        while (GameState ==  msgGameStateChange_e::NORMAL)
         {   
             GameClock_c::get().tick();
             WindowState = GameWindow.updateWindow();
-            GameState = GameControl.getGameState();
+            GameState = GameControl.getGameState(isLastMap);
 
             if (WindowState ==
                 presentation::GameWindow_c::WindowState_e::CLOSING)
@@ -60,9 +61,9 @@ void Game_c::gameLoop()
             }
         }
 
-        if (GameState == GameState_e::LEVEL_WON)
+        if (GameState == msgGameStateChange_e::LEVEL_WON)
         {
-            actualMap++;
+            mapIndex++;
         }
 
         PostOffice.unsubscribeAll();

@@ -33,8 +33,7 @@ void BallControl_c::handleActualTile()
                 BallState = BallState_e::LOST;
 
                 // Inform game control and sound control if the ball is lost
-                PO->broadcastMessage<msgGameStateChange_e>(msgGameStateChange_e::BALL_LOST);
-                PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::BALL_LOST);
+                PO->broadcastMessage<msgBallStateChange_e>(msgBallStateChange_e::BALL_LOST);
             }
             break;
             
@@ -60,8 +59,7 @@ void BallControl_c::handleActualTile()
                 BallState = BallState_e::LEVEL_WON;
 
                 // Inform game control if the level is won
-                PO->broadcastMessage<msgGameStateChange_e>(msgGameStateChange_e::LEVEL_WON);
-                PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::LEVEL_WON);
+                PO->broadcastMessage<msgBallStateChange_e>(msgBallStateChange_e::LEVEL_WON);
             }
             break;
 
@@ -165,9 +163,9 @@ void BallControl_c::addFriction(float rigidbody::Vector3D_s::* component, float 
     // Apply no force if the velocity is (almost) zero
     if (::fabs(Velocity.*component) < Constants_s::FRICTION_VELOCITY_THRESHOLD)
     {
-         velocityDirection = 0.F;
+        velocityDirection = 0.F;
     }
-   
+
     // Calculate friction force
     constexpr float normalForce = Constants_s::BALL_MASS * Constants_s::GRAVITY;
     float frictionMagnitude = velocityDirection * normalForce * -1 * coefficient;

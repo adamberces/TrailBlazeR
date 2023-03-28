@@ -22,7 +22,7 @@ BallDrawer->Map:msgBallPosition_s
 note over Map:Calculate actual tile type from ball position
 Map->BallControl:msgActualTileType_s
 note over BallControl:Calculate ball state from actual tile type
-BallControl->GameControl:msgGameStateChange_e
+BallControl->GameControl:msgBallStateChange_e
 note over GameControl:Handle ball lost/level won event, restart or advance level
 Map->HUD:msgMapData_s
 GameControl->HUD:msgRemainingLives_s

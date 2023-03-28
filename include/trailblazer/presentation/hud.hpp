@@ -17,6 +17,7 @@ namespace trailblazer::presentation
 //
 /// Inherits from MessageRecipient_i:
 /// Receives the msgMapData_s message from Map
+/// Receives the msgGameStateChange_e message from Game Control
 /// Receives the msgRemainingLives_s message from Game Control
 /// Receives the msgRedrawTrigger_s message from Game Scene
 
@@ -29,6 +30,14 @@ class HUD_c : public messaging::MessageRecipient_i
 
     /// Map data received from Map
     msgMapData_s MapData;
+
+    /// Game state message received from Game Control
+    /// to display special messages
+    msgGameStateChange_e GameState;
+
+    /// Generates the special messages which is displayed
+    /// instead of the in-game stats on game state changes
+    void handleGameState(std::string& stats);
 
 public:
     void draw();

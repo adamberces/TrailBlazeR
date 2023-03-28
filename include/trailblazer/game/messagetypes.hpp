@@ -12,10 +12,20 @@
 namespace trailblazer
 {
 
-enum class msgGameStateChange_e
+enum class msgBallStateChange_e
 {
     BALL_LOST,
     LEVEL_WON
+};
+
+enum class msgGameStateChange_e
+{
+    TILE_SCREEN,
+    NORMAL,
+    BALL_LOST,
+    LEVEL_WON,
+    GAME_OVER,
+    GAME_WON
 };
 
 enum class msgKeyEvent_e

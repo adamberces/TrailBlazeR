@@ -12,45 +12,87 @@ int GameControl_c::Lives = Constants_s::INITIAL_LIVES;
 /////////////////////////////////////////////////////////////////////////////////////////
 // Implementation for GameControl_c
 
-GameState_e GameControl_c::getGameState()
+void GameControl_c::triggerSound()
 {
-    PO->broadcastMessage<msgRemainingLives_s>({ Lives });
-
-    if (GameState == GameState_e::BALL_LOST ||
-        GameState == GameState_e::LEVEL_WON)
+    switch (GameState)
     {
-        WaitTimer += GameClock_c::TimePeriodSec;
-        if (WaitTimer >= Constants_s::WAIT_TIME)
+    case msgGameStateChange_e::BALL_LOST:
+        PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::BALL_LOST);
+        break;
+    case msgGameStateChange_e::LEVEL_WON:
+        PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::LEVEL_WON);
+        break;
+    case msgGameStateChange_e::GAME_OVER:
+        PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::GAME_OVER);
+        break;     
+    case msgGameStateChange_e::GAME_WON:
+        PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::GAME_WON);
+        break;       
+    default:
+        break;
+    }
+}
+
+msgGameStateChange_e GameControl_c::getGameState(bool isLastMap)
+{
+    // Transfer the number of lives to the HUD component
+    PO->broadcastMessage<msgRemainingLives_s>({ Lives });
+    PO->broadcastMessage<msgGameStateChange_e>(GameState);
+
+    if (GameState != msgGameStateChange_e::NORMAL)
+    {
+        if (WaitTimer == 0.F)
         {
-            WaitTimer = 0;
-            if (GameState == GameState_e::BALL_LOST)
+            // Decrement lives if the ball was lost
+            // and see if that was the last one...
+            if (GameState == msgGameStateChange_e::BALL_LOST)
             {
-                Lives--;
-                if (Lives == 0)
+                if (--Lives == 0)
                 {
-                    GameState = GameState_e::GAME_OVER;
+                    GameState = msgGameStateChange_e::GAME_OVER;
                 }
             }
+
+            // If we are on the current map and the level
+            // is won it means that the whole game is won
+            if (GameState == msgGameStateChange_e::LEVEL_WON && isLastMap)
+            {
+                GameState = msgGameStateChange_e::GAME_WON;
+            }
+
+            // Play the corresponding sound effect once
+            // for the game state change on state transition
+            triggerSound();
+        }
+
+        // Add game cycle period to the wait counter
+        WaitTimer += GameClock_c::TimePeriodSec;
+        
+        // When the time is up, inform the main Game class about the
+        // resulting state
+        if (WaitTimer >= Constants_s::WAIT_TIME)
+        {
+            WaitTimer = 0.F;
             return GameState;
         }
     }
 
-    return GameState_e::NORMAL;
+    return msgGameStateChange_e::NORMAL;
 }
 
 void GameControl_c::sendMessage(msg_t m)
 {
-    if (isMessageType<msgGameStateChange_e>(m))
+    if (isMessageType<msgBallStateChange_e>(m))
     {
-        msgGameStateChange_e s = msg_cast<msgGameStateChange_e>(m);
+        msgBallStateChange_e s = msg_cast<msgBallStateChange_e>(m);
         
         switch(s)
         {
-            case msgGameStateChange_e::BALL_LOST:
-                GameState = GameState_e::BALL_LOST;
+            case msgBallStateChange_e::BALL_LOST:
+                GameState = msgGameStateChange_e::BALL_LOST;
                 break;
-            case msgGameStateChange_e::LEVEL_WON:
-                GameState = GameState_e::LEVEL_WON;
+            case msgBallStateChange_e::LEVEL_WON:
+                GameState = msgGameStateChange_e::LEVEL_WON;
                 break;
         }
     }
@@ -58,11 +100,11 @@ void GameControl_c::sendMessage(msg_t m)
 
 GameControl_c::GameControl_c(messaging::PostOffice_c* po) :
     MessageRecipient_i(po),
-    GameState(GameState_e::NORMAL),
+    GameState(msgGameStateChange_e::NORMAL),
     WaitTimer(0.F)
 {   
     // Manage subscriptions
-    PO->subscribeRecipient<msgGameStateChange_e>(this);
+    PO->subscribeRecipient<msgBallStateChange_e>(this);
 }
 
 } // namespace trailblazer
