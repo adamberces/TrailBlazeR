@@ -39,12 +39,15 @@ struct Constants_s
     static constexpr float PI = 3.14159265359F;
     
     static constexpr float FRICITON_COEFFICIENT_X = 0.2F;
-    static constexpr float FRICITON_COEFFICIENT_Z = 10.F;
+    static constexpr float FRICITON_COEFFICIENT_Z = 5.F;
     static constexpr float FRICITON_COEFFICIENT_ENDLEVEL = 0.5F;
     
     static constexpr float GRAVITY = 9.81F;
     static constexpr float SPHERE_DRAG_COEFFICIENT = 0.47F;
     static constexpr float AIR_DENSITY = 1.29F;
+
+    static constexpr float BOUNCE_VELOCITY_THRESHOLD = 1.F;
+    static constexpr float FRICTION_VELOCITY_THRESHOLD = 0.001F;
 
     /// Ball control constants
     static constexpr float JUMP_VELOCITY = 4.F;

@@ -14,14 +14,7 @@ void BallControl_c::updateBall()
     handleActualTile();
     addForces(dt);
     updatePosition(dt);
-
-    
     applyMapLimits();
-
-    printf("dt %f pos %f %f %f vel %f %f %f\n", dt,
-        Position.X, Position.Y, Position.Z,
-        Velocity.X, Velocity.Y, Velocity.Z);
-
 
     broadcastPosition(dt);
 }
@@ -61,7 +54,8 @@ void BallControl_c::handleActualTile()
             break;
 
         case map::TileType_e::FINISH:
-            if (BallState != BallState_e::LEVEL_WON)
+            if (BallState != BallState_e::LEVEL_WON ||
+                BallState != BallState_e::LOST)
             {
                 BallState = BallState_e::LEVEL_WON;
 
@@ -119,9 +113,8 @@ void BallControl_c::addForces(float delta_time)
             Constants_s::FRICITON_COEFFICIENT_X);
     }
 
-    // If the ball is in the air, apply gravity and air drag
-    if (BallState == BallState_e::JUMPING ||
-        BallState == BallState_e::IN_AIR)
+    // If the ball is in not on ground
+    if (BallState != BallState_e::ON_GROUND)
     {
         addForce(rigidbody::Vector3D_s(0, 0, -(Constants_s::GRAVITY)));
 
@@ -169,6 +162,12 @@ void BallControl_c::addFriction(float rigidbody::Vector3D_s::* component, float 
     // Get the direction of the force
     float velocityDirection = sgn(Velocity.*component);
 
+    // Apply no force if the velocity is (almost) zero
+    if (::fabs(Velocity.*component) < Constants_s::FRICTION_VELOCITY_THRESHOLD)
+    {
+         velocityDirection = 0.F;
+    }
+   
     // Calculate friction force
     constexpr float normalForce = Constants_s::BALL_MASS * Constants_s::GRAVITY;
     float frictionMagnitude = velocityDirection * normalForce * -1 * coefficient;
@@ -176,7 +175,6 @@ void BallControl_c::addFriction(float rigidbody::Vector3D_s::* component, float 
     // Create vector object and apply the magnitude of the force to the desired component
     rigidbody::Vector3D_s frictionForce(0.F, 0.F, 0.F);
     frictionForce.*component = frictionMagnitude;
-    printf("Friction: %f %f %f\n", frictionForce.X, frictionForce.Y, frictionForce.Z);
     addForce(frictionForce);
 }
 
@@ -237,12 +235,14 @@ void BallControl_c::applyBounce()
         (BallState == BallState_e::ON_GROUND ||
          BallState == BallState_e::IN_AIR);
 
-    if (::abs(Velocity.Z) < 0.01)
+
+    if (::fabs(Velocity.Z) < Constants_s::BOUNCE_VELOCITY_THRESHOLD)
     {
         Velocity.Z = 0.F;
     }
     else if (isAllowedState && LastTileType != map::TileType_e::GAP)
     {
+        
         Velocity.Z = -Velocity.Z;
 
         // Also add some friction for the Z component
@@ -316,7 +316,6 @@ void BallControl_c::jump()
 
 void BallControl_c::sendMessage(msg_t m)
 {
-    printf("-------------------------------------\n");
     if (isMessageType<msgKeyEvent_e>(m))
     {
         msgKeyEvent_e e = msg_cast<msgKeyEvent_e>(m);
@@ -348,11 +347,11 @@ void BallControl_c::broadcastPosition(float delta_time)
 BallControl_c::BallControl_c(messaging::PostOffice_c* po) :
     MessageRecipient_i(po),
     RigidBody_c(rigidbody::Vector3D_s(Constants_s::START_POSITION_X,
-                                        Constants_s::START_POSITION_Y,
-                                        2.F),
+                                      Constants_s::START_POSITION_Y,
+                                      Constants_s::START_POSITION_Z),
                 rigidbody::Vector3D_s(0, Constants_s::START_VELOCITY, 0),
                 Constants_s::BALL_MASS),
-    BallState(BallState_e::IN_AIR),
+    BallState(BallState_e::ON_GROUND),
     LastTileType(map::TileType_e::NORMAL),
     JumpTimer(0.F)
 {   
