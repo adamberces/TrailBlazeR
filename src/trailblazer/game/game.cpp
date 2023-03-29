@@ -96,6 +96,7 @@ void Game_c::gameLoop()
         else if (GameState == msgGameStateChange_e::GAME_OVER)
         {
             mapIndex = 0;
+            GameControl.resetLives();
             GameState = msgGameStateChange_e::TILE_SCREEN;
         }
 

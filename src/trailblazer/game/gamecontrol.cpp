@@ -12,6 +12,11 @@ int GameControl_c::Lives = Constants_s::INITIAL_LIVES;
 /////////////////////////////////////////////////////////////////////////////////////////
 // Implementation for GameControl_c
 
+void GameControl_c::resetLives()
+{
+    Lives = Constants_s::INITIAL_LIVES;
+}
+
 void GameControl_c::triggerSound()
 {
     switch (GameState)

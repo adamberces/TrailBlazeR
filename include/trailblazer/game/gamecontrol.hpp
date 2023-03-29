@@ -32,6 +32,8 @@ class GameControl_c : public messaging::MessageRecipient_i
     void triggerSound();
 
 public:
+    void resetLives();
+    
     /// Provides the current game state (returns NORMAL even when the 
     /// ball is lost or the level is won, but we are still under WaitTimer)
     /// An argument shall be provided from the main Game class to indicate
