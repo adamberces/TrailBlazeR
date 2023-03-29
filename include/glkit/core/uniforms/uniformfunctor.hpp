@@ -38,7 +38,8 @@ UNIFORM_ARGS(EmptyPlaceholder)
 using uniform_types_t = std::variant<
     glm::vec3,
     glm::vec4,
-    glm::mat4
+    glm::mat4,
+    float
 >;
 
 using uniform_args_ptr_t = UniformFunctorArgs_i*;
