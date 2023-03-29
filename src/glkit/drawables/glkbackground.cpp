@@ -16,12 +16,18 @@ void GLKBackground_c::activateTexture() const
 
 void GLKBackground_c::draw() const
 {
+    glEnable(GL_BLEND);
     glDisable(GL_DEPTH_TEST);
+    glActiveTexture(GL_TEXTURE0);
+
     VertexArrayObject->bind();
     glDrawElements(GL_TRIANGLES, NumberOfElements,
                     GL_UNSIGNED_INT, 0);
     VertexArrayObject->unbind();
+
+    glBindTexture(GL_TEXTURE_2D, 0);
     glEnable(GL_DEPTH_TEST); 
+    glDisable(GL_BLEND);
 }
 
 std::pair<drawables::GLKDrawable_i::vertex_vector_t, drawables::GLKDrawable_i::element_vector_t>
@@ -30,10 +36,10 @@ GLKBackground_c::constructVertexData()
     vertex_vector_t v =
     {
         // Position          // Texture coordinates
-        -1.0f, -1.0f, 0.0f,  1.0f, 0.0f,
-         1.0f, -1.0f, 0.0f,  0.0f, 0.0f,
-         1.0f,  1.0f, 0.0f,  0.0f, 1.0f,
-        -1.0f,  1.0f, 0.0f,  1.0f, 1.0f
+        -1.0f, -1.0f, 0.0f,  0.0f, 1.0f,
+         1.0f, -1.0f, 0.0f,  1.0f, 1.0f,
+         1.0f,  1.0f, 0.0f,  1.0f, 0.0f,
+        -1.0f,  1.0f, 0.0f,  0.0f, 0.0f
     };
 
     element_vector_t e =
