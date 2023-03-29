@@ -103,21 +103,6 @@ void Game_c::gameLoop()
     }
 }
 
-void Game_c::titleScreen()
-{
-    presentation::BackgroundDrawer_c Background(&PostOffice);
-    Background.setup("./assets/backgrounds/intro.png");
-
-    while (1)
-    {
-        GameWindow.updateWindow();
-        Background.FadeIn(10);
-        msgRedrawTrigger_s t;
-        Background.sendMessage(t);
-        GameClock_c::get().tick();
-    }
-}
-
 Game_c::Game_c() :
     PostOffice(),
     GameWindow(&PostOffice),
