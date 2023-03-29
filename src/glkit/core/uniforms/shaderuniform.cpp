@@ -39,6 +39,11 @@ void ShaderUniform_c::setData(GLuint shaderProgramId, uniform_args_ptr_t uniform
         glm::mat4 v = std::get<glm::mat4>(value);
         glUniformMatrix4fv(location, 1, GL_FALSE, &v[0][0]);
     }
+    else if (std::holds_alternative<float>(value))
+    {
+        float v = std::get<float>(value);
+        glUniform1f(location, v);
+    }
     else
     {
         throw std::runtime_error("ShaderUniform_c::setData: unset/unknown type error in ShaderUniform_c");
