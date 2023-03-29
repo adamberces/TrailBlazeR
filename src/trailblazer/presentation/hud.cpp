@@ -37,8 +37,11 @@ void HUD_c::handleGameState(std::string& stats)
 void HUD_c::draw()
 {
     // Print game title on the bottom of the screen
-    Pipeline.run("TRAILBLAZER 2023 by Adam Berces", 10, 30, { 1, 1, 1 });
-
+    if  (GameState != msgGameStateChange_e::TILE_SCREEN)
+    {
+        Pipeline.run("TRAILBLAZER 2023 by Adam Berces", 10, 30, { 1, 1, 1 });
+    }
+    
     // Prepare in-game stats
     std::string stats =
         "Stage '" + MapData.Metadata.MapTitle + "'        Lives " + std::to_string(Lives) +
