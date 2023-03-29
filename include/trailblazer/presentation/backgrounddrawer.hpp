@@ -26,6 +26,8 @@ class BackgroundDrawer_c : public messaging::MessageRecipient_i
     std::unique_ptr<trailblazer::pipelines::BackgroundPipeline_c> PipelinePtr;
 
 public:
+    void FadeIn(float seconds);
+
     /// We have to call a setup explicitly, where we need to specify the image
     /// because the order of subscriptions matters in Game_c. If we create and subscribe
     /// Background after we know the file name from the Map object, the background will

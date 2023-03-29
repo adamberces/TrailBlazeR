@@ -39,7 +39,17 @@ msgGameStateChange_e GameControl_c::getGameState(bool isLastMap)
     PO->broadcastMessage<msgRemainingLives_s>({ Lives });
     PO->broadcastMessage<msgGameStateChange_e>(GameState);
 
-    if (GameState != msgGameStateChange_e::NORMAL)
+    if (GameState == msgGameStateChange_e::TILE_SCREEN ||
+        GameState == msgGameStateChange_e::NORMAL)
+    {
+        return GameState;
+    }
+    else if (GameState == msgGameStateChange_e::GAME_START)
+    {
+        GameState = msgGameStateChange_e::NORMAL;
+        return msgGameStateChange_e::GAME_START;
+    }
+    else
     {
         if (WaitTimer == 0.F)
         {
@@ -84,27 +94,43 @@ void GameControl_c::sendMessage(msg_t m)
 {
     if (isMessageType<msgBallStateChange_e>(m))
     {
-        msgBallStateChange_e s = msg_cast<msgBallStateChange_e>(m);
-        
-        switch(s)
+        if (GameState != msgGameStateChange_e::TILE_SCREEN &&
+            GameState != msgGameStateChange_e::GAME_START)
         {
+            msgBallStateChange_e s = msg_cast<msgBallStateChange_e>(m);
+
+            switch (s)
+            {
             case msgBallStateChange_e::BALL_LOST:
                 GameState = msgGameStateChange_e::BALL_LOST;
                 break;
             case msgBallStateChange_e::LEVEL_WON:
                 GameState = msgGameStateChange_e::LEVEL_WON;
                 break;
+            }
+        }
+    }
+    else if (isMessageType<msgKeyEvent_e>(m))
+    {
+        if (GameState == msgGameStateChange_e::TILE_SCREEN)
+        {
+            msgKeyEvent_e e = msg_cast<msgKeyEvent_e>(m);
+            if (e == msgKeyEvent_e::JUMP)
+            {
+                GameState = msgGameStateChange_e::GAME_START;
+            }
         }
     }
 }
 
-GameControl_c::GameControl_c(messaging::PostOffice_c* po) :
+GameControl_c::GameControl_c(messaging::PostOffice_c* po, msgGameStateChange_e initialState) :
     MessageRecipient_i(po),
-    GameState(msgGameStateChange_e::NORMAL),
+    GameState(initialState),
     WaitTimer(0.F)
 {   
     // Manage subscriptions
     PO->subscribeRecipient<msgBallStateChange_e>(this);
+    PO->subscribeRecipient<msgKeyEvent_e>(this);
 }
 
 } // namespace trailblazer

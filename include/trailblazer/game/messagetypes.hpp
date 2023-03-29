@@ -21,6 +21,7 @@ enum class msgBallStateChange_e
 enum class msgGameStateChange_e
 {
     TILE_SCREEN,
+    GAME_START,
     NORMAL,
     BALL_LOST,
     LEVEL_WON,

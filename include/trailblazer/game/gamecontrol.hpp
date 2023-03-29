@@ -41,7 +41,8 @@ public:
     msgGameStateChange_e getGameState(bool isLastMap);
 
     void sendMessage(msg_t) override;
-    explicit GameControl_c(messaging::PostOffice_c*);
+    explicit GameControl_c(messaging::PostOffice_c*,
+        msgGameStateChange_e initialState);
 };
 
 } // namespace trailblazer

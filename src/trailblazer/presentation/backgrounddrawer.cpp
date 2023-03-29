@@ -7,6 +7,20 @@ namespace trailblazer::presentation
 /////////////////////////////////////////////////////////////////////////////////////////
 // BackgroundDrawer_c implementation
 
+
+void BackgroundDrawer_c::FadeIn(float seconds)
+{
+    static float alpha = 0.F;
+    static int ticks = static_cast<int>(seconds / GameClock_c::TimePeriodSec);
+    float step = 1.F / ticks;
+
+    if (0 < ticks--)
+    {
+        alpha += step;
+        PipelinePtr->AlphaConfig.Value = alpha;
+    }
+}
+
 void BackgroundDrawer_c::sendMessage(msg_t m)
 {
     if (isMessageType<msgRedrawTrigger_s>(m))
