@@ -23,7 +23,7 @@ std::string ShaderFile_c::source() const
 ShaderFile_c::ShaderFile_c(const std::string& fileName) :
     FileName(fileName)
 {
-    std::size_t size = std::filesystem::file_size(FileName);
+    std::uintmax_t size = std::filesystem::file_size(FileName);
     Source = std::string(size + 1U, '\0');
     std::ifstream file(FileName);
 

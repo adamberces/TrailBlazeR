@@ -60,7 +60,7 @@ bool PngImage_c::loadPNG(std::string fileName)
 
     this->HasAlpha = (color_type & PNG_COLOR_MASK_ALPHA);
 
-    unsigned int row_bytes = png_get_rowbytes(png_ptr, info_ptr);
+    size_t row_bytes = png_get_rowbytes(png_ptr, info_ptr);
     unsigned char* image = (unsigned char*)malloc(row_bytes * this->Height);
 
     png_bytepp row_pointers = png_get_rows(png_ptr, info_ptr);

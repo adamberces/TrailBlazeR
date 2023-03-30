@@ -26,7 +26,8 @@ class GameClock_c
 public:
     static constexpr float FPS = 30.F;
     static constexpr float TimePeriodSec = 1.F / FPS;
-    static constexpr unsigned int TimePerioduSec = TimePeriodSec * 1E6;
+    static constexpr unsigned int TimePerioduSec =
+            static_cast<unsigned int>(TimePeriodSec * 1E6);
 
     static GameClock_c& get();
     static float elapsedTime();
