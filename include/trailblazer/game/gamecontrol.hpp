@@ -4,6 +4,8 @@
 #include <messaging/recipient.hpp>
 #include <trailblazer/game/messagetypes.hpp>
 
+#include <statemachine/statemachine.hpp>
+
 
 namespace trailblazer
 {
@@ -20,8 +22,16 @@ namespace trailblazer
 
 class GameControl_c : public messaging::MessageRecipient_i
 {   
-    msgGameStateChange_e GameState;
+    statemachine::StateMachine_i
+        <msgGameStateChange_e,
+         msgGameStateChange_e::TILE_SCREEN> StateMachine;
+
     static int Lives;
+    static size_t MapIndex;
+
+    // Received messages
+    msgKeyEvent_e LastKeyEvent;
+    msgBallStateChange_e LastBallState;
 
     /// Counter to measure the the short time before switching
     /// or restarting scene after the ball is lost or the level is won
@@ -31,9 +41,9 @@ class GameControl_c : public messaging::MessageRecipient_i
     /// effects either for ball lost, level won, game over or game won
     void triggerSound();
 
+    void setupStateTransitions();
+
 public:
-    void resetLives();
-    
     /// Provides the current game state (returns NORMAL even when the 
     /// ball is lost or the level is won, but we are still under WaitTimer)
     /// An argument shall be provided from the main Game class to indicate

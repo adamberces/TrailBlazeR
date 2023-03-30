@@ -95,6 +95,75 @@ msgGameStateChange_e GameControl_c::getGameState(bool isLastMap)
     return msgGameStateChange_e::NORMAL;
 }
 
+void GameControl_c::setupStateTransitions()
+{
+    StateMachine.addTransition({ msgGameStateChange_e::TILE_SCREEN,
+                                 msgGameStateChange_e::NORMAL,
+                                 [this]() { return LastKeyEvent == msgKeyEvent_e::JUMP; }
+                               });
+
+
+    StateMachine.addTransition({ msgGameStateChange_e::NORMAL,
+                                 msgGameStateChange_e::BALL_LOST_WAIT,
+                                 [this]() { return LastBallState == msgBallStateChange_e::BALL_LOST; },
+                                 statemachine::no_onetime_action,
+                                 [this]() { WaitTimer += GameClock_c::TimePeriodSec; }
+                               });
+    StateMachine.addTransition({ msgGameStateChange_e::BALL_LOST_WAIT,
+                                 msgGameStateChange_e::BALL_LOST,
+                                 [this]() { return WaitTimer >= Constants_s::WAIT_TIME; },
+                                 [this]() { WaitTimer = 0; Lives--; },
+                                 statemachine::no_repeated_action
+                               });
+    StateMachine.addTransition({ msgGameStateChange_e::BALL_LOST,
+                                 msgGameStateChange_e::NORMAL,
+                                 [this]() { return Lives > 0; },
+                                 statemachine::no_onetime_action,
+                                 statemachine::no_repeated_action
+                               });
+    
+    StateMachine.addTransition({ msgGameStateChange_e::BALL_LOST,
+                                 msgGameStateChange_e::GAME_OVER,
+                                 [this]() { return Lives == 0; },
+                                 statemachine::no_onetime_action,
+                                 statemachine::no_repeated_action
+                               });
+    StateMachine.addTransition({ msgGameStateChange_e::GAME_OVER,
+                                 msgGameStateChange_e::TILE_SCREEN,
+                                 statemachine::default_condition,
+                                 [this]() { MapIndex = 0; Lives == Constants_s::INITIAL_LIVES; },
+                                 statemachine::no_repeated_action
+                               });
+
+
+    StateMachine.addTransition({ msgGameStateChange_e::NORMAL,
+                                 msgGameStateChange_e::GAME_OVER_WAIT,
+                                 [this]() { LastBallState == msgBallStateChange_e::BALL_LOST; },
+                                 statemachine::no_onetime_action,
+                                 [this]() { WaitTimer += GameClock_c::TimePeriodSec; }
+                               });
+    StateMachine.addTransition({ msgGameStateChange_e::BALL_LOST_WAIT,
+                                 msgGameStateChange_e::BALL_LOST,
+                                 [this]() { WaitTimer = 0; Lives--; },
+                                 statemachine::no_repeated_action
+                               });
+
+    StateMachine.addTransition({ msgGameStateChange_e::BALL_LOST,
+                                 msgGameStateChange_e::NORMAL,
+                                 [this]() { Lives > 0; }
+        });
+
+    StateMachine.addTransition({ msgGameStateChange_e::NORMAL,
+                                 msgGameStateChange_e::LEVEL_WON,
+                                 [this]() { LastBallState == msgBallStateChange_e::LEVEL_WON; }
+                               });
+
+    StateMachine.addTransition({ msgGameStateChange_e::TILE_SCREEN,
+                                 msgGameStateChange_e::NORMAL,
+                                 [this]() { LastKeyEvent == msgKeyEvent_e::JUMP; }
+        });
+}
+
 void GameControl_c::sendMessage(msg_t m)
 {
     if (isMessageType<msgBallStateChange_e>(m))

@@ -1,0 +1,37 @@
+TILE_SCREEN
+Possible transitions:
+GAME_START	Condition: msgKeyEvent_e is JUMP
+
+
+GAME_START
+Possible transitions:
+NORMAL
+
+
+NORMAL
+Possible transitions:
+BALL_LOST	Condition: msgBallStateChange_e is BALL_LOST
+LEVEL_WON	Condition: msgBallStateChange_e is LEVEL_WON
+Waiting before transitions!
+
+
+BALL_LOST
+Possible transitions:
+NORMAL		Condition: Lives > 0 				    Post-action: Lives--
+GAME_OVER	Condition: Lives == 0					Post-action: Lives = MAX; mapIndex = 0;
+
+
+LEVEL_WON
+Possible transitions:
+NORMAL		Condition: mapIndex + 1 < mapCount		Post-action: Lives++; MapIndex++
+GAME_WON	Condition: mapIndex + 1 == mapCount		Post-action: Lives = MAX; mapIndex = 0;
+
+
+GAME_OVER
+Possible transitions:
+TILE_SCREEN	Condition: -
+
+
+GAME_WON
+Possible transitions:
+TILE_SCREEN	Condition: -

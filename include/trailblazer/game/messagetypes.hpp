@@ -21,12 +21,16 @@ enum class msgBallStateChange_e
 enum class msgGameStateChange_e
 {
     TILE_SCREEN,
-    GAME_START,
+
     NORMAL,
+
     BALL_LOST,
-    LEVEL_WON,
+    BALL_LOST_WAIT,
     GAME_OVER,
-    GAME_WON
+
+    LEVEL_WON,
+    LEVEL_WON_WAIT,
+    GAME_WON,
 };
 
 enum class msgKeyEvent_e
