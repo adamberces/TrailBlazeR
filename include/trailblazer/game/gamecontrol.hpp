@@ -22,14 +22,16 @@ namespace trailblazer
 
 class GameControl_c : public messaging::MessageRecipient_i
 {   
-    statemachine::StateMachine_i
-        <msgGameStateChange_e,
-         msgGameStateChange_e::TILE_SCREEN> StateMachine;
+    statemachine::StateMachine_i<msgGameState_e> StateMachine;
 
+    /// The responsibility of the class is to maintain the value of 
+    /// Lives and the actual map's index. Some state transitions are
+    /// also depending the value of these variables
     static int Lives;
-    static size_t MapIndex;
+    static std::size_t MapIndex;
+    std::size_t MapCount;
 
-    // Received messages
+    /// Received messages
     msgKeyEvent_e LastKeyEvent;
     msgBallStateChange_e LastBallState;
 
@@ -44,17 +46,23 @@ class GameControl_c : public messaging::MessageRecipient_i
     void setupStateTransitions();
 
 public:
+    std::size_t mapIndex() const
+    {
+        return MapIndex;
+    }
+
     /// Provides the current game state (returns NORMAL even when the 
     /// ball is lost or the level is won, but we are still under WaitTimer)
     /// An argument shall be provided from the main Game class to indicate
     /// if the current scene contains the last available map or not, 
     /// to make distinction between LEVEL_WON and GAME_WON
     /// (BALL_LOST and GAME_OVER can de distinguished using Lives).
-    msgGameStateChange_e getGameState(bool isLastMap);
+    msgGameState_e updateGameState();
 
     void sendMessage(msg_t) override;
     explicit GameControl_c(messaging::PostOffice_c*,
-        msgGameStateChange_e initialState);
+        msgGameState_e initialState,
+        std::size_t mapCount);
 };
 
 } // namespace trailblazer

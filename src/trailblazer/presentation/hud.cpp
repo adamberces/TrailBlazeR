@@ -9,23 +9,23 @@ namespace trailblazer::presentation
 
 void HUD_c::handleGameState(std::string& stats)
 {
-    if (GameState != msgGameStateChange_e::NORMAL)
+    if (GameState != msgGameState_e::NORMAL_GAMEPLAY)
     {
         switch (GameState)
         {
-        case msgGameStateChange_e::TILE_SCREEN:
+        case msgGameState_e::TILE_SCREEN:
             stats = "Press SPACE to start!";
             break;
-        case msgGameStateChange_e::BALL_LOST:
+        case msgGameState_e::BALL_LOST:
             stats = "Ball lost";
             break;
-        case msgGameStateChange_e::LEVEL_WON:
+        case msgGameState_e::LEVEL_WON:
             stats = "Stage cleared!";
             break;
-        case msgGameStateChange_e::GAME_OVER:
+        case msgGameState_e::GAME_OVER:
             stats = "Game over!";
             break;
-        case msgGameStateChange_e::GAME_WON:
+        case msgGameState_e::GAME_WON:
             stats = "Congratulations! You won the game!";
             break;
         default:
@@ -37,7 +37,7 @@ void HUD_c::handleGameState(std::string& stats)
 void HUD_c::draw()
 {
     // Print game title on the bottom of the screen
-    if  (GameState != msgGameStateChange_e::TILE_SCREEN)
+    if  (GameState != msgGameState_e::TILE_SCREEN)
     {
         Pipeline.run("TRAILBLAZER 2023 by Adam Berces", 10, 30, { 1, 1, 1 });
     }
@@ -69,9 +69,9 @@ void HUD_c::sendMessage(msg_t m)
     {
         MapData = msg_cast<msgMapData_s>(m);
     }
-    else if (isMessageType<msgGameStateChange_e>(m))
+    else if (isMessageType<msgGameState_e>(m))
     {
-        GameState = msg_cast<msgGameStateChange_e>(m);
+        GameState = msg_cast<msgGameState_e>(m);
     }
 }
 
@@ -81,7 +81,7 @@ HUD_c::HUD_c(messaging::PostOffice_c* po) :
 {   
     // Manage subscriptions
     PO->subscribeRecipient<msgRedrawTrigger_s>(this);
-    PO->subscribeRecipient<msgGameStateChange_e>(this);
+    PO->subscribeRecipient<msgGameState_e>(this);
     PO->subscribeRecipient<msgRemainingLives_s>(this);
     PO->subscribeRecipient<msgMapData_s>(this);
 }

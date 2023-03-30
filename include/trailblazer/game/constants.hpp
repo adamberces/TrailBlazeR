@@ -20,7 +20,9 @@ struct Constants_s
     static constexpr int WINDOW_WIDTH = 1024;
     static constexpr int WINDOW_HEIGHT = 768;
 
-    static constexpr int INITIAL_LIVES = 3;
+    static constexpr int INITIAL_LIVES = 5;
+    /// This number is added to Lives if a level is cleared
+    static constexpr int LEVEL_WON_BONUS = 1;
     static constexpr float WAIT_TIME = 4.F; //sec
 
     /// Number of map tiles per row

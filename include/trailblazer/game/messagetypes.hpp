@@ -14,15 +14,17 @@ namespace trailblazer
 
 enum class msgBallStateChange_e
 {
+    UNUSED,
     BALL_LOST,
     LEVEL_WON
 };
 
-enum class msgGameStateChange_e
+enum class msgGameState_e
 {
     TILE_SCREEN,
+    TILE_SCREEN_EXIT,
 
-    NORMAL,
+    NORMAL_GAMEPLAY,
 
     BALL_LOST,
     BALL_LOST_WAIT,

@@ -53,6 +53,15 @@ public:
         }
     }
     
+    /// Remove a subscriber for all types
+    void unsubscribeRecipient(MessageRecipient_i* r)
+    {
+        for (auto& i : Recipients)
+        {
+            i.second.remove(r);
+        }
+    }
+
     /// Clear subscriber list, useful if the PO object needs to be reused
     void unsubscribeAll()
     {

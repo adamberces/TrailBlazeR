@@ -23,13 +23,11 @@ std::string ShaderFile_c::source() const
 ShaderFile_c::ShaderFile_c(const std::string& fileName) :
     FileName(fileName)
 {
-    std::uintmax_t size = std::filesystem::file_size(FileName);
-    Source = std::string(size + 1U, '\0');
     std::ifstream file(FileName);
-
-    if (!file.read(Source.data(), size))
-    {
-        throw std::runtime_error("Loading GLSL file failed: " + FileName);
+    std::string line;
+    while (std::getline(file, line))
+    { 
+        Source += line + "\n";
     }
 }
 

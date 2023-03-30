@@ -17,31 +17,29 @@ namespace trailblazer
 
 void Game_c::gameLoop()
 {   
-    msgGameStateChange_e GameState = msgGameStateChange_e::TILE_SCREEN;
-
-    std::size_t mapIndex = 0;
+    msgGameState_e GameState = msgGameState_e::TILE_SCREEN;
     std::size_t mapCount = MapManager.mapFiles().size();
 
-    for (; mapIndex < mapCount;)
+    while (true)
     {
-        bool isLastMap = (mapIndex + 1 == mapCount);
-        std::string mapFileName = MapManager.mapFiles().at(mapIndex);
+        // GameControl handles the main state machine of the game
+        GameControl_c GameControl(&PostOffice, GameState, mapCount);
 
-        // Set up a new ball and a scene from the ball and the actual map
-        // for the new level's scene
+        // Set up new controller classes for each stage
         ball::BallControl_c BallControl(&PostOffice);
-        GameControl_c GameControl(&PostOffice, GameState);
         audio::SoundControl_c SoundControl(&PostOffice);
 
-        // First instantiate the drawables.
+        // Set up new drawables for each stage
         // The order is important here, as msgRedrawTrigger calls
         // the draw functions in the order of their subscription 
         // to that message, which happens in the constructor
         presentation::BackgroundDrawer_c Background(&PostOffice);
         ball::BallDrawer_c Ball(&PostOffice);
+        std::string mapFileName = MapManager.mapFiles().at(GameControl.mapIndex());
         map::Map_c Map(&PostOffice, mapFileName);
         
-        // Setup game scene from the metadata acquired from the current map
+        // Setup game scene from the color theme metadata acquired from the
+        // current mapfile and also load the background image
         auto mapData = Map.mapMetaData();
         presentation::GameScene_c GameScene(&PostOffice, mapData.ColorTheme);
         Background.setup("./assets/backgrounds/" + mapData.BackgroundFileName);
@@ -49,7 +47,7 @@ void Game_c::gameLoop()
         // Setup a background object for the title screen
         // to be rendered in front of the original background
         std::unique_ptr<presentation::BackgroundDrawer_c> TitleScreen;
-        if (GameState == msgGameStateChange_e::TILE_SCREEN)
+        if (GameState == msgGameState_e::TILE_SCREEN)
         {
             TitleScreen = std::make_unique<presentation::BackgroundDrawer_c>(&PostOffice);
             TitleScreen->setup("./assets/backgrounds/intro.png");
@@ -58,46 +56,34 @@ void Game_c::gameLoop()
         // Setup HUD as the topmost drawable component
         presentation::HUD_c HUD(&PostOffice);
 
-        presentation::GameWindow_c::WindowState_e WindowState =
-            presentation::GameWindow_c::WindowState_e::OK;
-
-        while (GameState == msgGameStateChange_e::NORMAL ||
-               GameState == msgGameStateChange_e::TILE_SCREEN)
+        // This inner loop handles the main update-redraw cycle
+        // of a scene (either the title screen or a stage)
+        while (GameState == msgGameState_e::NORMAL_GAMEPLAY ||
+               GameState == msgGameState_e::TILE_SCREEN)
         {   
             GameClock_c::get().tick();
 
+            // Shift the fade in animation for the title screen,
+            // if we have it anyways...
             if (TitleScreen)
             {
                 TitleScreen->FadeIn(10);
             }
  
-            WindowState = GameWindow.updateWindow();
-            GameState = GameControl.getGameState(isLastMap);
+            // This one invokes keyboard polling from the game window,
+            // which starts the casade of messages and events supervised
+            // by PostOffice, which ultimately ends up in the redraw of drawables
+            auto WindowState = GameWindow.updateWindow();
 
+            // Updates the game's main state machine and returns the actual state
+            GameState = GameControl.updateGameState();
+
+            // Handle the keypress of ESC
             if (WindowState ==
                 presentation::GameWindow_c::WindowState_e::CLOSING)
             {
                 exit(0);
             }
-        }
-
-        if (GameState == msgGameStateChange_e::GAME_START)
-        {
-            GameState = msgGameStateChange_e::NORMAL;
-        }
-        else if (GameState == msgGameStateChange_e::LEVEL_WON)
-        {
-            mapIndex++;
-        }
-        else if (GameState == msgGameStateChange_e::BALL_LOST)
-        {
-            GameState = msgGameStateChange_e::NORMAL;
-        }
-        else if (GameState == msgGameStateChange_e::GAME_OVER)
-        {
-            mapIndex = 0;
-            GameControl.resetLives();
-            GameState = msgGameStateChange_e::TILE_SCREEN;
         }
 
         PostOffice.unsubscribeAll();
@@ -110,7 +96,6 @@ Game_c::Game_c() :
     BackgroundMusic("./assets/audio/music.ogg"),
     MapManager("./assets/maps")
 { 
-    //titleScreen();
 }
 
 } // namespace trailblazer
