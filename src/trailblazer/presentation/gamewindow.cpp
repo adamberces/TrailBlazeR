@@ -23,7 +23,7 @@ void GameWindow_c::handleKeypressEvents()
     }
     else if (isPressed(GLFW_KEY_SPACE))
     {
-        e = msgKeyEvent_e::JUMP;
+        e = msgKeyEvent_e::SPACE;
     }
 
     PO->broadcastMessage<msgKeyEvent_e>(e);

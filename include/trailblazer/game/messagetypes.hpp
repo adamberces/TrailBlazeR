@@ -40,7 +40,7 @@ enum class msgKeyEvent_e
     NONE,
     LEFT,
     RIGHT,
-    JUMP
+    SPACE
 };
 
 enum class msgSoundEvent_e

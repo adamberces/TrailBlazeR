@@ -17,13 +17,13 @@ namespace trailblazer
 
 void Game_c::gameLoop()
 {   
-    msgGameState_e GameState = msgGameState_e::TILE_SCREEN;
+    GameSceneChange_e GameSceneChange = GameSceneChange_e::TOGGLE_TITLE;
     std::size_t mapCount = MapManager.mapFiles().size();
 
     while (true)
     {
         // GameControl handles the main state machine of the game
-        GameControl_c GameControl(&PostOffice, GameState, mapCount);
+        GameControl_c GameControl(&PostOffice, GameSceneChange, mapCount);
 
         // Set up new controller classes for each stage
         ball::BallControl_c BallControl(&PostOffice);
@@ -47,7 +47,7 @@ void Game_c::gameLoop()
         // Setup a background object for the title screen
         // to be rendered in front of the original background
         std::unique_ptr<presentation::BackgroundDrawer_c> TitleScreen;
-        if (GameState == msgGameState_e::TILE_SCREEN)
+        if (GameSceneChange == GameSceneChange_e::TOGGLE_TITLE)
         {
             TitleScreen = std::make_unique<presentation::BackgroundDrawer_c>(&PostOffice);
             TitleScreen->setup("./assets/backgrounds/intro.png");
@@ -58,8 +58,9 @@ void Game_c::gameLoop()
 
         // This inner loop handles the main update-redraw cycle
         // of a scene (either the title screen or a stage)
-        while (GameState == msgGameState_e::NORMAL_GAMEPLAY ||
-               GameState == msgGameState_e::TILE_SCREEN)
+        // until a GameSceneChange is received from GameControl
+        GameSceneChange = GameSceneChange_e::SCENE_NOCHANGE;
+        while (GameSceneChange == GameSceneChange_e::SCENE_NOCHANGE)
         {   
             GameClock_c::get().tick();
 
@@ -75,8 +76,8 @@ void Game_c::gameLoop()
             // by PostOffice, which ultimately ends up in the redraw of drawables
             auto WindowState = GameWindow.updateWindow();
 
-            // Updates the game's main state machine and returns the actual state
-            GameState = GameControl.updateGameState();
+            // Updates the game's main state machine
+            GameSceneChange = GameControl.updateGameState();
 
             // Handle the keypress of ESC
             if (WindowState ==

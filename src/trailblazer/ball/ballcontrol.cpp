@@ -266,7 +266,7 @@ void BallControl_c::handleKeyboardInput(msgKeyEvent_e e)
     {
         switch(e)
         {
-        case msgKeyEvent_e::JUMP:
+        case msgKeyEvent_e::SPACE:
             jump();
             break;
         case msgKeyEvent_e::LEFT:

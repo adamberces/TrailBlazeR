@@ -11,6 +11,19 @@ namespace trailblazer
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
+/// This is the return type of updateGameState, which informs the main Game class
+/// if the currently displayed scene shall change (either a title screen or an actual map),
+/// by basically mapping the state of the Game state machine to these states,
+/// so the Game class can decide if the current scene can be kept alive or a new one is needed
+
+enum class GameSceneChange_e
+{
+    TOGGLE_TITLE,
+    TOGGLE_GAMEPLAY,
+    SCENE_NOCHANGE
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////
 /// Controls the main flow of a stage. Counts the remaining lives and
 /// maintains a timer to wait a few seconds when the ball is lost or it
 /// has reached the finish line before shifting/restarting the stage.
@@ -22,7 +35,7 @@ namespace trailblazer
 
 class GameControl_c : public messaging::MessageRecipient_i
 {   
-    statemachine::StateMachine_i<msgGameState_e> StateMachine;
+    statemachine::StateMachine_c<msgGameState_e> StateMachine;
 
     /// The responsibility of the class is to maintain the value of 
     /// Lives and the actual map's index. Some state transitions are
@@ -39,11 +52,9 @@ class GameControl_c : public messaging::MessageRecipient_i
     /// or restarting scene after the ball is lost or the level is won
     float WaitTimer;
 
-    /// Notifies Sound Control to play one of the "spoken word" sound
-    /// effects either for ball lost, level won, game over or game won
-    void triggerSound();
-
     void setupStateTransitions();
+
+    void playSound(msgSoundEvent_e);
 
 public:
     std::size_t mapIndex() const
@@ -51,18 +62,15 @@ public:
         return MapIndex;
     }
 
-    /// Provides the current game state (returns NORMAL even when the 
-    /// ball is lost or the level is won, but we are still under WaitTimer)
-    /// An argument shall be provided from the main Game class to indicate
-    /// if the current scene contains the last available map or not, 
-    /// to make distinction between LEVEL_WON and GAME_WON
-    /// (BALL_LOST and GAME_OVER can de distinguished using Lives).
-    msgGameState_e updateGameState();
+    /// Runs a state transition process on the underlying StateMachine
+    /// and returns a GameSceneChange enum for the main Game class,
+    /// which controls the game scenery accordingly
+    GameSceneChange_e updateGameState();
 
     void sendMessage(msg_t) override;
     explicit GameControl_c(messaging::PostOffice_c*,
-        msgGameState_e initialState,
-        std::size_t mapCount);
+                           GameSceneChange_e,
+                           std::size_t mapCount);
 };
 
 } // namespace trailblazer
