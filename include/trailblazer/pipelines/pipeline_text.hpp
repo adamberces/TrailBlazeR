@@ -7,7 +7,7 @@
 #include <glkit/functors/ortho.hpp>
 #include <glkit/functors/color.hpp>
 
-#include <trailblazer/game/constants.hpp>
+#include <trailblazer/game/gameconfig.hpp>
 
 
 namespace trailblazer::pipelines

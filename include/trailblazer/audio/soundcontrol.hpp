@@ -7,7 +7,7 @@
 #include <messaging/recipient.hpp>
 #include <trailblazer/game/messagetypes.hpp>
 
-#include <trailblazer/game/constants.hpp>
+#include <trailblazer/game/gameconfig.hpp>
 
 
 namespace trailblazer::audio

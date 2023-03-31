@@ -1,6 +1,6 @@
 #pragma once
 
-#include <trailblazer/game/constants.hpp>
+#include <trailblazer/game/gameconfig.hpp>
 
 #include <messaging/postoffice.hpp>
 #include <messaging/recipient.hpp>

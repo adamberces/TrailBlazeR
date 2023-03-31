@@ -5,8 +5,8 @@
 #include <trailblazer/game/messagetypes.hpp>
 
 #include <rigidbody/rigidbody.hpp>
-#include <trailblazer/game/clock.hpp>
-#include <trailblazer/game/constants.hpp>
+#include <trailblazer/game/gameclock.hpp>
+#include <trailblazer/game/gameconfig.hpp>
 
 #include <iostream>
 

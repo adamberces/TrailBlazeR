@@ -6,8 +6,8 @@
 #include <trailblazer/map/tile.hpp>
 #include <trailblazer/map/mapfile.hpp>
 
-#include <trailblazer/game/clock.hpp>
-#include <trailblazer/game/constants.hpp>
+#include <trailblazer/game/gameclock.hpp>
+#include <trailblazer/game/gameconfig.hpp>
 
 namespace trailblazer
 {

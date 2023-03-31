@@ -4,7 +4,7 @@
 #include <string>
 
 #include <trailblazer/map/tile.hpp>
-#include <trailblazer/game/constants.hpp>
+#include <trailblazer/game/gameconfig.hpp>
 #include <glkit/functors/functor_types.hpp>
 
 namespace trailblazer::map
