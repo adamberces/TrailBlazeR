@@ -11,7 +11,8 @@ namespace trailblazer
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-/// The main class which instantiates all components and realizes the main game loop
+/// The main class which instantiates all components' classes, controls the game scene
+/// realizes the main game loop and the change between the title screen and normal gameplay
 
 class Game_c
 {   

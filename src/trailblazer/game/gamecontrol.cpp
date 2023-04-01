@@ -4,17 +4,14 @@
 namespace trailblazer
 {
 
-/////////////////////////////////////////////////////////////////////////////////////////
-// Definition for the static class member Lives
-int GameControl_c::Lives = Constants_s::INITIAL_LIVES;
-std::size_t GameControl_c::MapIndex = 0U;
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // Implementation for GameControl_c
 
 static GameSceneChange_e mapState(msgGameState_e gameState)
 {
-    GameSceneChange_e sc;
+    GameSceneChange_e sc = GameSceneChange_e::SCENE_NOCHANGE;;
 
     switch (gameState)
     {
@@ -23,15 +20,13 @@ static GameSceneChange_e mapState(msgGameState_e gameState)
     case msgGameState_e::GAME_OVER:
         sc = GameSceneChange_e::TOGGLE_TITLE;
         break;
-    case msgGameState_e::TILE_SCREEN_EXIT:
-    case msgGameState_e::BALL_LOST:
-    case msgGameState_e::LEVEL_WON:
+    case msgGameState_e::NORMAL_GAMEPLAY:
         sc = GameSceneChange_e::TOGGLE_GAMEPLAY;
         break;
-    case msgGameState_e::NORMAL_GAMEPLAY:
     case msgGameState_e::BALL_LOST_WAIT:
+    case msgGameState_e::BALL_LOST:
     case msgGameState_e::LEVEL_WON_WAIT:
-        sc = GameSceneChange_e::SCENE_NOCHANGE;
+    case msgGameState_e::LEVEL_WON:
         break;
     }
 
@@ -42,21 +37,29 @@ GameSceneChange_e GameControl_c::updateGameState()
 {
     GameSceneChange_e sc = GameSceneChange_e::SCENE_NOCHANGE;
     statemachine::TransitionResult_e tr = StateMachine.performTransition();
+   
     if (tr == statemachine::TransitionResult_e::TRANSITION_PERFORMED)
     {
+        std::cout << "Game state changed: " <<
+            std::to_string(static_cast<int>(StateMachine.state())) << std::endl;
         sc = mapState(StateMachine.state()); 
     }
+        
+    // Reset these states to their initial values after they were used once
+    // for a state transition to prevent shifting to unwanted states
+    LastBallState = msgBallStateChange_e::UNUSED;
+    LastKeyEvent = msgKeyEvent_e::NONE;
     
-    // Transfer the number of lives to the HUD component
+    // Inform HUD about the actual number of lives
     PO->broadcastMessage<msgRemainingLives_s>({ Lives });
-    PO->broadcastMessage<msgGameState_e>(StateMachine.state());
 
     return sc;
 }
 
-void GameControl_c::playSound(msgSoundEvent_e e)
+void GameControl_c::broadcastEvents(msgSoundEvent_e snd, msgHUDStatus_e hud)
 {
-    PO->broadcastMessage<msgSoundEvent_e>(e);
+    PO->broadcastMessage<msgSoundEvent_e>(snd);
+    PO->broadcastMessage<msgHUDStatus_e>(hud);
 }
 
 void GameControl_c::setupStateTransitions()
@@ -67,18 +70,13 @@ void GameControl_c::setupStateTransitions()
 
     // Transition from the default state (title screen) to gameplay
     StateMachine.addTransition({ msgGameState_e::TILE_SCREEN,
-                                 msgGameState_e::TILE_SCREEN_EXIT,
-                                 statemachine::empty_repeated_action,
-                                 [this](TransitionConditionTag) { return LastKeyEvent == msgKeyEvent_e::SPACE; },
-                                 [this](OnetimeActionTag) { MapIndex = 0; Lives = Constants_s::INITIAL_LIVES; }
-                               });
-
-    StateMachine.addTransition({ msgGameState_e::TILE_SCREEN_EXIT,
                                  msgGameState_e::NORMAL_GAMEPLAY,
                                  statemachine::empty_repeated_action,
-                                 statemachine::default_condition,
-                                 statemachine::empty_onetime_action,
+                                 [this](TransitionConditionTag) { return LastKeyEvent == msgKeyEvent_e::SPACE; },
+                                 [this](OnetimeActionTag) { Lives = Constants_s::INITIAL_LIVES;
+                                    broadcastEvents(msgSoundEvent_e::NONE, msgHUDStatus_e::NORMAL_GAMEPLAY); }
                                });
+
 
     // Handle events when the ball is lost
     // The outcome can be either the restart of the current level
@@ -89,8 +87,8 @@ void GameControl_c::setupStateTransitions()
                                  statemachine::empty_repeated_action,
                                  [this](TransitionConditionTag) { return LastBallState == msgBallStateChange_e::BALL_LOST; },
                                  [this](OnetimeActionTag) { Lives > 1 ?
-                                                            playSound(msgSoundEvent_e::BALL_LOST) :
-                                                            playSound(msgSoundEvent_e::GAME_OVER); }
+                                    broadcastEvents(msgSoundEvent_e::BALL_LOST, msgHUDStatus_e::BALL_LOST) :
+                                    broadcastEvents(msgSoundEvent_e::GAME_OVER, msgHUDStatus_e::GAME_OVER); }
                                });
 
     StateMachine.addTransition({ msgGameState_e::BALL_LOST_WAIT,
@@ -104,7 +102,7 @@ void GameControl_c::setupStateTransitions()
                                  msgGameState_e::NORMAL_GAMEPLAY,
                                  statemachine::empty_repeated_action,
                                  [this](TransitionConditionTag) { return Lives > 0; },
-                                 statemachine::empty_onetime_action
+                                 [this](OnetimeActionTag) { broadcastEvents(msgSoundEvent_e::NONE, msgHUDStatus_e::NORMAL_GAMEPLAY); }
                                });
     
 
@@ -112,14 +110,14 @@ void GameControl_c::setupStateTransitions()
                                  msgGameState_e::GAME_OVER,
                                  statemachine::empty_repeated_action,
                                  [this](TransitionConditionTag) { return Lives == 0; },
-                                 statemachine::empty_onetime_action
+                                 [this](OnetimeActionTag) { MapIndex = 0; }
                                });
 
     StateMachine.addTransition({ msgGameState_e::GAME_OVER,
                                  msgGameState_e::TILE_SCREEN,
                                  statemachine::empty_repeated_action,
                                  statemachine::default_condition,
-                                 statemachine::empty_onetime_action
+                                 [this](OnetimeActionTag) { broadcastEvents(msgSoundEvent_e::NONE, msgHUDStatus_e::TILE_SCREEN); }
                                 });
 
 
@@ -132,8 +130,8 @@ void GameControl_c::setupStateTransitions()
                                  statemachine::empty_repeated_action,
                                  [this](TransitionConditionTag) { return LastBallState == msgBallStateChange_e::LEVEL_WON; },
                                  [this](OnetimeActionTag) { MapIndex + 1 < MapCount ?
-                                            playSound(msgSoundEvent_e::LEVEL_WON) :
-                                            playSound(msgSoundEvent_e::GAME_WON); }
+                                    broadcastEvents(msgSoundEvent_e::LEVEL_WON, msgHUDStatus_e::LEVEL_WON) :
+                                    broadcastEvents(msgSoundEvent_e::GAME_WON, msgHUDStatus_e::GAME_WON); }
                                });
 
     StateMachine.addTransition({ msgGameState_e::LEVEL_WON_WAIT,
@@ -146,23 +144,24 @@ void GameControl_c::setupStateTransitions()
     StateMachine.addTransition({ msgGameState_e::LEVEL_WON,
                                  msgGameState_e::NORMAL_GAMEPLAY,
                                  statemachine::empty_repeated_action,
-                                 [this](TransitionConditionTag) { return MapIndex + 1 < MapCount; },
-                                 [this](OnetimeActionTag) { Lives += Constants_s::LEVEL_WON_BONUS; }
+                                 [this](TransitionConditionTag) { return MapIndex + 1 <= MapCount; },
+                                 [this](OnetimeActionTag) { Lives += Constants_s::LEVEL_WON_BONUS;
+                                    broadcastEvents(msgSoundEvent_e::NONE, msgHUDStatus_e::NORMAL_GAMEPLAY); }
                                });
 
 
     StateMachine.addTransition({ msgGameState_e::LEVEL_WON,
                                  msgGameState_e::GAME_WON,
                                  statemachine::empty_repeated_action,
-                                 [this](TransitionConditionTag) { return MapIndex + 1 == MapCount; },
-                                 statemachine::empty_onetime_action
-                               });
+                                 [this](TransitionConditionTag) { return MapIndex + 1 > MapCount; },
+                                 [this](OnetimeActionTag) { MapIndex = 0; }
+                                });
 
     StateMachine.addTransition({ msgGameState_e::GAME_WON,
                                  msgGameState_e::TILE_SCREEN,
                                  statemachine::empty_repeated_action,
                                  statemachine::default_condition,
-                                 statemachine::empty_onetime_action
+                                 [this](OnetimeActionTag) { broadcastEvents(msgSoundEvent_e::NONE, msgHUDStatus_e::TILE_SCREEN); }
                                });
 }
 
@@ -188,11 +187,11 @@ void GameControl_c::sendMessage(msg_t m)
 }
 
 GameControl_c::GameControl_c(messaging::PostOffice_c* po,
-                             GameSceneChange_e initialState,
                              std::size_t mapCount) :
     MessageRecipient_i(po),
-    StateMachine(initialState == GameSceneChange_e::TOGGLE_TITLE ? 
-                 msgGameState_e::TILE_SCREEN : msgGameState_e::NORMAL_GAMEPLAY),
+    StateMachine(msgGameState_e::TILE_SCREEN),
+    Lives(Constants_s::INITIAL_LIVES),
+    MapIndex(0U),
     MapCount(mapCount),
     LastKeyEvent(msgKeyEvent_e::NONE),
     LastBallState(msgBallStateChange_e::UNUSED),

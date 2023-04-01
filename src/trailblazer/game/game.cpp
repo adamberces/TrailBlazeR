@@ -20,15 +20,18 @@ void Game_c::gameLoop()
     GameSceneChange_e GameSceneChange = GameSceneChange_e::TOGGLE_TITLE;
     std::size_t mapCount = MapManager.mapFiles().size();
 
+    // GameControl handles the main state machine of the game, counts the 
+    // number of lives and the actual map's index
+    GameControl_c GameControl(&PostOffice, mapCount);
+
+    // Responsible for playing the sound effects
+    audio::SoundControl_c SoundControl(&PostOffice);
+
     while (true)
     {
-        // GameControl handles the main state machine of the game
-        GameControl_c GameControl(&PostOffice, GameSceneChange, mapCount);
-
-        // Set up new controller classes for each stage
+        // Set up new ball controller classes for each stage
         ball::BallControl_c BallControl(&PostOffice);
-        audio::SoundControl_c SoundControl(&PostOffice);
-
+        
         // Set up new drawables for each stage
         // The order is important here, as msgRedrawTrigger calls
         // the draw functions in the order of their subscription 
@@ -86,8 +89,6 @@ void Game_c::gameLoop()
                 exit(0);
             }
         }
-
-        PostOffice.unsubscribeAll();
     }
 }
 

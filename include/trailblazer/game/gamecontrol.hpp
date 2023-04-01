@@ -24,9 +24,9 @@ enum class GameSceneChange_e
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////
-/// Controls the main flow of a stage. Counts the remaining lives and
-/// maintains a timer to wait a few seconds when the ball is lost or it
-/// has reached the finish line before shifting/restarting the stage.
+/// Controls the main flow of the game. Maintains a state machine and informs the main
+/// game class if a new scene shall be set up and also counts the number of lives and
+/// an index to the actual, which are also the main drivers of the actual game state
 //
 /// Inherits from MessageRecipient_i:
 /// Provides the msgRemainingLives_s message for HUD
@@ -40,11 +40,11 @@ class GameControl_c : public messaging::MessageRecipient_i
     /// The responsibility of the class is to maintain the value of 
     /// Lives and the actual map's index. Some state transitions are
     /// also depending the value of these variables
-    static int Lives;
-    static std::size_t MapIndex;
+    int Lives;
+    std::size_t MapIndex;
     std::size_t MapCount;
 
-    /// Received messages
+    /// Received messages kept as an innter state
     msgKeyEvent_e LastKeyEvent;
     msgBallStateChange_e LastBallState;
 
@@ -52,9 +52,12 @@ class GameControl_c : public messaging::MessageRecipient_i
     /// or restarting scene after the ball is lost or the level is won
     float WaitTimer;
 
-    void setupStateTransitions();
+    /// Sends message to the HUD and the sound control
+    void broadcastEvents(msgSoundEvent_e, msgHUDStatus_e);
 
-    void playSound(msgSoundEvent_e);
+    /// This function is the main part of this class,
+    /// contains the definition of state transitions
+    void setupStateTransitions();
 
 public:
     std::size_t mapIndex() const
@@ -69,7 +72,6 @@ public:
 
     void sendMessage(msg_t) override;
     explicit GameControl_c(messaging::PostOffice_c*,
-                           GameSceneChange_e,
                            std::size_t mapCount);
 };
 

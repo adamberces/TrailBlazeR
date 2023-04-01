@@ -9,8 +9,17 @@
 #include <trailblazer/game/gameclock.hpp>
 #include <trailblazer/game/gameconfig.hpp>
 
+
 namespace trailblazer
 {
+
+enum class msgKeyEvent_e
+{
+    NONE,
+    LEFT,
+    RIGHT,
+    SPACE
+};
 
 enum class msgBallStateChange_e
 {
@@ -22,8 +31,6 @@ enum class msgBallStateChange_e
 enum class msgGameState_e
 {
     TILE_SCREEN,
-    TILE_SCREEN_EXIT,
-
     NORMAL_GAMEPLAY,
 
     BALL_LOST,
@@ -35,16 +42,22 @@ enum class msgGameState_e
     GAME_WON,
 };
 
-enum class msgKeyEvent_e
+enum class msgHUDStatus_e
 {
-    NONE,
-    LEFT,
-    RIGHT,
-    SPACE
+    TILE_SCREEN,
+    NORMAL_GAMEPLAY,
+    
+    BALL_LOST,
+    GAME_OVER,
+
+    LEVEL_WON,
+    GAME_WON,
 };
+
 
 enum class msgSoundEvent_e
 {
+    NONE,
     JUMP,
     BOUNCE,
     SPEEDUP,

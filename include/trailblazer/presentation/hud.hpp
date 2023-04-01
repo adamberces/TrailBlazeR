@@ -32,8 +32,10 @@ class HUD_c : public messaging::MessageRecipient_i
     msgMapData_s MapData;
 
     /// Game state message received from Game Control
-    /// to display special messages
-    msgGameState_e GameState;
+    /// to display special messages. Defined as static
+    /// because a HUD object is recreated for every game 
+    /// but this value shall be kept
+    static msgHUDStatus_e HUDStatus;
 
     /// Generates the special messages which is displayed
     /// instead of the in-game stats on game state changes

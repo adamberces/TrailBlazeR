@@ -18,6 +18,8 @@ sf::SoundBuffer SoundControl_c::loadSound(std::string fileName)
         throw std::runtime_error("SoundControl_c::loadSound: cannot open " + fileName);
     }
 
+    std::cout << "Sound loaded: " << path << std::endl;
+
     return buffer;
 }
 
