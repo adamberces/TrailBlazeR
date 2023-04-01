@@ -9,6 +9,7 @@ namespace messaging
 /////////////////////////////////////////////////////////////////////////////////////////
 /// Interface for message recipient/sender classes.
 
+/// Forward declare for pointer type
 class PostOffice_c;
 
 class MessageRecipient_i
@@ -47,6 +48,11 @@ public:
         PO(postOfficeAddress)
     {
     }
+
+    /// This is only a declaration, as the definition needs
+    /// PostOffice header to be included, as the destructor
+    /// calls the unsubscribe function
+    ~MessageRecipient_i();
 };
 
 } // namespace messaging

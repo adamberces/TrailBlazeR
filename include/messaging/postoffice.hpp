@@ -58,6 +58,7 @@ public:
     {
         for (auto& i : Recipients)
         {
+            std::cout << "Subscriber of type " << i.first.name() << " removed: " << r << std::endl;
             i.second.remove(r);
         }
     }
