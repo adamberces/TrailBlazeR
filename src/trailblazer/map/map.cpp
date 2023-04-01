@@ -10,7 +10,13 @@ namespace trailblazer::map
 
 TileType_e Map_c::getTile(int x, int y)
 {
-    int index = Constants_s::MAP_WIDTH * y + x;
+    std::size_t index = Constants_s::MAP_WIDTH * y + x;
+    
+    if (index >= MapFile.tiles().size())
+    {
+        return TileType_e::GAP;
+    }
+    
     return MapFile.tiles().at(index).Type;
 }
 
