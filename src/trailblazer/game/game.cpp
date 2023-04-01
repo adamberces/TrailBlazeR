@@ -53,7 +53,8 @@ void Game_c::gameLoop()
         if (GameSceneChange == GameSceneChange_e::TOGGLE_TITLE)
         {
             TitleScreen = std::make_unique<presentation::BackgroundDrawer_c>(&PostOffice);
-            TitleScreen->setup(Files_s::BACKGROUNDS_PATH.data() + Files_s::TILESCREEN_BACKGROUND.data());
+            TitleScreen->setup(std::string(Files_s::BACKGROUNDS_PATH) +
+                std::string(Files_s::TILESCREEN_BACKGROUND));
         }
 
         // Setup HUD as the topmost drawable component
@@ -95,8 +96,8 @@ void Game_c::gameLoop()
 Game_c::Game_c() :
     PostOffice(),
     GameWindow(&PostOffice),
-    BackgroundMusic(Files_s::AUDIO_PATH.data() + Files_s::MUSIC.data()),
-    MapManager(Files_s::MAPS.data())
+    BackgroundMusic(std::string(Files_s::AUDIO_PATH) + std::string(Files_s::MUSIC)),
+    MapManager(std::string(Files_s::MAPS_PATH))
 { 
 }
 

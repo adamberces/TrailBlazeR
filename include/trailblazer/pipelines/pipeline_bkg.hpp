@@ -48,8 +48,8 @@ public:
     inline void setup()
     {
         glkit::core::shaders::ShaderSourceList_s SSL;
-        SSL.VertexShaderPath = Files_s::SHADER_PATH.data() + "v_ortotexture.glsl";
-        SSL.FragmentShaderPath = Files_s::SHADER_PATH.data() + "f_texturedquad.glsl";
+        SSL.VertexShaderPath = std::string(Files_s::SHADER_PATH) + "v_ortotexture.glsl";
+        SSL.FragmentShaderPath = std::string(Files_s::SHADER_PATH) + "f_texturedquad.glsl";
 
         ShaderProgram = std::make_unique<glkit::core::shaders::ShaderProgram_c>(SSL);
         Uniforms = std::make_unique<glkit::core::uniforms::ShaderUniformInterface_c>(ShaderProgram->getId());
