@@ -45,7 +45,7 @@ void Game_c::gameLoop()
         // current mapfile and also load the background image
         auto mapData = Map.mapMetaData();
         presentation::GameScene_c GameScene(&PostOffice, mapData.ColorTheme);
-        Background.setup("./assets/backgrounds/" + mapData.BackgroundFileName);
+        Background.setup(Files_s::BACKGROUNDS_PATH.data() + mapData.BackgroundFileName);
 
         // Setup a background object for the title screen
         // to be rendered in front of the original background
@@ -53,7 +53,7 @@ void Game_c::gameLoop()
         if (GameSceneChange == GameSceneChange_e::TOGGLE_TITLE)
         {
             TitleScreen = std::make_unique<presentation::BackgroundDrawer_c>(&PostOffice);
-            TitleScreen->setup("./assets/backgrounds/intro.png");
+            TitleScreen->setup(Files_s::BACKGROUNDS_PATH.data() + Files_s::TILESCREEN_BACKGROUND.data());
         }
 
         // Setup HUD as the topmost drawable component
@@ -95,8 +95,8 @@ void Game_c::gameLoop()
 Game_c::Game_c() :
     PostOffice(),
     GameWindow(&PostOffice),
-    BackgroundMusic("./assets/audio/music.ogg"),
-    MapManager("./assets/maps")
+    BackgroundMusic(Files_s::AUDIO_PATH.data() + Files_s::MUSIC.data()),
+    MapManager(Files_s::MAPS.data())
 { 
 }
 

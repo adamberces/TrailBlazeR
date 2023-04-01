@@ -10,9 +10,9 @@ class BallPipeline_c : public RenderPipeline_i
 {
     inline void setupSSL() override
     {
-        SSL.VertexShaderPath = "./assets/shaders/v_perspective.glsl";
-        SSL.GeometryShaderPath = "./assets/shaders/g_normalcalculator.glsl";
-        SSL.FragmentShaderPath = "./assets/shaders/f_blinnphong.glsl";
+        SSL.VertexShaderPath = Files_s::SHADER_PATH.data() + "v_perspective.glsl";
+        SSL.GeometryShaderPath = Files_s::SHADER_PATH.data() + "g_normalcalculator.glsl";
+        SSL.FragmentShaderPath = Files_s::SHADER_PATH.data() + "f_blinnphong.glsl";
     }
 
     inline void constructMesh() override

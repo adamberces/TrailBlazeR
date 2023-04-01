@@ -87,7 +87,7 @@ void HUD_c::sendMessage(msg_t m)
 
 HUD_c::HUD_c(messaging::PostOffice_c* po) :
     MessageRecipient_i(po),
-    Pipeline("./assets/fonts/font")
+    Pipeline(Files_s::FONT_PATH.data())
 {   
     // Manage subscriptions
     PO->subscribeRecipient<msgRedrawTrigger_s>(this);

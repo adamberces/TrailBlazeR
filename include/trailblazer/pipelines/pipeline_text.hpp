@@ -45,8 +45,8 @@ public:
     inline void setup()
     {
         glkit::core::shaders::ShaderSourceList_s SSL;
-        SSL.VertexShaderPath = "./assets/shaders/v_text.glsl";
-        SSL.FragmentShaderPath = "./assets/shaders/f_text.glsl";
+        SSL.VertexShaderPath = Files_s::SHADER_PATH.data() + "v_text.glsl";
+        SSL.FragmentShaderPath = Files_s::SHADER_PATH.data() + "f_text.glsl";
         ShaderProgram = std::make_unique<glkit::core::shaders::ShaderProgram_c>(SSL);
         ShaderProgram->use();
        

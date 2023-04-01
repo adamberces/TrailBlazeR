@@ -13,6 +13,12 @@ struct Files_s
     static constexpr auto AUDIO_PATH = "./assets/audio/"sv;
     static constexpr auto BACKGROUNDS_PATH = "./assets/backgrounds/"sv;
     static constexpr auto FONT_PATH = "./assets/fonts/font"sv;
+    static constexpr auto MAPS_PATH = "./assets/maps/"sv;
+    static constexpr auto SHADER_PATH = "./assets/shaders/"sv;
+
+    static constexpr auto MUSIC = "music.ogg"sv;
+    static constexpr auto TILESCREEN_BACKGROUND = "intro.png"sv;
+    
 };
 
 struct Constants_s
