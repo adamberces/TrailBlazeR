@@ -9,14 +9,13 @@ namespace trailblazer::presentation
 
 void BackgroundDrawer_c::FadeIn(float duration_seconds)
 {
-    static float alpha = 0.F;
     static int ticks = static_cast<int>(duration_seconds / GameClock_c::TimePeriodSec);
     float step = 1.F / ticks;
 
     if (0 < ticks--)
     {
-        alpha += step;
-        PipelinePtr->AlphaConfig.Value = alpha;
+        Alpha += step;
+        PipelinePtr->AlphaConfig.Value = Alpha;
     }
 }
 
@@ -30,11 +29,12 @@ void BackgroundDrawer_c::sendMessage(msg_t m)
 
 void BackgroundDrawer_c::setup(std::string fileName)
 {
-    PipelinePtr = std::make_unique<trailblazer::pipelines::BackgroundPipeline_c>(fileName);
+    PipelinePtr = std::make_unique<trailblazer::pipelines::BackgroundPipeline_c>(fileName, Alpha);
 }
 
-BackgroundDrawer_c::BackgroundDrawer_c(messaging::PostOffice_c* po) :
-    MessageRecipient_i(po)
+BackgroundDrawer_c::BackgroundDrawer_c(messaging::PostOffice_c* po, FadeInEnabled_e fadeInEnabled) :
+    MessageRecipient_i(po),
+    Alpha((fadeInEnabled == FadeInEnabled_e::YES ? 0.F : 1.F))
 {   
     // Manage subscriptions
     PO->subscribeRecipient<msgRedrawTrigger_s>(this);

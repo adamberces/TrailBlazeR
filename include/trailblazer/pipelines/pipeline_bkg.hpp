@@ -58,11 +58,11 @@ public:
         Uniforms->add("alpha", glkit::functors::Float_f);
     }
 
-    explicit BackgroundPipeline_c(std::string fileName) :
+    explicit BackgroundPipeline_c(std::string fileName, float initialAlpha) :
         Background(std::make_unique<glkit::drawables::GLKBackground_c>(fileName))
     {
         setup();
-        AlphaConfig.Value = 1.F;
+        AlphaConfig.Value = initialAlpha;
     }
 };
 

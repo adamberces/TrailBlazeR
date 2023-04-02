@@ -36,7 +36,8 @@ void Game_c::gameLoop()
         // The order is important here, as msgRedrawTrigger calls
         // the draw functions in the order of their subscription 
         // to that message, which happens in the constructor
-        presentation::BackgroundDrawer_c Background(&PostOffice);
+        presentation::BackgroundDrawer_c Background
+            (&PostOffice, presentation::BackgroundDrawer_c::FadeInEnabled_e::NO);
         ball::BallDrawer_c Ball(&PostOffice);
         std::string mapFileName = MapManager.mapFiles().at(GameControl.mapIndex());
         map::Map_c Map(&PostOffice, mapFileName);
@@ -52,7 +53,8 @@ void Game_c::gameLoop()
         std::unique_ptr<presentation::BackgroundDrawer_c> TitleScreen;
         if (GameSceneChange == GameSceneChange_e::TOGGLE_TITLE)
         {
-            TitleScreen = std::make_unique<presentation::BackgroundDrawer_c>(&PostOffice);
+            TitleScreen = std::make_unique<presentation::BackgroundDrawer_c>
+                (&PostOffice, presentation::BackgroundDrawer_c::FadeInEnabled_e::YES);
             TitleScreen->setup(std::string(Files_s::BACKGROUNDS_PATH) +
                 std::string(Files_s::TILESCREEN_BACKGROUND));
         }

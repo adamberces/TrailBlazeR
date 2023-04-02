@@ -23,6 +23,17 @@ namespace trailblazer::presentation
 
 class BackgroundDrawer_c : public messaging::MessageRecipient_i
 {
+public:
+    enum class FadeInEnabled_e : bool
+    {
+        NO = false,
+        YES = true
+    };
+
+private:
+    /// Alpha value passed to the shader uniform interface
+    float Alpha;
+
     std::unique_ptr<trailblazer::pipelines::BackgroundPipeline_c> PipelinePtr;
 
 public:
@@ -36,7 +47,11 @@ public:
     void setup(std::string fileName);
 
     void sendMessage(msg_t) override;
-    explicit BackgroundDrawer_c(messaging::PostOffice_c*);
+
+    /// If fade-in is enabled, the background pipeline's alpha uniform
+    /// will have an initial value of 0.F, so initially the image won't be
+    /// displayed, until FadeIn function gradually increases this value
+    explicit BackgroundDrawer_c(messaging::PostOffice_c*, FadeInEnabled_e);
 };
 
 } // namespace trailblazer::presentation
