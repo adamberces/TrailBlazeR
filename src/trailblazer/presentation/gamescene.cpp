@@ -6,6 +6,9 @@ namespace trailblazer::presentation
 
 /////////////////////////////////////////////////////////////////////////////////////////
 // GameScene_c implementation
+//
+// Note: there are some "magic" literals which are hardcoded instead of coming from the
+// constants struct, as they are fine tuned and not meant to be changed for eg. debug reasons
 
 // Updates the scene's globals (camera and lightning uniforms)
 // to follow the movement of the ball
@@ -15,7 +18,7 @@ void GameScene_c::updateGlobals(glkit::functors::point3d_t ballPos)
     RenderPipeline_i::LightningPositionConfig.Position.X =
         ballPos.X;
     RenderPipeline_i::LightningPositionConfig.Position.Y =
-        ballPos.Y - .25; /*Ball.diameter()*/;
+        ballPos.Y - Constants_s::BALL_DIAMETER;
     RenderPipeline_i::LightningPositionConfig.Position.Z = ballPos.Z + 0.5F;
 
     // Update camera positions
@@ -47,8 +50,8 @@ void GameScene_c::setup(glkit::functors::rgb_t lightColor)
 {
     // Setup projection matrix
     RenderPipeline_i::ProjectionConfig.FOV = 45.F;
-    RenderPipeline_i::ProjectionConfig.ScreenWidth = 640;
-    RenderPipeline_i::ProjectionConfig.ScreenHeight = 480;
+    RenderPipeline_i::ProjectionConfig.ScreenWidth = Constants_s::WINDOW_WIDTH;
+    RenderPipeline_i::ProjectionConfig.ScreenHeight = Constants_s::WINDOW_HEIGHT;
     RenderPipeline_i::ProjectionConfig.NearPlane = 0.1F;
     RenderPipeline_i::ProjectionConfig.FarPlane = 100.F;
 

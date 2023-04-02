@@ -7,11 +7,10 @@ namespace trailblazer::presentation
 /////////////////////////////////////////////////////////////////////////////////////////
 // BackgroundDrawer_c implementation
 
-
-void BackgroundDrawer_c::FadeIn(float seconds)
+void BackgroundDrawer_c::FadeIn(float duration_seconds)
 {
     static float alpha = 0.F;
-    static int ticks = static_cast<int>(seconds / GameClock_c::TimePeriodSec);
+    static int ticks = static_cast<int>(duration_seconds / GameClock_c::TimePeriodSec);
     float step = 1.F / ticks;
 
     if (0 < ticks--)

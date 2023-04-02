@@ -45,18 +45,31 @@ void Map_c::sendMessage(msg_t m)
 void Map_c::draw()
 {
     // Setup initial position
+    //
+    // X is -1 because it will be incremented in the
+    // main drawing loop below.
+    //
+    // Z is -ball diameter - tile height , so the ground level
+    // can be 0 exactly which makes all physical calculations
+    // easier in the ball control component
     Pipeline.ModelConfig.Position.X = -1.F;
     Pipeline.ModelConfig.Position.Y =  0.F;
-    Pipeline.ModelConfig.Position.Z =  -.25F - .1F;
+    Pipeline.ModelConfig.Position.Z = 
+        -(Constants_s::BALL_DIAMETER) - Constants_s::TILE_HEIGHT;
 
     // We will never render the whole map for each frame,
     // so we shall discard some rows both from the beginning
     // and from the end based on the camera's Y position
+    //
+    // The number of tiles can be specified in gameconfig.hpp
+    // The first displayed row must be two rows behind the camera
+    // to not to leave gaps while rendering
     int cameraPosY = static_cast<int>(
         ::floor(pipelines::RenderPipeline_i::CameraConfig.Position.Y)
     );
     int firstRow = std::max(cameraPosY - 2, 0);
-    int lastRow = std::min(cameraPosY + 20, static_cast<int>(MapFile.tiles().size()));
+    int lastRow = std::min(cameraPosY + Constants_s::MAX_DISPLAYED_TILES,
+        static_cast<int>(MapFile.tiles().size()));
 
     // Set up counter to know when to stop drawing
     int rowCnt = 0;

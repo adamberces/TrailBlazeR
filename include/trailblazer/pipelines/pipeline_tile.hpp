@@ -17,7 +17,7 @@ class TilePipeline_c : public RenderPipeline_i
 
     inline void constructMesh() override
     {
-        Mesh = std::make_unique<glkit::drawables::GLKCube_c>(1, 1, .1);
+        Mesh = std::make_unique<glkit::drawables::GLKCube_c>(1, 1, Constants_s::TILE_HEIGHT);
     }
 };
 

@@ -30,7 +30,8 @@ void GameWindow_c::handleKeypressEvents()
 }
 
 GameWindow_c::GameWindow_c(messaging::PostOffice_c* po) :
-    GLWindow_i(1024, 768, "TrailBlazeR"),
+    GLWindow_i(Constants_s::WINDOW_WIDTH,
+        Constants_s::WINDOW_HEIGHT, "TrailBlazeR"),
     MessageRecipient_i(po)
 {}
 

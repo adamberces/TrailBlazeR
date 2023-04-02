@@ -1,5 +1,7 @@
 #include <stdexcept>
+
 #include <trailblazer/audio/music.hpp>
+#include <trailblazer/game/gameconfig.hpp>
 
 namespace trailblazer::audio
 {
@@ -15,7 +17,7 @@ Music_c::Music_c(std::string fileName)
     }
     
     Music.setLoop(true);
-    Music.setVolume(5);
+    Music.setVolume(Constants_s::MUSIC_VOLUME);
     Music.play();
 }  
 
