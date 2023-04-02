@@ -17,11 +17,12 @@ void GameWindow_c::handleKeypressEvents()
         e = msgKeyEvent_e::LEFT;
     }
     else if (isPressed(GLFW_KEY_D) ||
-                isPressed(GLFW_KEY_RIGHT))
+             isPressed(GLFW_KEY_RIGHT))
     {
         e = msgKeyEvent_e::RIGHT;
     }
-    else if (isPressed(GLFW_KEY_SPACE))
+    else if (isPressed(GLFW_KEY_SPACE) ||
+             isPressed(GLFW_KEY_LEFT_CONTROL))
     {
         e = msgKeyEvent_e::SPACE;
     }
