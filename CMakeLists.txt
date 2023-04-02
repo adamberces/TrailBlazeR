@@ -1,10 +1,16 @@
 cmake_minimum_required(VERSION 3.10)
 project(trailblazer)
-
 set(EXE_NAME trailblazer)
 
-set(CCFLAGS -g -std=c++2a -Wall) # -Wpedantic -Werror)
-set (LINK_LIBS glfw GL png dl m pthread freetype2)
+set(CCFLAGS -std=c++2a -Wall)
+
+###############################################################################
+
+find_package(SFML 2.5 
+  COMPONENTS system audio REQUIRED)
+
+set (LINK_LIBS glfw GL png dl m pthread sfml-audio sfml-system)
+
 ###############################################################################
 
 # Set variables for the main folder structure
@@ -19,7 +25,6 @@ set(EXECUTABLE_OUTPUT_PATH ${BIN_FOLDER})
 # Define the include directory and source file list
 file(GLOB_RECURSE EXE_SOURCE_FILES "${SOURCE_FOLDER}/*.c*")
 include_directories(${INCLUDE_FOLDER})
-include_directories (/usr/include/freetype2)
 
 ###############################################################################
 
