@@ -1,6 +1,8 @@
 import random
 import argparse
 
+import config
+
 # Number of patterns to choose per stage
 MAP_LEN = 20
 
@@ -16,113 +18,56 @@ if args.stage > 9 or args.stage < 0:
 
 ###################################################################################################
 
-# Stage name definitions
-names = ["Earth", "Moonbase", "Mercury", "Venus", "Mars", "Jupiter", \
-         "Saturn", "Uranus", "Neptune", "Pluto cities" ]
-
-# Background file names
-backgrounds = ["earth.png", "moonbase.png", "mercury.png", "venus.png", "mars.png",  \
-               "jupiter.png", "saturn.png", "uranus.png", "neptune.png", "pluto.png" ]
-
-# Each map has a color theme, which is used for the HUD text color and the fog color
-colorthemes = ["\x80\xAA\xFF", "\x82\x68\x91" ]
-
-###################################################################################################
-
-# Gaps and special fields randomly replaces regular tiles with the probablities below
-gap_probablity = [0.2, 0.2 ]
-speedup_probablity = [0.05, 0.05 ]
-slowdown_probablity = [0.02, 0.02 ]
-
-# Map starting patterns
-prefix = [ \
-         #0  
-         "16161 16161 16161 16161 16161 16161 16161 16161", \
-         # 1 
-         "00A00 00A00 00A00 00700 00700 00700 00700 00700 00700 00700" \
-         "00700 00700 00700 00700 00700 00700 00700 00700 00700 00700" \
-         "00700 00700 00700 00700 00700 00700 00700 00700 00700 00700" \
-         "00700 00700 00700 00700 00700 00700 00700 00700 00700 00700" \
-         "00A00 00A00 00A00 00A00 00A00 00A00 00A00 00A00 00A00 00A00" \
-         "00000 00000 00000 00000 00000 00000 00000 00000 00000 00000" \
-         "00000 00000 00000 00000 00000 CCCCC CCCCC CCCCC CCCCC CCCCC" \
-         "CCCCC CCCCC CCCCC CCCCC CCCCC CCCCC CCCCC CCCCC CCCCC CCCCC" \
-         "74447 47474 44744 47474 74447"
-         ]
-
-# Finish line pattern - same for all maps
-end =    "F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 " \
-         "F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 " \
-         "F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 " \
-         "F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 " \
-         "F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 " \
-         "F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 " \
-         "F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 " \
-         "F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 " \
-
-# Randomly chosen patterns
-random_patterns = [ \
-                   #0
-                   ["16161 61616 16161 61616 16161 61616 16161 61616", \
-                   "99999", "36363 63636 36363 63636 36363 63636 36363 63636", \
-                   "91919 19191 91919 19191 91919 19191 91919 19191"], \
-                   #1
-                   ["49494 94949 49494 94949 49494 94949 49494 94949", \
-                    "71717 17171 71717 17171 71717 17171 71717 17171 ",
-                    "77777", "74447 47474 44744 47474 74447 47474 44744 47474" ] \
-                  ]
-
-###################################################################################################
-
 # Generates a map from a predefined number of randomly chosen patterns
 def generate_map(num_lines, map_index):
 
     # Initialize the map with the hardcoded map starting tiles
-    map = prefix[map_index]
+    map = config.prefix[map_index]
 
     # Add random patterns   
     for i in range(num_lines):
-        line = random.choice(random_patterns[map_index])
-        line = line
+        line = random.choice(config.random_patterns[map_index]).replace(" ", "")
         line = list(line)
-
+       
         # Add special tiles for some challenge
         for i in range(len(line)):
             letter = line[i]
-            line[i] = "0" if random.random() < gap_probablity[map_index] else line[i]
-            line[i] = "A" if random.random() < speedup_probablity[map_index] else line[i]
-            line[i] = "C" if random.random() < slowdown_probablity[map_index] else line[i]
-   
+            if line[i] != "0":
+                line[i] = "0" if random.random() < config.gap_probablity[map_index] else line[i]
+                line[i] = "A" if random.random() < config.speedup_probablity[map_index] else line[i]
+                line[i] = "C" if random.random() < config.slowdown_probablity[map_index] else line[i]
+
         line = ''.join(line)
-
         map += line
-
-    map += end
+        
+    map += config.end
     return map
 
 ###################################################################################################    
 
 # Generate the map, then remove the heper spaces    
-print("Selected stage: " + names[args.stage] + "\nPattern:")
+print("Selected stage: " + config.names[args.stage])
 m = generate_map(MAP_LEN, args.stage)  
 m = m.replace(" ", "")
+print("Generated tiles: " + str(len(m)) + "Pattern: \n")
 print(m)  
 
-f = open(args.outfile, "w")
+# Create empty bytearray for output
+ba = bytearray()
 
-# Write header
-f.write("TMF")
+# Prepare header
+header = "TMF"
+meta = config.names[args.stage] + "\0" + config.backgrounds[args.stage] + "\0"
+ba.extend(header.encode('utf-8'))
+ba.extend(config.colorthemes[args.stage])
+ba.extend(meta.encode('utf-8'))
 
-# Write metadata
-f.write(colorthemes[args.stage])
-f.write(names[args.stage] + "\0")
-f.write(backgrounds[args.stage] + "\0")
-
-# Convert map tile letters to the ASCII code they represent 
+# Convert map tile letters to the hexadecimal number they represent
 for char in m:
-    s = chr(int(char,16))
-    f.write(s)
+    ba.extend(int(char, 16).to_bytes(length=1, byteorder='big'))
 
-# Close file
+# Write file
+f = open(args.outfile, "wb")
+f.write(ba)
 f.close()
 print("\n\nSuccess! Generated file: " + args.outfile)
