@@ -17,9 +17,8 @@ namespace trailblazer::audio
 /// Manages a map of sound effects and plays them when a specific event is triggered
 //
 /// Inherits from MessageRecipient_i:
-/// Receives the msgSoundEvent_e message from Ball Control
-/// Receives the msgSoundEvent_e message from Game Control  (when the game is over)
-/// Receives the msgSoundEvent_e message from the main Game class (when the game is won)
+/// Receives the msgSoundEvent_e message from Ball Control (ball sound effects)
+/// Receives the msgSoundEvent_e message from Game Control  (when the game state changes)
 
 class SoundControl_c : public messaging::MessageRecipient_i
 {

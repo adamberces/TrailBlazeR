@@ -37,6 +37,7 @@ enum class BallState_e
 /// Inherits from MessageRecipient_i:
 /// Provides the msgBallPositionAndDistance_s message for Ball Drawer
 /// Provides the msgSoundEvent_e message for Sound Control
+/// Provides the msgBallStateChange_e for Game Control
 /// Receives the msgKeyEvent_e message from Game Window
 /// Receives the msgActualTileType_s message from Map
 

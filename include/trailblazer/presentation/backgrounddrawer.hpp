@@ -14,11 +14,9 @@ namespace trailblazer::presentation
 {
 
 /////////////////////////////////////////////////////////////////////////////////////////
-/// Wraps a text pipeline to draw the Head Up Display
+/// Draws the background image of the scene
 //
 /// Inherits from MessageRecipient_i:
-/// Receives the msgMapData_s message from Map
-/// Receives the msgRemainingLives_s message from Game Control
 /// Receives the msgRedrawTrigger_s message from Game Scene
 
 class BackgroundDrawer_c : public messaging::MessageRecipient_i

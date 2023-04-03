@@ -16,6 +16,12 @@ namespace trailblazer::map
 /////////////////////////////////////////////////////////////////////////////////////////
 /// Represents a game map (aka. stage), contains a mapfile and a drawing pipeline
 /// which renders the tiles contained in the MapFile
+//
+/// Inherits from MessageRecipient_i:
+/// Receives the msgBallPosition_s from Ball Drawer
+/// Receives the msgRedrawTrigger_s from Game Scene
+/// Provides the msgActualTileType_s message for Ball Control
+/// Provides the msgMapData_s message for HUD
 
 class Map_c : public messaging::MessageRecipient_i
 {

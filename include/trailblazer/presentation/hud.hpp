@@ -17,7 +17,7 @@ namespace trailblazer::presentation
 //
 /// Inherits from MessageRecipient_i:
 /// Receives the msgMapData_s message from Map
-/// Receives the msgGameState_e message from Game Control
+/// Receives the msgHUDStatus_e message from Game Control (trigger for special messages)
 /// Receives the msgRemainingLives_s message from Game Control
 /// Receives the msgRedrawTrigger_s message from Game Scene
 

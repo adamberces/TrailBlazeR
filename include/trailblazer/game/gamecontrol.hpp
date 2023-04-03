@@ -30,8 +30,10 @@ enum class GameSceneChange_e
 //
 /// Inherits from MessageRecipient_i:
 /// Provides the msgRemainingLives_s message for HUD
+/// Provides the msgHUDStatus_e message for HUD
 /// Provides the msgSoundEvent_e message for Sound Control
-/// Receives the msgBallStateChange_e message from Ball Control
+/// Receives the msgKeyEvent_e message from Ball Control
+/// Receives the msgBallStateChange_e message from Game Window
 
 class GameControl_c : public messaging::MessageRecipient_i
 {   
