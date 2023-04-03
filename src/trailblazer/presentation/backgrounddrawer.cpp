@@ -10,11 +10,12 @@ namespace trailblazer::presentation
 void BackgroundDrawer_c::FadeIn(float duration_seconds)
 {
     static int ticks = static_cast<int>(duration_seconds / GameClock_c::TimePeriodSec);
-    float step = 1.F / ticks;
+    static float step = 1.F / ticks;
 
-    if (0 < ticks--)
+    if (Alpha < 1.F)
     {
         Alpha += step;
+        Alpha = std::min(Alpha, 1.F);
         PipelinePtr->AlphaConfig.Value = Alpha;
     }
 }

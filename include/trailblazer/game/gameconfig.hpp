@@ -6,7 +6,7 @@
 namespace trailblazer
 {
 
-using namespace std::literals;
+using namespace std::literals::string_view_literals;
 
 struct Files_s
 {
@@ -18,14 +18,14 @@ struct Files_s
 
     static constexpr auto MUSIC = "music.ogg"sv;
     static constexpr auto TILESCREEN_BACKGROUND = "intro.png"sv;
-    
 };
 
 struct Constants_s
 {
+    /// Window config
     static constexpr int WINDOW_WIDTH = 1024;
     static constexpr int WINDOW_HEIGHT = 768;
-
+    static constexpr float TILE_FADEIN_TIME = 10;
 
     /// Main game Control configuraiton
     static constexpr int INITIAL_LIVES = 5;
@@ -33,6 +33,7 @@ struct Constants_s
     static constexpr int LEVEL_WON_BONUS = 1;
     /// Seconds to wait before changing scene after ball is lost/level won
     static constexpr float WAIT_TIME = 4.F;
+
 
     /// Tile height
     static constexpr float TILE_HEIGHT = 0.1F;
@@ -54,6 +55,7 @@ struct Constants_s
     static constexpr float PI = 3.14159265359F;
     static constexpr float FRICITON_COEFFICIENT_X = 0.2F;
     static constexpr float FRICITON_COEFFICIENT_Z = 5.F;
+    /// Extra friction force applied to stop the ball at finish line
     static constexpr float FRICITON_COEFFICIENT_ENDLEVEL = 0.5F;
     static constexpr float GRAVITY = 9.81F;
     static constexpr float SPHERE_DRAG_COEFFICIENT = 0.47F;
@@ -65,7 +67,7 @@ struct Constants_s
     /// Ball control constants
     static constexpr float JUMP_VELOCITY = 4.F;
     static constexpr float JUMP_TIME = 0.1F;
-    static constexpr float START_POSITION_X = 2.F;
+    static constexpr float START_POSITION_X = static_cast<float>(static_cast<int>(MAP_WIDTH / 2));
     static constexpr float START_POSITION_Y = 0.F;
     static constexpr float START_POSITION_Z = 0.F;
     static constexpr float START_VELOCITY = 1.F;

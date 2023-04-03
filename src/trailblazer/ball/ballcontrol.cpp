@@ -298,7 +298,8 @@ void BallControl_c::jump()
 {
     // Allow jumping only when the ball is on ground
     // If yes, do a state transition which will be handled in addForces
-    if (BallState == BallState_e::ON_GROUND)
+    if (LastTileType != map::TileType_e::GAP &&
+        BallState == BallState_e::ON_GROUND)
     {
         JumpTimer = 0;
         BallState = BallState_e::JUMPING;

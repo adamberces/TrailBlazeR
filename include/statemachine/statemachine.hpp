@@ -10,10 +10,8 @@ namespace statemachine
 /////////////////////////////////////////////////////////////////////////////////////////
 /// Minimalistic finite state machine API
 
-/// First, we define strong tag types to make distinction
-/// Between repeated and onetime actions, to make harder
-/// for the API users to mix them and also the caller side
-/// code will be more expressive
+/// First, we define strong tag types to make distinction between functor types to make harder
+/// for the API users to mix them and also the caller side code will be more expressive
 struct TransitionConditionTag {};
 struct RepeatedActionTag {};
 struct OnetimeActionTag {};
@@ -23,10 +21,8 @@ using transition_condition_ftor_t = std::function<bool(TransitionConditionTag&&)
 using repeated_action_ftor_t = std::function<void(RepeatedActionTag&&)>;
 using onetime_action_ftor_t = std::function<void(OnetimeActionTag&&)>;
 
-/// Then we define the placeholders which shall be used
-/// when a state transition doesn't needs any of these,
-/// eg. if we want to have an unconditional transition from a state
-/// to another, we can just use statmachine::default_condition instead
+/// Then we define the placeholders which shall be used when a state transition doesn't needs any of these.
+/// For actions we have functors with no statements inside, while default transition condition a always returns true.
 inline transition_condition_ftor_t default_condition = [](TransitionConditionTag) { return true; };
 inline repeated_action_ftor_t empty_repeated_action = [](RepeatedActionTag) {};
 inline onetime_action_ftor_t empty_onetime_action = [](OnetimeActionTag) {};
@@ -48,8 +44,6 @@ enum class TransitionResult_e
 ///
 /// It has a template parameter (StateType) which is the type (preferably an enumeration),
 /// which is used to track the states on the API user side
-
-
 
 template <typename StateType>
 struct StateTransitionTemplate_s

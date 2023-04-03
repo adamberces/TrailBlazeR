@@ -74,7 +74,7 @@ void Game_c::gameLoop()
             // if we have it anyways...
             if (TitleScreen)
             {
-                TitleScreen->FadeIn(10);
+                TitleScreen->FadeIn(Constants_s::TILE_FADEIN_TIME);
             }
  
             // This one invokes keyboard polling from the game window,
