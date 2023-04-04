@@ -28,7 +28,7 @@ If you want to build the game from sources, you'll need the following libraries:
 The supplied CMake project file can be used to build the project. I have tested with GCC 9.4.0, but probably any compiler will do the job that supports at least the C++20 standard, however on Windows you might need to work from homebrew libraries.
 
 ## Game instructions
-Control the ball with the left and right arrow keys (or alternatively A and D) and jump with SPACE/left CTRL. Light green tiles will speed up the ball, which allows longer jumps, while light red tiles slows down the ball to the initial speed.
+Control the ball with the left and right arrow keys (or alternatively A and D) and jump with SPACE/left CTRL. Light green tiles will speed up the ball, which allows longer jumps, while light red tiles slows down the ball to the initial speed. When a stage is cleared a bonus life is granted.
 
 # Reusable parts of the project
 The project's source code contains some parts which can be useful maybe even for your projects, which is offered for free reuse under the Unlicense.
