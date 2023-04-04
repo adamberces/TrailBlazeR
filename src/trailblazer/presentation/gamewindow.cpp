@@ -28,6 +28,17 @@ void GameWindow_c::handleKeypressEvents()
     }
 
     PO->broadcastMessage<msgKeyEvent_e>(e);
+
+    // Polling the number keys from 1 to 9 for an undocumented
+    // feature ("cheat"), which allows the user to secretly select
+    // the stage number from the title screen.
+    for (int key = GLFW_KEY_1; key <= GLFW_KEY_9; key++)
+    {
+        if (isPressed(key))
+        {
+            PO->broadcastMessage<msgStageSelectionCheat_s>({ key - GLFW_KEY_0 });
+        }
+    }
 }
 
 GameWindow_c::GameWindow_c(messaging::PostOffice_c* po) :

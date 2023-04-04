@@ -97,4 +97,9 @@ struct msgRedrawTrigger_s
 {
 };
 
+struct msgStageSelectionCheat_s
+{
+    int MapIndex;
+};
+
 } // namespace trailblazer::messaging

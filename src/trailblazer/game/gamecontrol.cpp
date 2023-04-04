@@ -182,6 +182,17 @@ void GameControl_c::sendMessage(msg_t m)
     {
         LastKeyEvent = msg_cast<msgKeyEvent_e>(m);
     }
+    else if (isMessageType<msgStageSelectionCheat_s>(m))
+    {
+        // This is a backdoor which allows user to select stage,
+        // from the title screen using keys 1 -- 9.
+        // This feature is undocumented in the readme file.
+        if ((StateMachine.state() == msgGameState_e::TILE_SCREEN))
+        {
+            MapIndex = msg_cast<msgStageSelectionCheat_s>(m).MapIndex;
+            PO->broadcastMessage<msgSoundEvent_e>(msgSoundEvent_e::SPEEDUP);
+        }
+    }
 }
 
 GameControl_c::GameControl_c(messaging::PostOffice_c* po,
@@ -200,6 +211,7 @@ GameControl_c::GameControl_c(messaging::PostOffice_c* po,
     // Manage subscriptions
     PO->subscribeRecipient<msgBallStateChange_e>(this);
     PO->subscribeRecipient<msgKeyEvent_e>(this);
+    PO->subscribeRecipient<msgStageSelectionCheat_s>(this);
 }
 
 } // namespace trailblazer
