@@ -6,7 +6,7 @@
 
 # Stage name definitions
 names = ["Earth", "Moonbase", "Mercury", "Acidic rain on venus", "Mars", "Jupiter", \
-         "Saturn", "Uranus", "Neptune", "Pluto cities" ]
+         "Saturn", "Uranus", "Neptune", "Cities of Pluto" ]
 
 # Background file names
 backgrounds = ["earth.png", "moonbase.png", "mercury.png", "venus.png", "mars.png",  \
@@ -14,14 +14,14 @@ backgrounds = ["earth.png", "moonbase.png", "mercury.png", "venus.png", "mars.pn
 
 # Each map has a color theme, which is used for the HUD text color and the fog color
 colorthemes = [b"\x80\xaa\xff", b"\x82\x68\x91", b"\xff\xe4\x59", b"\xbd\xb2\xb2", b"\xc7\xe3\xe7", \
-               b"\xfc\xc2\xb1", b"\xb3\x6b\x48", b"\x9d\xbb\xbd", b"\x45\xe4\xfa" ]
+               b"\xfc\xc2\xb1", b"\xb3\x6b\x48", b"\x9d\xbb\xbd", b"\x45\xe4\xfa", b"\x42\x31\x29" ]
 
 #########################################################################################################
 
 # Gaps and special fields randomly replaces regular tiles with the probablities below
-gap_probablity =      [0.1,  0.2,   0.2, 0.05, 0.01, 0.1, 0.3, 0.2, 0.2 ]
-speedup_probablity =  [0.05, 0.05, 0.05, 0.07, 0.07, 0.07, 0.05, 0.02, 0.02 ]
-slowdown_probablity = [0.02, 0.02, 0.02, 0.01, 0.00, 0.01, 0.01, 0.02, 0.02]
+gap_probablity =      [0.1,  0.2,   0.2, 0.05, 0.01, 0.1, 0.3, 0.2, 0.2, 0.2]
+speedup_probablity =  [0.05, 0.05, 0.05, 0.07, 0.07, 0.07, 0.05, 0.02, 0.02, 0.02 ]
+slowdown_probablity = [0.02, 0.02, 0.02, 0.01, 0.00, 0.01, 0.01, 0.02, 0.02, 0.02]
 
 #########################################################################################################
 
@@ -55,7 +55,10 @@ prefix = [ \
          "9E9E9 E9E9E 90009 90009 E000E 90009 E000E 90009 E000E 99999 99999 99999", \
          #8
          "33333 33333 33333 33B33 33B33 33B33 B3B3B 3BBB3 33B33 33333 00003 00003" \
-         "00003 00003 00003 00003 00003 00003 00003 00033 00333 03333 33333 AAAAA" ]
+         "00003 00003 00003 00003 00003 00003 00003 00033 00333 03333 33333 AAAAA", \
+         #9
+         "AAAAA AAAAA AAAAA AAAAA 30603 06360 30603 06360 30603 06360 30603 06360"
+         ]
 
 # Finish line pattern - same for all maps
 end =    "F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 F8F8F 8F8F8 " \
@@ -118,4 +121,11 @@ random_patterns = [ \
                     "B3B3B 3B3B3 B3B3B 3B3B3 B3B3B 3B3B3 B3B3B 3B3B3 B3B3B 3B3B3", \
                     "1B1B1 B1B1B 1B1B1 B1B1B 1B1B1 B1B1B 1B1B1 B1B1B 1B1B1 B1B1B" \
                     "1B1B1 B1B1B 1B1B1 B1B1B 1B1B1 B1B1B 1B1B1 B1B1B 1B1B1 B1B1B"], \
+                    #9
+                   ["36363 63636 36363 63636 36363 63636 36363 63636" \
+                    "36363 63636 36363 63636 36363 63636 36363 63636", \
+                   "77777", "73737 37373 73737 37373 73737 37373 73737 37373", \
+                   "00700 00300 30703 00300 00700 70307 00700 00300" \
+                   "30703 00300 00700 70307 00700 00300 30703 00300 00300", 
+                   "00000 60300 60300 60300 60300 60000 60000 00003 00603 00603 00603 00603 00603 00000"], \
                   ]
