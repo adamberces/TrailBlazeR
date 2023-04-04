@@ -4,7 +4,7 @@ import argparse
 import config
 
 # Number of patterns to choose per stage
-MAP_LEN = 10
+MAP_LEN = 20
 
 # Parse the index of the stage to be generated
 parser = argparse.ArgumentParser(description='Trailblazer TMF map generator')
