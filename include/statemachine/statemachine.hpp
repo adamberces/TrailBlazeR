@@ -80,7 +80,7 @@ struct StateTransitionTemplate_s
 /// It has a template parameter (StateType) which is the type (preferably an enumeration),
 /// which is used to track the states on the API user side
 
-template <typename StateType> //, StateType InitialState>
+template <typename StateType>
 class StateMachine_c
 {
 public:
